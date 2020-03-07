@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Team G - Plant Project</string>
-    <string name="title_home">Home</string>
-    <string name="title_feed">Feed</string>
-    <string name="title_profile">Profile</string>
+    <string name="title_home">My Plants</string>
+    <string name="title_feed">Activity Feed</string>
+    <string name="title_profile">My Profile</string>
     <string name="action_sign_in_short">Register</string>
     <string name="email">Email</string>
     <string name="minimum_password">Password too short, enter minimum 6 characters!</string>
