@@ -32,13 +32,6 @@ public class FeedFragment extends Fragment {
                 ViewModelProviders.of(this).get(FeedViewModel.class);
         View root = inflater.inflate(R.layout.fragment_feed, container, false);
 
-        final TextView textView = root.findViewById(R.id.text_feed);
-        feedViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
 
         fb.collection("sensors/z1QgZ1bVjYnUyrszlU9b/data")
                 .get()
