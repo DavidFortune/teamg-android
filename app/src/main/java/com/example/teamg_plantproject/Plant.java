@@ -5,7 +5,6 @@ public class Plant {
     private int plantID;
     private String plantName;
     private String plantState;
-    private int plantFave;
     private String waterTime;
 
     public Plant() {
@@ -15,7 +14,6 @@ public class Plant {
         this.plantID = plantID;
         this.plantName = plantName;
         this.plantState = plantState;
-        this.plantFave = plantFave;
         this.waterTime = waterTime;
     }
 
@@ -41,14 +39,6 @@ public class Plant {
 
     public void setPlantState(String plantState) {
         this.plantState = plantState;
-    }
-
-    public int isPlantFave() {
-        return plantFave;
-    }
-
-    public void setPlantFave(int plantFave) {
-        this.plantFave = plantFave;
     }
 
     public String getWaterTime() {

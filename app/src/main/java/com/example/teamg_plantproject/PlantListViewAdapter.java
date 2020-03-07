@@ -68,7 +68,6 @@ public class PlantListViewAdapter extends BaseAdapter {
         //Link and Fill in values
         plantName.setText("  Plant name: " + plantArrayList.get(position).getPlantName());
         plantState.setText("  Plant state: " + plantArrayList.get(position).getPlantState());
-        plantFave.setText("  Plant favorite status: " + plantArrayList.get(position).isPlantFave());
         plantWater.setText("  Plant last watered: " + plantArrayList.get(position).getWaterTime());
 
         //Setup listener for when use click on any of the listView entities to redirect to

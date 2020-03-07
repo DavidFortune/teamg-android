@@ -23,13 +23,6 @@
         android:hint="Plant State"
         android:inputType="textPersonName" />
 
-    <EditText
-        android:id="@+id/plant_fave"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Favorite  plant?"
-        android:inputType="textPersonName" />
 
     <EditText
         android:id="@+id/plant_watertime"

@@ -56,7 +56,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(PLANT_NAME, plant.getPlantName());
         contentValues.put(PLANT_STATE, plant.getPlantState());
-        contentValues.put(PLANT_LIKE, plant.isPlantFave());
         contentValues.put(NEXT_WATER, plant.getWaterTime());
 
         long plant_id = db.insert(TABLE_PLANTS,null,contentValues);
@@ -85,7 +84,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             plant.setPlantID(cursor.getInt(cursor.getColumnIndex(KEY_PLANT_ID)));
             plant.setPlantName(cursor.getString(cursor.getColumnIndex(PLANT_NAME)));
-            plant.setPlantFave(Integer.parseInt(cursor.getString(cursor.getColumnIndex(PLANT_LIKE))));
             plant.setPlantState(cursor.getString(cursor.getColumnIndex(PLANT_STATE)));
             plant.setWaterTime(cursor.getString(cursor.getColumnIndex(NEXT_WATER)));
             cursor.close();
@@ -110,7 +108,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 Plant plant = new Plant();
                 plant.setPlantID(cursor.getInt(cursor.getColumnIndex(KEY_PLANT_ID)));
                 plant.setPlantName(cursor.getString(cursor.getColumnIndex(PLANT_NAME)));
-                plant.setPlantFave(Integer.parseInt(cursor.getString(cursor.getColumnIndex(PLANT_LIKE))));
                 plant.setPlantState(cursor.getString(cursor.getColumnIndex(PLANT_STATE)));
                 plant.setWaterTime(cursor.getString(cursor.getColumnIndex(NEXT_WATER)));
 
