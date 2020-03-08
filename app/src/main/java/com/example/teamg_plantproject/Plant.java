@@ -4,16 +4,16 @@ public class Plant {
 
     private int plantID;
     private String plantName;
-    private String plantState;
+    private String plantType;
     private String waterTime;
 
     public Plant() {
     }
 
-    public Plant(int plantID, String plantName, String plantState, int plantFave, String waterTime) {
+    public Plant(int plantID, String plantName, String plantType, String waterTime) {
         this.plantID = plantID;
         this.plantName = plantName;
-        this.plantState = plantState;
+        this.plantType = plantType;
         this.waterTime = waterTime;
     }
 
@@ -33,12 +33,12 @@ public class Plant {
         this.plantName = plantName;
     }
 
-    public String getPlantState() {
-        return plantState;
+    public String getPlantType() {
+        return plantType;
     }
 
-    public void setPlantState(String plantState) {
-        this.plantState = plantState;
+    public void setPlantType(String plantType) {
+        this.plantType = plantType;
     }
 
     public String getWaterTime() {

@@ -60,14 +60,13 @@ public class PlantListViewAdapter extends BaseAdapter {
         convertView = LayoutInflater.from(context).inflate(R.layout.plant_layout, parent, false);
 
         TextView plantName = convertView.findViewById(R.id.plant_name_listview);
-        TextView plantState = convertView.findViewById(R.id.plant_state_listview);
-        TextView plantFave = convertView.findViewById(R.id.plant_fave_listview);
+        TextView plantType = convertView.findViewById(R.id.plant_type_listview);
         TextView plantWater = convertView.findViewById(R.id.plant_water_listview);
 
 
         //Link and Fill in values
         plantName.setText("  Plant name: " + plantArrayList.get(position).getPlantName());
-        plantState.setText("  Plant state: " + plantArrayList.get(position).getPlantState());
+        plantType.setText("  Plant type: " + plantArrayList.get(position).getPlantType());
         plantWater.setText("  Plant last watered: " + plantArrayList.get(position).getWaterTime());
 
         //Setup listener for when use click on any of the listView entities to redirect to

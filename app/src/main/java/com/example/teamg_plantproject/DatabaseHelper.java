@@ -14,8 +14,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String KEY_PLANT_ID = "plant_id";
     private static final String PLANT_NAME = "plant_name";
-    private static final String PLANT_STATE = "plant_state";
-    private static final String  PLANT_LIKE = "fave_plant";
+    private static final String PLANT_TYPE = "plant_type";
     private static final String NEXT_WATER = "water_timer";
 
     private static final String TAG = "DB CREATOR";
@@ -30,8 +29,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + TABLE_PLANTS + "("
             + KEY_PLANT_ID + " INTEGER PRIMARY KEY,"
             + PLANT_NAME + " TEXT,"
-            + PLANT_STATE + " TEXT,"
-            + PLANT_LIKE + " TEXT,"
+            + PLANT_TYPE + " TEXT,"
             + NEXT_WATER + " TEXT" + ")";
 
 
@@ -55,7 +53,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(PLANT_NAME, plant.getPlantName());
-        contentValues.put(PLANT_STATE, plant.getPlantState());
+        contentValues.put(PLANT_TYPE, plant.getPlantType());
         contentValues.put(NEXT_WATER, plant.getWaterTime());
 
         long plant_id = db.insert(TABLE_PLANTS,null,contentValues);
@@ -84,7 +82,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             plant.setPlantID(cursor.getInt(cursor.getColumnIndex(KEY_PLANT_ID)));
             plant.setPlantName(cursor.getString(cursor.getColumnIndex(PLANT_NAME)));
-            plant.setPlantState(cursor.getString(cursor.getColumnIndex(PLANT_STATE)));
+            plant.setPlantType(cursor.getString(cursor.getColumnIndex(PLANT_TYPE)));
             plant.setWaterTime(cursor.getString(cursor.getColumnIndex(NEXT_WATER)));
             cursor.close();
             return plant;
@@ -108,7 +106,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 Plant plant = new Plant();
                 plant.setPlantID(cursor.getInt(cursor.getColumnIndex(KEY_PLANT_ID)));
                 plant.setPlantName(cursor.getString(cursor.getColumnIndex(PLANT_NAME)));
-                plant.setPlantState(cursor.getString(cursor.getColumnIndex(PLANT_STATE)));
+                plant.setPlantType(cursor.getString(cursor.getColumnIndex(PLANT_TYPE)));
                 plant.setWaterTime(cursor.getString(cursor.getColumnIndex(NEXT_WATER)));
 
                 plants.add(plant);

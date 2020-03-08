@@ -22,7 +22,7 @@ public class PlantDialog extends DialogFragment {
     private Button saveButton;
     private Button cancelButton;
     private EditText plantNameEdit;
-    private EditText plantStateEdit;
+    private EditText plantTypeEdit;
     private EditText plantWaterEdit;
 
     public View onCreateView(@NonNull LayoutInflater inflater
@@ -33,7 +33,7 @@ public class PlantDialog extends DialogFragment {
         saveButton = view.findViewById(R.id.save);
         cancelButton = view.findViewById(R.id.cancel);
         plantNameEdit = view.findViewById(R.id.plant_name);
-        plantStateEdit = view.findViewById(R.id.plant_state);
+        plantTypeEdit = view.findViewById(R.id.plant_type);
         plantWaterEdit = view.findViewById(R.id.plant_watertime);
 
         //on save open DataBase and store new course, on cancel return to activity
@@ -42,7 +42,7 @@ public class PlantDialog extends DialogFragment {
             public void onClick(View v) {
 
                 if (TextUtils.isEmpty(plantNameEdit.getText().toString())
-                        || TextUtils.isEmpty(plantStateEdit.getText().toString())
+                        || TextUtils.isEmpty(plantTypeEdit.getText().toString())
                         || TextUtils.isEmpty(plantWaterEdit.getText().toString())) {
                     Toast.makeText(getContext(), "Empty Fields Not Allowed", Toast.LENGTH_LONG).show();
                 } else {
@@ -53,10 +53,10 @@ public class PlantDialog extends DialogFragment {
 
                     Toast.makeText(getActivity(), "Plant Saved", Toast.LENGTH_LONG).show();
                     String plantName = plantNameEdit.getText().toString();
-                    String plantState = plantStateEdit.getText().toString();
+                    String plantType = plantTypeEdit.getText().toString();
                     String plantWater = plantWaterEdit.getText().toString();
                     plant.setPlantName(plantName);
-                    plant.setPlantState(plantState);
+                    plant.setPlantType(plantType);
                     plant.setWaterTime(plantWater);
                     db.createPlant(plant);
 
