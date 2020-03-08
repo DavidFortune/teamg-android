@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -60,6 +61,7 @@ public class PlantListViewAdapter extends BaseAdapter {
         TextView plantName = convertView.findViewById(R.id.plant_name_listview);
         TextView plantType = convertView.findViewById(R.id.plant_type_listview);
         TextView plantSensor = convertView.findViewById(R.id.plant_sensor_listview);
+        ImageView plantPicture = convertView.findViewById(R.id.plant_image_view);
 
 
         //Link and Fill in values
