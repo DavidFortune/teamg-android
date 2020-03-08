@@ -75,8 +75,9 @@ public class FeedFragment extends Fragment {
 
                             sensorDataText = sensorDataText +
                                         date.toString()
-                                        + "\nHumidity: " + doc.get("rawHumidity")
+                                        + "\nAir Humidity: " + doc.get("rawHumidity")
                                         + "  Solar: " + doc.get("rawSolarValue")
+                                        + "\nSoil humidity: " + doc.get("rawSoilValue")
                                         + "  Temperature: " + doc.get("rawTemp")
                                         + "\n\n";
 
