@@ -40,28 +40,35 @@ public class FeedFragment extends Fragment {
         this.root = inflater.inflate(R.layout.fragment_feed, container, false);
 
 
-        setUpRecyclerView();
 
-        fb.collection("sensors/z1QgZ1bVjYnUyrszlU9b/data")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(SensorActivity.class.getName(), document.getId() + " => " + document.getData());
+
+        try {
+            fb.collection("sensors/z1QgZ1bVjYnUyrszlU9b/data")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    Log.d(SensorActivity.class.getName(), document.getId() + " => " + document.getData());
+                                }
+                            } else {
+                                Log.w(SensorActivity.class.getName(), "Error getting documents.", task.getException());
                             }
-                        } else {
-                            Log.w(SensorActivity.class.getName(), "Error getting documents.", task.getException());
                         }
-                    }
-                });
+                    });
+        }
+        catch (Exception e){
+            Log.w(SensorActivity.class.getName(), e.getMessage());
+        }
+
+        setUpRecyclerView();
 
         return this.root;
     }
 
     private void setUpRecyclerView(){
-        Query query = sensorDataRef.orderBy("createdAt", Query.Direction.DESCENDING);
+        Query query = sensorDataRef.orderBy("rawHumidity", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<SensorData> options = new FirestoreRecyclerOptions.Builder<SensorData>()
                 .setQuery(query, SensorData.class)
@@ -73,6 +80,8 @@ public class FeedFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager( getActivity()));
         recyclerView.setAdapter(adapter);
+
+        Log.w(SensorActivity.class.getName(), "Error getting documents.");
     }
 
     @Override

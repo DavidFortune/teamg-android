@@ -1,5 +1,6 @@
 package com.example.teamg_plantproject;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 public class SensorDataAdapter extends FirestoreRecyclerAdapter<SensorData, SensorDataAdapter.SensorDataHolder> {
 
@@ -20,7 +22,7 @@ public class SensorDataAdapter extends FirestoreRecyclerAdapter<SensorData, Sens
     @Override
     protected void onBindViewHolder(@NonNull SensorDataHolder holder, int position, @NonNull SensorData model) {
 
-        holder.textViewTimestamp.setText(model.getCreatedAt());
+        holder.textViewTimestamp.setText("2020-03-06");
 
         String sensorDataText = "Humidity:    " + Double.toString(model.getRawHumidity())
                             + "\nSolar:       " + Double.toString(model.getRawSolarValue())
@@ -35,6 +37,7 @@ public class SensorDataAdapter extends FirestoreRecyclerAdapter<SensorData, Sens
                 parent, false);
         return new SensorDataHolder(v);
     }
+
 
     class SensorDataHolder extends RecyclerView.ViewHolder{
 

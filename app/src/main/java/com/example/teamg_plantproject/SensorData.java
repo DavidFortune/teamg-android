@@ -1,17 +1,22 @@
 package com.example.teamg_plantproject;
 
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.ServerTimestamp;
+
+import java.util.Date;
+
 public class SensorData {
     private double rawHumidity;
     private double rawSoilValue;
     private double rawSolarValue;
     private double rawTemp;
-    private String createdAt;
+    private Date createdAt;
 
     public SensorData() {
         //empty controctor needed
     }
 
-    public SensorData(double rawHumidity, double rawSoilValue, double rawSolarValue, double rawTemp, String createdAt ){
+    public SensorData(double rawHumidity, double rawSoilValue, double rawSolarValue, double rawTemp, Date createdAt ){
         this.rawHumidity = rawHumidity;
         this.rawSoilValue = rawSoilValue;
         this.rawSolarValue = rawSolarValue;
@@ -35,7 +40,8 @@ public class SensorData {
         return rawTemp;
     }
 
-    public String getCreatedAt() {
+    @ServerTimestamp
+    public Date getCreatedAt() {
         return createdAt;
     }
 
@@ -55,7 +61,7 @@ public class SensorData {
         this.rawTemp = rawTemp;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 }
