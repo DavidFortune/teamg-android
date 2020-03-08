@@ -5,7 +5,7 @@ public class Plant {
     private int plantID;
     private String plantName;
     private String plantType;
-    private String waterTime;
+    private String sensorId;
 
     public Plant() {
     }
@@ -14,7 +14,7 @@ public class Plant {
         this.plantID = plantID;
         this.plantName = plantName;
         this.plantType = plantType;
-        this.waterTime = waterTime;
+        this.sensorId = sensorId;
     }
 
     public int getPlantID() {
@@ -41,11 +41,11 @@ public class Plant {
         this.plantType = plantType;
     }
 
-    public String getWaterTime() {
-        return waterTime;
+    public String getSensorId() {
+        return sensorId;
     }
 
-    public void setWaterTime(String waterTime) {
-        this.waterTime = waterTime;
+    public void setSensorId(String sensorId) {
+        this.sensorId = sensorId;
     }
 }

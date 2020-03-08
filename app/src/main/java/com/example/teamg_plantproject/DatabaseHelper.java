@@ -15,7 +15,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_PLANT_ID = "plant_id";
     private static final String PLANT_NAME = "plant_name";
     private static final String PLANT_TYPE = "plant_type";
-    private static final String NEXT_WATER = "water_timer";
+    private static final String SENSOR_ID = "plant_sensor";
 
     private static final String TAG = "DB CREATOR";
 
@@ -30,7 +30,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + KEY_PLANT_ID + " INTEGER PRIMARY KEY,"
             + PLANT_NAME + " TEXT,"
             + PLANT_TYPE + " TEXT,"
-            + NEXT_WATER + " TEXT" + ")";
+            + SENSOR_ID + " TEXT" + ")";
 
 
     public DatabaseHelper(Context context){
@@ -54,7 +54,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(PLANT_NAME, plant.getPlantName());
         contentValues.put(PLANT_TYPE, plant.getPlantType());
-        contentValues.put(NEXT_WATER, plant.getWaterTime());
+        contentValues.put(SENSOR_ID, plant.getSensorId());
 
         long plant_id = db.insert(TABLE_PLANTS,null,contentValues);
 
@@ -83,7 +83,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             plant.setPlantID(cursor.getInt(cursor.getColumnIndex(KEY_PLANT_ID)));
             plant.setPlantName(cursor.getString(cursor.getColumnIndex(PLANT_NAME)));
             plant.setPlantType(cursor.getString(cursor.getColumnIndex(PLANT_TYPE)));
-            plant.setWaterTime(cursor.getString(cursor.getColumnIndex(NEXT_WATER)));
+            plant.setSensorId(cursor.getString(cursor.getColumnIndex(SENSOR_ID)));
             cursor.close();
             return plant;
 
@@ -107,7 +107,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 plant.setPlantID(cursor.getInt(cursor.getColumnIndex(KEY_PLANT_ID)));
                 plant.setPlantName(cursor.getString(cursor.getColumnIndex(PLANT_NAME)));
                 plant.setPlantType(cursor.getString(cursor.getColumnIndex(PLANT_TYPE)));
-                plant.setWaterTime(cursor.getString(cursor.getColumnIndex(NEXT_WATER)));
+                plant.setSensorId(cursor.getString(cursor.getColumnIndex(SENSOR_ID)));
 
                 plants.add(plant);
             } while (cursor.moveToNext());

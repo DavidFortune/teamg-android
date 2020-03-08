@@ -61,13 +61,13 @@ public class PlantListViewAdapter extends BaseAdapter {
 
         TextView plantName = convertView.findViewById(R.id.plant_name_listview);
         TextView plantType = convertView.findViewById(R.id.plant_type_listview);
-        TextView plantWater = convertView.findViewById(R.id.plant_water_listview);
+        TextView plantSensor = convertView.findViewById(R.id.plant_sensor_listview);
 
 
         //Link and Fill in values
         plantName.setText("  Plant name: " + plantArrayList.get(position).getPlantName());
         plantType.setText("  Plant type: " + plantArrayList.get(position).getPlantType());
-        plantWater.setText("  Plant last watered: " + plantArrayList.get(position).getWaterTime());
+        plantSensor.setText("  Plant sensor ID: " + plantArrayList.get(position).getSensorId());
 
         //Setup listener for when use click on any of the listView entities to redirect to
         //plant activity of that plant

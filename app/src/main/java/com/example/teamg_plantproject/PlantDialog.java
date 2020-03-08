@@ -23,7 +23,7 @@ public class PlantDialog extends DialogFragment {
     private Button cancelButton;
     private EditText plantNameEdit;
     private EditText plantTypeEdit;
-    private EditText plantWaterEdit;
+    private EditText plantSensorEdit;
 
     public View onCreateView(@NonNull LayoutInflater inflater
             , @Nullable ViewGroup container
@@ -34,7 +34,7 @@ public class PlantDialog extends DialogFragment {
         cancelButton = view.findViewById(R.id.cancel);
         plantNameEdit = view.findViewById(R.id.plant_name);
         plantTypeEdit = view.findViewById(R.id.plant_type);
-        plantWaterEdit = view.findViewById(R.id.plant_watertime);
+        plantSensorEdit = view.findViewById(R.id.plant_sensor_id);
 
         //on save open DataBase and store new course, on cancel return to activity
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -43,7 +43,7 @@ public class PlantDialog extends DialogFragment {
 
                 if (TextUtils.isEmpty(plantNameEdit.getText().toString())
                         || TextUtils.isEmpty(plantTypeEdit.getText().toString())
-                        || TextUtils.isEmpty(plantWaterEdit.getText().toString())) {
+                        || TextUtils.isEmpty(plantSensorEdit.getText().toString())) {
                     Toast.makeText(getContext(), "Empty Fields Not Allowed", Toast.LENGTH_LONG).show();
                 } else {
                     DatabaseHelper db;
@@ -54,10 +54,10 @@ public class PlantDialog extends DialogFragment {
                     Toast.makeText(getActivity(), "Plant Saved", Toast.LENGTH_LONG).show();
                     String plantName = plantNameEdit.getText().toString();
                     String plantType = plantTypeEdit.getText().toString();
-                    String plantWater = plantWaterEdit.getText().toString();
+                    String plantId = plantSensorEdit.getText().toString();
                     plant.setPlantName(plantName);
                     plant.setPlantType(plantType);
-                    plant.setWaterTime(plantWater);
+                    plant.setSensorId(plantId);
                     db.createPlant(plant);
 
                     getActivity().startActivityForResult(getActivity().getIntent(), 10);
