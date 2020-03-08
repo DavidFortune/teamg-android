@@ -12,12 +12,19 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.teamg_plantproject.R;
 import com.example.teamg_plantproject.SensorActivity;
+import com.example.teamg_plantproject.SensorData;
+import com.example.teamg_plantproject.SensorDataAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -25,13 +32,18 @@ public class FeedFragment extends Fragment {
 
     private FeedViewModel feedViewModel;
     private FirebaseFirestore fb = FirebaseFirestore.getInstance();
+    private CollectionReference sensorDataRef = fb.collection("sensors/z1QgZ1bVjYnUyrszlU9b/data");
+    private SensorDataAdapter adapter;
+    protected View root;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         feedViewModel =
                 ViewModelProviders.of(this).get(FeedViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_feed, container, false);
+        this.root = inflater.inflate(R.layout.fragment_feed, container, false);
 
+
+        setUpRecyclerView();
 
         fb.collection("sensors/z1QgZ1bVjYnUyrszlU9b/data")
                 .get()
@@ -48,7 +60,33 @@ public class FeedFragment extends Fragment {
                     }
                 });
 
-        return root;
+        return this.root;
     }
 
+    private void setUpRecyclerView(){
+        Query query = sensorDataRef.orderBy("createdAt", Query.Direction.DESCENDING);
+
+        FirestoreRecyclerOptions<SensorData> options = new FirestoreRecyclerOptions.Builder<SensorData>()
+                .setQuery(query, SensorData.class)
+                .build();
+
+        adapter = new SensorDataAdapter(options);
+
+        RecyclerView recyclerView = this.root.findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager( getActivity()));
+        recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        adapter.startListening();
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        adapter.stopListening();
+    }
 }
