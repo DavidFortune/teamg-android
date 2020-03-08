@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import java.security.PublicKey;
 import java.util.ArrayList;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -33,7 +32,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + SENSOR_ID + " TEXT" + ")";
 
 
-    public DatabaseHelper(Context context){
+    public DatabaseHelper(Context context) {
         super(context, DATA_BASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -56,7 +55,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(PLANT_TYPE, plant.getPlantType());
         contentValues.put(SENSOR_ID, plant.getSensorId());
 
-        long plant_id = db.insert(TABLE_PLANTS,null,contentValues);
+        long plant_id = db.insert(TABLE_PLANTS, null, contentValues);
 
         Log.d(TAG, "CREATED PLANT");
         return plant_id;
@@ -115,6 +114,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         return plants;
     }
+
     //delete a plant inside the plant table
     public void deletePlant(int plantID) {
         SQLiteDatabase db = this.getWritableDatabase();
