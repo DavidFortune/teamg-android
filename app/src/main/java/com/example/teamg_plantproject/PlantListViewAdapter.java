@@ -1,8 +1,6 @@
 package com.example.teamg_plantproject;
 
 import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,16 +58,14 @@ public class PlantListViewAdapter extends BaseAdapter {
         convertView = LayoutInflater.from(context).inflate(R.layout.plant_layout, parent, false);
 
         TextView plantName = convertView.findViewById(R.id.plant_name_listview);
-        TextView plantState = convertView.findViewById(R.id.plant_state_listview);
-        TextView plantFave = convertView.findViewById(R.id.plant_fave_listview);
-        TextView plantWater = convertView.findViewById(R.id.plant_water_listview);
+        TextView plantType = convertView.findViewById(R.id.plant_type_listview);
+        TextView plantSensor = convertView.findViewById(R.id.plant_sensor_listview);
 
 
         //Link and Fill in values
         plantName.setText("  Plant name: " + plantArrayList.get(position).getPlantName());
-        plantState.setText("  Plant state: " + plantArrayList.get(position).getPlantState());
-        plantFave.setText("  Plant favorite status: " + plantArrayList.get(position).isPlantFave());
-        plantWater.setText("  Plant last watered: " + plantArrayList.get(position).getWaterTime());
+        plantType.setText("  Plant type: " + plantArrayList.get(position).getPlantType());
+        plantSensor.setText("  Plant sensor ID: " + plantArrayList.get(position).getSensorId());
 
         //Setup listener for when use click on any of the listView entities to redirect to
         //plant activity of that plant

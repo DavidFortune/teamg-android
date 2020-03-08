@@ -10,19 +10,14 @@ android:layout_height="match_parent">
     android:text="TextView" />
 
 <TextView
-    android:id="@+id/plant_state_listview"
+    android:id="@+id/plant_type_listview"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="TextView" />
 
-<TextView
-    android:id="@+id/plant_fave_listview"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="TextView" />
 
 <TextView
-    android:id="@+id/plant_water_listview"
+    android:id="@+id/plant_sensor_listview"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="TextView" />

@@ -7,16 +7,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import java.security.PublicKey;
 import java.util.ArrayList;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String KEY_PLANT_ID = "plant_id";
     private static final String PLANT_NAME = "plant_name";
-    private static final String PLANT_STATE = "plant_state";
-    private static final String  PLANT_LIKE = "fave_plant";
-    private static final String NEXT_WATER = "water_timer";
+    private static final String PLANT_TYPE = "plant_type";
+    private static final String SENSOR_ID = "plant_sensor";
 
     private static final String TAG = "DB CREATOR";
 
@@ -30,12 +28,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + TABLE_PLANTS + "("
             + KEY_PLANT_ID + " INTEGER PRIMARY KEY,"
             + PLANT_NAME + " TEXT,"
-            + PLANT_STATE + " TEXT,"
-            + PLANT_LIKE + " TEXT,"
-            + NEXT_WATER + " TEXT" + ")";
+            + PLANT_TYPE + " TEXT,"
+            + SENSOR_ID + " TEXT" + ")";
 
 
-    public DatabaseHelper(Context context){
+    public DatabaseHelper(Context context) {
         super(context, DATA_BASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -55,11 +52,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(PLANT_NAME, plant.getPlantName());
-        contentValues.put(PLANT_STATE, plant.getPlantState());
-        contentValues.put(PLANT_LIKE, plant.isPlantFave());
-        contentValues.put(NEXT_WATER, plant.getWaterTime());
+        contentValues.put(PLANT_TYPE, plant.getPlantType());
+        contentValues.put(SENSOR_ID, plant.getSensorId());
 
-        long plant_id = db.insert(TABLE_PLANTS,null,contentValues);
+        long plant_id = db.insert(TABLE_PLANTS, null, contentValues);
 
         Log.d(TAG, "CREATED PLANT");
         return plant_id;
@@ -85,9 +81,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             plant.setPlantID(cursor.getInt(cursor.getColumnIndex(KEY_PLANT_ID)));
             plant.setPlantName(cursor.getString(cursor.getColumnIndex(PLANT_NAME)));
-            plant.setPlantFave(Integer.parseInt(cursor.getString(cursor.getColumnIndex(PLANT_LIKE))));
-            plant.setPlantState(cursor.getString(cursor.getColumnIndex(PLANT_STATE)));
-            plant.setWaterTime(cursor.getString(cursor.getColumnIndex(NEXT_WATER)));
+            plant.setPlantType(cursor.getString(cursor.getColumnIndex(PLANT_TYPE)));
+            plant.setSensorId(cursor.getString(cursor.getColumnIndex(SENSOR_ID)));
             cursor.close();
             return plant;
 
@@ -110,9 +105,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 Plant plant = new Plant();
                 plant.setPlantID(cursor.getInt(cursor.getColumnIndex(KEY_PLANT_ID)));
                 plant.setPlantName(cursor.getString(cursor.getColumnIndex(PLANT_NAME)));
-                plant.setPlantFave(Integer.parseInt(cursor.getString(cursor.getColumnIndex(PLANT_LIKE))));
-                plant.setPlantState(cursor.getString(cursor.getColumnIndex(PLANT_STATE)));
-                plant.setWaterTime(cursor.getString(cursor.getColumnIndex(NEXT_WATER)));
+                plant.setPlantType(cursor.getString(cursor.getColumnIndex(PLANT_TYPE)));
+                plant.setSensorId(cursor.getString(cursor.getColumnIndex(SENSOR_ID)));
 
                 plants.add(plant);
             } while (cursor.moveToNext());
@@ -120,6 +114,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         return plants;
     }
+
     //delete a plant inside the plant table
     public void deletePlant(int plantID) {
         SQLiteDatabase db = this.getWritableDatabase();

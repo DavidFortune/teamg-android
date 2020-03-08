@@ -4,19 +4,17 @@ public class Plant {
 
     private int plantID;
     private String plantName;
-    private String plantState;
-    private int plantFave;
-    private String waterTime;
+    private String plantType;
+    private String sensorId;
 
     public Plant() {
     }
 
-    public Plant(int plantID, String plantName, String plantState, int plantFave, String waterTime) {
+    public Plant(int plantID, String plantName, String plantType, String waterTime) {
         this.plantID = plantID;
         this.plantName = plantName;
-        this.plantState = plantState;
-        this.plantFave = plantFave;
-        this.waterTime = waterTime;
+        this.plantType = plantType;
+        this.sensorId = sensorId;
     }
 
     public int getPlantID() {
@@ -35,27 +33,19 @@ public class Plant {
         this.plantName = plantName;
     }
 
-    public String getPlantState() {
-        return plantState;
+    public String getPlantType() {
+        return plantType;
     }
 
-    public void setPlantState(String plantState) {
-        this.plantState = plantState;
+    public void setPlantType(String plantType) {
+        this.plantType = plantType;
     }
 
-    public int isPlantFave() {
-        return plantFave;
+    public String getSensorId() {
+        return sensorId;
     }
 
-    public void setPlantFave(int plantFave) {
-        this.plantFave = plantFave;
-    }
-
-    public String getWaterTime() {
-        return waterTime;
-    }
-
-    public void setWaterTime(String waterTime) {
-        this.waterTime = waterTime;
+    public void setSensorId(String sensorId) {
+        this.sensorId = sensorId;
     }
 }
