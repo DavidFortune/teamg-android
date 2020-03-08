@@ -13,8 +13,8 @@ public class ProfileViewModel extends ViewModel {
     public ProfileViewModel() {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         String profileText = auth.getCurrentUser().getDisplayName()
-                            + "\n\n"
-                            + auth.getCurrentUser().getEmail();
+                + "\n\n"
+                + auth.getCurrentUser().getEmail();
         mText = new MutableLiveData<>();
         mText.setValue(profileText);
     }

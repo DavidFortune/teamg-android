@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 
 public class SensorDataAdapter extends FirestoreRecyclerAdapter<SensorData, SensorDataAdapter.SensorDataHolder> {
 
@@ -29,6 +28,7 @@ public class SensorDataAdapter extends FirestoreRecyclerAdapter<SensorData, Sens
         String sensorDataText = "Humidity:    " + Double.toString(model.getrawHumidity())
                             + "\nSolar:       " + Double.toString(model.getrawSolarValue())
                             + "\nTemperature: " + Double.toString(model.getrawTemp());
+
         holder.textViewSensorData.setText(sensorDataText);
 
         Log.w(MainActivity.class.getName(), "View holder Binding.");
@@ -50,7 +50,7 @@ public class SensorDataAdapter extends FirestoreRecyclerAdapter<SensorData, Sens
     }
 
 
-    class SensorDataHolder extends RecyclerView.ViewHolder{
+    class SensorDataHolder extends RecyclerView.ViewHolder {
 
         TextView textViewSensorData;
         TextView textViewTimestamp;

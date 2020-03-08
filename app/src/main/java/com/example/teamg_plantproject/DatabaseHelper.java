@@ -14,7 +14,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_PLANT_ID = "plant_id";
     private static final String PLANT_NAME = "plant_name";
     private static final String PLANT_TYPE = "plant_type";
-    private static final String SENSOR_ID = "plant_sensor";
+    private static final String SENSOR_ID = "sensor_id";
 
     private static final String TAG = "DB CREATOR";
 

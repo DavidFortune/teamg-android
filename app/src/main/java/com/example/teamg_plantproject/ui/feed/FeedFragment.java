@@ -41,10 +41,10 @@ public class FeedFragment extends Fragment {
 
     private FeedViewModel feedViewModel;
     private FirebaseFirestore fb = FirebaseFirestore.getInstance();
+    protected View root;
     private CollectionReference sensorDataRef = fb.collection("sensors/z1QgZ1bVjYnUyrszlU9b/data");
     private DocumentReference sensorDataObjectRef = fb.document("sensors/z1QgZ1bVjYnUyrszlU9b/data/HGt6aznsr96pnpVlrw7C");
     private SensorDataAdapter adapter;
-    protected View root;
     private TextView textView;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -98,6 +98,7 @@ public class FeedFragment extends Fragment {
     private void setUpRecyclerView(){
         Query query = sensorDataRef.orderBy("createdAt", Query.Direction.DESCENDING).limit(20);
 
+
         FirestoreRecyclerOptions<SensorData> options = new FirestoreRecyclerOptions.Builder<SensorData>()
                 .setQuery(query, SensorData.class)
                 .build();
@@ -106,20 +107,20 @@ public class FeedFragment extends Fragment {
 
         RecyclerView recyclerView = this.root.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager( getActivity()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
 
         Log.w(MainActivity.class.getName(), "Recycler View setup completed.");
     }
 
     @Override
-    public void onStart(){
+    public void onStart() {
         super.onStart();
         //adapter.startListening();
     }
 
     @Override
-    public void onStop(){
+    public void onStop() {
         super.onStop();
 
         //if(adapter != null) {

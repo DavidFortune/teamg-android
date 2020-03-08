@@ -2,6 +2,7 @@ package com.example.teamg_plantproject;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ public class PlantDialog extends DialogFragment {
     private EditText plantNameEdit;
     private EditText plantTypeEdit;
     private EditText plantSensorEdit;
+    protected static final String TAG = "_PLANT DIALOG";
 
     public View onCreateView(@NonNull LayoutInflater inflater
             , @Nullable ViewGroup container
@@ -55,6 +57,7 @@ public class PlantDialog extends DialogFragment {
                     plant.setPlantType(plantType);
                     plant.setSensorId(plantId);
                     db.createPlant(plant);
+                    Log.d(TAG, "onClick: " + db.getPlant(1));
 
                     getActivity().startActivityForResult(getActivity().getIntent(), 10);
                     dismiss();

@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
                 String greeting = "Welcome " + user.getDisplayName() + ". You're signed in!";
-                Toast.makeText(this, greeting , Toast.LENGTH_LONG).show();
+                Toast.makeText(this, greeting, Toast.LENGTH_LONG).show();
 
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
