@@ -23,6 +23,7 @@ public class PlantActivity extends AppCompatActivity {
 
     protected TextView plantName;
     protected TextView plantType;
+    protected TextView plantTemp;
     protected ProgressBar waterBar;
     protected ProgressBar humidityBar;
     protected ProgressBar sunBar;
@@ -71,6 +72,8 @@ public class PlantActivity extends AppCompatActivity {
                                 int jj = (int) Math.floor(Double.parseDouble(j));
                                 String k = Objects.requireNonNull(doc.get("rawSolarValue")).toString();
                                 int kk = (int) Math.floor(Double.parseDouble(k));
+                                String l = Objects.requireNonNull(doc.get("rawTemp")).toString();
+                                int ll = (int) Math.floor(Double.parseDouble(l));
 
                                 waterBar.setProgress((ii * 100) / soilMax);
                                 Log.d(TAG, "onEvent: " + ((ii * 100) / soilMax));
@@ -78,6 +81,8 @@ public class PlantActivity extends AppCompatActivity {
                                 Log.d(TAG, "onEvent: " + (jj));
                                 sunBar.setProgress((kk * 100) / solarMax);
                                 Log.d(TAG, "onEvent: " + ((kk * 100) / solarMax));
+                                plantTemp.setText(l + "*C");
+                                Log.d(TAG, "onEvent: " + l);
 
                             }
                         }
@@ -101,6 +106,7 @@ public class PlantActivity extends AppCompatActivity {
         waterBar = findViewById(R.id.water_progress_i);
         humidityBar = findViewById(R.id.humidity_progress_i);
         sunBar = findViewById(R.id.sunshine_progress_i);
+        plantTemp = findViewById(R.id.temerature_i);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
