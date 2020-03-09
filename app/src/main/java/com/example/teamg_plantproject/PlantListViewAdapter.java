@@ -1,6 +1,7 @@
 package com.example.teamg_plantproject;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,9 +70,20 @@ public class PlantListViewAdapter extends BaseAdapter {
         plantType.setText("  Plant type: " + plantArrayList.get(position).getPlantType());
         plantSensor.setText("  Plant sensor ID: " + plantArrayList.get(position).getSensorId());
 
+
         //Setup listener for when use click on any of the listView entities to redirect to
         //plant activity of that plant
 
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, PlantActivity.class);
+                intent.putExtra("PlantID", plantArrayList.get(position).getPlantID());
+                context.startActivity(intent);
+            }
+        });
         return convertView;
     }
+
+
 }
