@@ -73,7 +73,6 @@ public class PlantActivity extends AppCompatActivity {
                                 String k = Objects.requireNonNull(doc.get("rawSolarValue")).toString();
                                 int kk = (int) Math.floor(Double.parseDouble(k));
                                 String l = Objects.requireNonNull(doc.get("rawTemp")).toString();
-                                int ll = (int) Math.floor(Double.parseDouble(l));
 
                                 waterBar.setProgress((ii * 100) / soilMax);
                                 Log.d(TAG, "onEvent: " + ((ii * 100) / soilMax));
