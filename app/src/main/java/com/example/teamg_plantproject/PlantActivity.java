@@ -66,11 +66,11 @@ public class PlantActivity extends AppCompatActivity {
                             if (doc.get("rawHumidity") != null) {
 
                                 String i = Objects.requireNonNull(doc.get("rawSoilValue")).toString();
-                                int ii = Integer.parseInt(i);
+                                int ii = (int) Math.floor(Double.parseDouble(i));
                                 String j = Objects.requireNonNull(doc.get("rawHumidity")).toString();
                                 int jj = (int) Math.floor(Double.parseDouble(j));
                                 String k = Objects.requireNonNull(doc.get("rawSolarValue")).toString();
-                                int kk = Integer.parseInt(k);
+                                int kk = (int) Math.floor(Double.parseDouble(k));
 
                                 waterBar.setProgress((ii * 100) / soilMax);
                                 Log.d(TAG, "onEvent: " + ((ii * 100) / soilMax));
