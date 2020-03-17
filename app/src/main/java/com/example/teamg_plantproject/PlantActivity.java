@@ -28,12 +28,13 @@ public class PlantActivity extends AppCompatActivity {
     protected ProgressBar humidityBar;
     protected ProgressBar sunBar;
     protected int plantID;
+    protected String plantSensorID;
     protected DatabaseHelper db;
     private static final String TAG = "_Plant_Indiv";
     private final int soilMax = 3000;
     private final int solarMax = 2000;
     private FirebaseFirestore fb = FirebaseFirestore.getInstance();
-    private CollectionReference sensorDataRef = fb.collection("sensors/z1QgZ1bVjYnUyrszlU9b/data");
+    private CollectionReference sensorDataRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,11 +46,15 @@ public class PlantActivity extends AppCompatActivity {
         plantID = intent.getIntExtra("PlantID", 0);
         db = new DatabaseHelper(getApplicationContext());
 
+        plantSensorID = db.getPlant(plantID).getSensorId();
         plantName.setText(db.getPlant(plantID).getPlantName());
         plantType.setText(db.getPlant(plantID).getPlantType());
-        waterBar.setProgress(0);
-        humidityBar.setProgress(0);
-        sunBar.setProgress(0);
+        sensorDataRef = fb.collection("sensors/" + plantSensorID + "/data");
+        waterBar.setProgress(25);
+        sunBar.setProgress(50);
+        humidityBar.setProgress(75);
+
+        Log.d(TAG, "onCreate: " + sensorDataRef);
 
         sensorDataRef.orderBy("createdAt", Query.Direction.DESCENDING).limit(1)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -60,9 +65,6 @@ public class PlantActivity extends AppCompatActivity {
                             Log.w(MainActivity.class.getName(), "Listen failed.", e);
                             return;
                         }
-
-                        String sensorDataText = "";
-
                         for (QueryDocumentSnapshot doc : value) {
                             if (doc.get("rawHumidity") != null) {
 

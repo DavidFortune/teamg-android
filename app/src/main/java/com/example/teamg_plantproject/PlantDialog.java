@@ -14,6 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 
 public class PlantDialog extends DialogFragment {
     private Button saveButton;
@@ -21,6 +24,9 @@ public class PlantDialog extends DialogFragment {
     private EditText plantNameEdit;
     private EditText plantTypeEdit;
     private EditText plantSensorEdit;
+    private CollectionReference sensorDataRef;
+    private String sensorID;
+    private FirebaseFirestore fb = FirebaseFirestore.getInstance();
     protected static final String TAG = "_PLANT DIALOG";
 
     public View onCreateView(@NonNull LayoutInflater inflater
@@ -38,12 +44,17 @@ public class PlantDialog extends DialogFragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (TextUtils.isEmpty(plantNameEdit.getText().toString())
                         || TextUtils.isEmpty(plantTypeEdit.getText().toString())
                         || TextUtils.isEmpty(plantSensorEdit.getText().toString())) {
                     Toast.makeText(getContext(), "Empty Fields Not Allowed", Toast.LENGTH_LONG).show();
-                } else {
+                }
+                // TODO: 2020-03-17    Check if sensor exists on firebase
+//                else if (!(sensorDataRef = fb.collection("sensors/" + plantSensorEdit.getText().toString() + "/data")).get().isCanceled()) {
+//                    Toast.makeText(getContext(), "Incorrect Sensor ID", Toast.LENGTH_LONG).show();
+//                }
+                else {
+
                     DatabaseHelper db;
                     db = new DatabaseHelper(getContext());
                     final Plant plant;
