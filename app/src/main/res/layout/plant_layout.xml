@@ -8,7 +8,7 @@
 
     <TextView
         android:id="@+id/plant_name_listview"
-        android:layout_width="344dp"
+        android:layout_width="284dp"
         android:layout_height="20dp"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
@@ -18,7 +18,7 @@
 
     <TextView
         android:id="@+id/plant_type_listview"
-        android:layout_width="344dp"
+        android:layout_width="284dp"
         android:layout_height="20dp"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
@@ -28,29 +28,42 @@
 
     <TextView
         android:id="@+id/plant_sensor_listview"
-        android:layout_width="343dp"
-        android:layout_height="22dp"
+        android:layout_width="284dp"
+        android:layout_height="20dp"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@id/plant_image_view"
         app:layout_constraintTop_toBottomOf="@+id/plant_type_listview" />
 
-    <ProgressBar
-        android:id="@+id/progressBar2"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="412dp"
-        android:layout_height="34dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/plant_sensor_listview" />
-
     <ImageView
         android:id="@+id/plant_image_view"
         android:layout_width="67dp"
-        android:layout_height="62dp"
+        android:layout_height="60dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_menu_add" />
+
+    <ProgressBar
+        android:id="@+id/overall_state"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:progress="80"
+        android:progressDrawable="@drawable/circle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/overall_percentage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="@+id/overall_state"
+        app:layout_constraintEnd_toEndOf="@+id/overall_state"
+        app:layout_constraintStart_toStartOf="@+id/overall_state"
+        app:layout_constraintTop_toTopOf="@+id/overall_state" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
