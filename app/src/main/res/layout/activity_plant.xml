@@ -43,6 +43,17 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_plant_logo_300dp" />
 
+    <Button
+        android:id="@+id/capture_image_btn"
+        style="@style/Base.Widget.AppCompat.Button.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Take a picture"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/humidity_progress_i"
+        app:layout_constraintVertical_bias="0.143"
+        tools:layout_editor_absoluteX="0dp" />
+
     <TextView
         android:id="@+id/water_i"
         android:layout_width="wrap_content"
@@ -94,8 +105,8 @@
 
     <TextView
         android:id="@+id/temerature_i"
-        android:layout_width="65dp"
-        android:layout_height="40dp"
+        android:layout_width="45dp"
+        android:layout_height="31dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="44dp"
         app:layout_constraintStart_toEndOf="@+id/plant_image_i"
