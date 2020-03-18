@@ -80,7 +80,7 @@ public class PlantListViewAdapter extends BaseAdapter {
 
         CollectionReference sensorDataRef = fb.collection("sensors/" + plantArrayList.get(position).getSensorId() + "/data");
 
-        Log.d(TAG, "getView: " + sensorDataRef);
+//        Log.d(TAG, "getView: " + sensorDataRef);
         convertView = LayoutInflater.from(context).inflate(R.layout.plant_layout, parent, false);
 
         final View finalConvertView = convertView;
@@ -127,13 +127,15 @@ public class PlantListViewAdapter extends BaseAdapter {
         TextView plantType = convertView.findViewById(R.id.plant_type_listview);
         TextView plantSensor = convertView.findViewById(R.id.plant_sensor_listview);
         ImageView plantPicture = convertView.findViewById(R.id.plant_image_view);
-
+        int plantId = plantArrayList.get(position).getPlantID();
+        Log.d(TAG, "getView: " + plantId);
 
         //Link and Fill in values
         plantName.setText("  Plant name: " + plantArrayList.get(position).getPlantName());
         plantType.setText("  Plant type: " + plantArrayList.get(position).getPlantType());
         plantSensor.setText("  Plant sensor ID: " + plantArrayList.get(position).getSensorId());
-
+        plantPicture.setImageBitmap(db.getImage(plantId));
+//        Log.d(TAG, "getView: "+db.getImage(position));
         //Setup listener for when use click on any of the listView entities to redirect to
         //plant activity of that plant
 

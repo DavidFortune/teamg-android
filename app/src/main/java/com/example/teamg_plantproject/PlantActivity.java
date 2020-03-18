@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,7 +21,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.firebase.ui.auth.viewmodel.RequestCodes;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -29,6 +29,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Objects;
 
 public class PlantActivity extends AppCompatActivity {
@@ -49,16 +50,18 @@ public class PlantActivity extends AppCompatActivity {
     protected int plantID;
     protected DatabaseHelper db;
     private static final String TAG = "_Plant_Indiv";
+    protected String plantSensorID;
     private final int soilMax = 3000;
     private final int solarMax = 2000;
     private FirebaseFirestore fb = FirebaseFirestore.getInstance();
-    private CollectionReference sensorDataRef = fb.collection("sensors/z1QgZ1bVjYnUyrszlU9b/data");
+    private CollectionReference sensorDataRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plant);
         setUpUI();
+
 
         plantPicture = findViewById(R.id.plant_image_i);
         takePictureButton = findViewById(R.id.capture_image_btn);
@@ -93,12 +96,18 @@ public class PlantActivity extends AppCompatActivity {
         Intent intent = getIntent();
         plantID = intent.getIntExtra("PlantID", 0);
         db = new DatabaseHelper(getApplicationContext());
+        plantSensorID = db.getPlant(plantID).getSensorId();
+        sensorDataRef = fb.collection("sensors/" + plantSensorID + "/data");
+
 
         plantName.setText(db.getPlant(plantID).getPlantName());
         plantType.setText(db.getPlant(plantID).getPlantType());
-        waterBar.setProgress(0);
-        humidityBar.setProgress(0);
-        sunBar.setProgress(0);
+        waterBar.setProgress(25);
+        sunBar.setProgress(50);
+        humidityBar.setProgress(75);
+        if (!(db.getImage(plantID) == null))
+            plantPicture.setImageBitmap(db.getImage(plantID));
+
 
         sensorDataRef.orderBy("createdAt", Query.Direction.DESCENDING).limit(1)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -109,9 +118,6 @@ public class PlantActivity extends AppCompatActivity {
                             Log.w(MainActivity.class.getName(), "Listen failed.", e);
                             return;
                         }
-
-                        String sensorDataText = "";
-
                         for (QueryDocumentSnapshot doc : value) {
                             if (doc.get("rawHumidity") != null) {
 
@@ -155,9 +161,17 @@ public class PlantActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //called when image is captured by camera
         super.onActivityResult(requestCode, resultCode, data);
+        db = new DatabaseHelper(getApplicationContext());
         if (resultCode == RESULT_OK) {
             //set the image capture to our ImageView
+            plantPicture.setDrawingCacheEnabled(true);
+            plantPicture.buildDrawingCache();
             plantPicture.setImageURI(image_uri);
+            Bitmap bitmap = plantPicture.getDrawingCache();
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+            byte[] dataMy = byteArrayOutputStream.toByteArray();
+            db.addImage(dataMy, plantID);
         }
     }
 
