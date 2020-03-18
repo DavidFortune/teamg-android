@@ -12,7 +12,11 @@
         android:layout_width="179dp"
         android:layout_height="37dp"
         android:layout_marginStart="8dp"
+<<<<<<< HEAD
         android:text="Plant Type"
+=======
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+>>>>>>> 5c1391a99baa8bac9f96425b5e1e8a2b36c2d13c
         app:layout_constraintStart_toEndOf="@+id/plant_image_i"
         app:layout_constraintTop_toBottomOf="@+id/plant_name_i"
         tools:text="Plant Type" />
@@ -32,6 +36,7 @@
     <ProgressBar
         android:id="@+id/humidity_progress_i"
         style="?android:attr/progressBarStyleHorizontal"
+        android:progressTint="#32CD32"
         android:layout_width="377dp"
         android:layout_height="22dp"
         android:layout_marginStart="16dp"
@@ -41,9 +46,12 @@
     <ProgressBar
         android:id="@+id/water_progress_i"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="377dp"
+        android:layout_width="375dp"
         android:layout_height="22dp"
         android:layout_marginStart="16dp"
+        android:background="#FFFFFF"
+        android:progressTint="#4169E1"
+        android:scrollbarSize="4dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/water_i" />
 
@@ -60,13 +68,16 @@
     <Button
         android:id="@+id/capture_image_btn"
         style="@style/Base.Widget.AppCompat.Button.Colored"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="143dp"
+        android:layout_height="52dp"
+        android:background="@android:color/holo_green_light"
         android:text="Take a picture"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/humidity_progress_i"
-        app:layout_constraintVertical_bias="0.143"
-        tools:layout_editor_absoluteX="0dp" />
+        app:layout_constraintVertical_bias="0.106" />
 
     <TextView
         android:id="@+id/water_i"
@@ -75,15 +86,18 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="Water"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/plant_image_i" />
 
     <ProgressBar
         android:id="@+id/sunshine_progress_i"
         style="?android:attr/progressBarStyleHorizontal"
+        android:progressTint="#FFFF00"
         android:layout_width="377dp"
         android:layout_height="22dp"
         android:layout_marginStart="16dp"
+        android:background="#FFFFFF"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sunshine_i" />
 
@@ -94,6 +108,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="Sunshine"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/water_progress_i" />
 
@@ -104,6 +119,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="Humidity"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sunshine_progress_i" />
 
@@ -113,14 +129,21 @@
         android:layout_height="37dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintStart_toEndOf="@+id/plant_image_i"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Plant Name" />
 
     <TextView
+<<<<<<< HEAD
         android:id="@+id/temperature_i"
         android:layout_width="45dp"
         android:layout_height="31dp"
+=======
+        android:id="@+id/temerature_i"
+        android:layout_width="91dp"
+        android:layout_height="28dp"
+>>>>>>> 5c1391a99baa8bac9f96425b5e1e8a2b36c2d13c
         android:layout_marginStart="8dp"
         android:layout_marginTop="44dp"
         app:layout_constraintStart_toEndOf="@+id/plant_image_i"
