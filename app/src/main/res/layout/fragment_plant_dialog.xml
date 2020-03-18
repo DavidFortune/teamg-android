@@ -15,13 +15,12 @@
         android:hint="Plant Name"
         android:inputType="textPersonName" />
 
-    <EditText
-        android:id="@+id/plant_type"
-        android:layout_width="match_parent"
+    <Spinner
+        android:id="@+id/spinner1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Plant Type"
-        android:inputType="textPersonName" />
+        android:text="Plant Type"
+        android:entries="@array/plant_type"/>
 
 
     <EditText

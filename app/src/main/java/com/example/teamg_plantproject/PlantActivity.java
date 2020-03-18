@@ -11,9 +11,11 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,6 +64,10 @@ public class PlantActivity extends AppCompatActivity {
         setContentView(R.layout.activity_plant);
         setUpUI();
 
+/*        Spinner spinner= findViewById(R.id.spinner1);
+        ArrayAdapter<CharSequence> adapter=ArrayAdapter.createFromResource(this,R.array.plant_type,android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);*/
 
         plantPicture = findViewById(R.id.plant_image_i);
         takePictureButton = findViewById(R.id.capture_image_btn);
@@ -70,7 +76,7 @@ public class PlantActivity extends AppCompatActivity {
         takePictureButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //if system is >= Marshmallow, requesrt runtime permission
+                //if system is >= Marshmallow, request runtime permission
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
                     if (checkSelfPermission(Manifest.permission.CAMERA) ==
                             PackageManager.PERMISSION_DENIED ||
@@ -204,14 +210,12 @@ public class PlantActivity extends AppCompatActivity {
     protected void setUpUI() {
 
         plantName = findViewById(R.id.plant_name_i);
-        plantType = findViewById(R.id.plant_type_i);
+//        plantType = findViewById(R.id.plant_type_i);
         waterBar = findViewById(R.id.water_progress_i);
         humidityBar = findViewById(R.id.humidity_progress_i);
         sunBar = findViewById(R.id.sunshine_progress_i);
-        plantTemp = findViewById(R.id.temerature_i);
+        plantTemp = findViewById(R.id.temperature_i);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
-
-
 
 }

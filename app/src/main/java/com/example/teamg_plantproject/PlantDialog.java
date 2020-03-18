@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -37,8 +39,10 @@ public class PlantDialog extends DialogFragment {
         saveButton = view.findViewById(R.id.save);
         cancelButton = view.findViewById(R.id.cancel);
         plantNameEdit = view.findViewById(R.id.plant_name);
-        plantTypeEdit = view.findViewById(R.id.plant_type);
+//        plantTypeEdit = view.findViewById(R.id.plant_type);
         plantSensorEdit = view.findViewById(R.id.plant_sensor_id);
+
+        SpinnerList spinnerList ;
 
         //on save open DataBase and store new course, on cancel return to activity
         saveButton.setOnClickListener(new View.OnClickListener() {
