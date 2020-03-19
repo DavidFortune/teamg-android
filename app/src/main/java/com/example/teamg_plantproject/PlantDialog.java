@@ -25,6 +25,7 @@ public class PlantDialog extends DialogFragment {
     private Button cancelButton;
     private EditText plantNameEdit;
     private EditText plantTypeEdit;
+    private Spinner spinnerEdit;
     private EditText plantSensorEdit;
     private CollectionReference sensorDataRef;
     private String sensorID;
@@ -40,16 +41,19 @@ public class PlantDialog extends DialogFragment {
         cancelButton = view.findViewById(R.id.cancel);
         plantNameEdit = view.findViewById(R.id.plant_name);
 //        plantTypeEdit = view.findViewById(R.id.plant_type);
+
         plantSensorEdit = view.findViewById(R.id.plant_sensor_id);
 
-        SpinnerList spinnerList ;
+        SpinnerList spinnerList;
+        spinnerEdit = view.findViewById(R.id.spinner1);
+
 
         //on save open DataBase and store new course, on cancel return to activity
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (TextUtils.isEmpty(plantNameEdit.getText().toString())
-                        || TextUtils.isEmpty(plantTypeEdit.getText().toString())
+                        || TextUtils.isEmpty(spinnerEdit.getSelectedItem().toString())
                         || TextUtils.isEmpty(plantSensorEdit.getText().toString())) {
                     Toast.makeText(getContext(), "Empty Fields Not Allowed", Toast.LENGTH_LONG).show();
                 }
@@ -66,7 +70,7 @@ public class PlantDialog extends DialogFragment {
 
                     Toast.makeText(getActivity(), "Plant Saved", Toast.LENGTH_LONG).show();
                     String plantName = plantNameEdit.getText().toString();
-                    String plantType = plantTypeEdit.getText().toString();
+                    String plantType = spinnerEdit.getSelectedItem().toString();
                     String plantId = plantSensorEdit.getText().toString();
                     plant.setPlantName(plantName);
                     plant.setPlantType(plantType);

@@ -63,11 +63,6 @@ public class PlantActivity extends AppCompatActivity {
         setContentView(R.layout.activity_plant);
         setUpUI();
 
-/*        Spinner spinner= findViewById(R.id.spinner1);
-        ArrayAdapter<CharSequence> adapter=ArrayAdapter.createFromResource(this,R.array.plant_type,android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);*/
-
         plantPicture = findViewById(R.id.plant_image_i);
         takePictureButton = findViewById(R.id.capture_image_btn);
 
