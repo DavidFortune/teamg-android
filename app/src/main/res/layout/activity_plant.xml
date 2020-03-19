@@ -21,6 +21,7 @@
         app:layout_constraintTop_toBottomOf="@+id/plant_name_i"
         tools:text="Plant Type" />-->
 
+<!--<<<<<<< HEAD-->
 
 <!--    &ndash;&gt;<Spinner
         android:id="@+id/spinner1"
@@ -33,6 +34,8 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />-->
 
+=======
+>>>>>>> 2083b64fb14dc628411a582ac0e1839c6300056c
     <ProgressBar
         android:id="@+id/humidity_progress_i"
         style="?android:attr/progressBarStyleHorizontal"
@@ -134,15 +137,7 @@
         app:layout_constraintStart_toEndOf="@+id/plant_image_i"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Plant Name" />
-
-
-<!--    <TextView
-<<<<<<< HEAD
-        android:id="@+id/temperature_i"
-        android:layout_width="45dp"
-        android:layout_height="31dp"
-=======-->
-    <!--&gt;>>>>>> 5c1391a99baa8bac9f96425b5e1e8a2b36c2d13c-->
+    
         <TextView
         android:id="@+id/temperature_i"
         android:layout_width="91dp"
