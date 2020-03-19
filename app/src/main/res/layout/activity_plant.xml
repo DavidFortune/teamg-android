@@ -7,22 +7,22 @@
     tools:context=".PlantActivity">
 
 
-    <TextView
+<!--    <TextView
         android:id="@+id/plant_type_i"
         android:layout_width="179dp"
         android:layout_height="37dp"
         android:layout_marginStart="8dp"
-<<<<<<< HEAD
+&lt;!&ndash;&lt;!&ndash;<<<<<<< HEAD
         android:text="Plant Type"
 =======
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
->>>>>>> 5c1391a99baa8bac9f96425b5e1e8a2b36c2d13c
+>>>>>>> 5c1391a99baa8bac9f96425b5e1e8a2b36c2d13c&ndash;&gt;
         app:layout_constraintStart_toEndOf="@+id/plant_image_i"
         app:layout_constraintTop_toBottomOf="@+id/plant_name_i"
-        tools:text="Plant Type" />
+        tools:text="Plant Type" />-->
 
 
-    <Spinner
+    --><Spinner
         android:id="@+id/spinner1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -63,7 +63,8 @@
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_plant_logo_300dp" />
+        app:srcCompat="@drawable/ic_plant_logo_300dp"
+        tools:ignore="VectorDrawableCompat" />
 
     <Button
         android:id="@+id/capture_image_btn"
@@ -134,21 +135,25 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Plant Name" />
 
-    <TextView
+
+<!--    <TextView
 <<<<<<< HEAD
         android:id="@+id/temperature_i"
         android:layout_width="45dp"
         android:layout_height="31dp"
-=======
-        android:id="@+id/temerature_i"
+=======-->
+    <!--&gt;>>>>>> 5c1391a99baa8bac9f96425b5e1e8a2b36c2d13c-->
+        <TextView
+        android:id="@+id/temperature_i"
         android:layout_width="91dp"
         android:layout_height="28dp"
->>>>>>> 5c1391a99baa8bac9f96425b5e1e8a2b36c2d13c
+
         android:layout_marginStart="8dp"
         android:layout_marginTop="44dp"
         app:layout_constraintStart_toEndOf="@+id/plant_image_i"
         app:layout_constraintTop_toBottomOf="parent"
-    tools:text="temperature
+        tools:text="temperature" />
+
 
     <Button
         android:id="@+id/delete_plant"
