@@ -11,11 +11,9 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +39,7 @@ public class PlantActivity extends AppCompatActivity {
     protected TextView plantTemp;
 
     protected ImageView plantPicture;
+    protected Button deletePlant;
     protected Button takePictureButton;
     private static final int PERMISSION_CODE = 1000;
     private static final int IMAGE_CAPTURE_CODE = 1001 ;
@@ -151,6 +150,18 @@ public class PlantActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        deletePlant.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                db.deletePlant(plantID);
+                goToPlantList();
+            }
+        });
+    }
+
     private void openCamera() {
         ContentValues values = new ContentValues();
         values.put(MediaStore.Images.Media.TITLE, "New Picture");
@@ -215,7 +226,13 @@ public class PlantActivity extends AppCompatActivity {
         humidityBar = findViewById(R.id.humidity_progress_i);
         sunBar = findViewById(R.id.sunshine_progress_i);
         plantTemp = findViewById(R.id.temperature_i);
+        deletePlant = findViewById(R.id.delete_plant);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    protected void goToPlantList() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
 }
