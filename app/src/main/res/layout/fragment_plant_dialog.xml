@@ -47,12 +47,14 @@
         android:id="@+id/save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#D3FFC107"
         android:text="SAVE" />
 
     <Button
         android:id="@+id/cancel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#57FFC107"
         android:text="CANCEL" />
 
 </LinearLayout>

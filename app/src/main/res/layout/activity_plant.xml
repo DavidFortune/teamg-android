@@ -19,10 +19,10 @@
     <ProgressBar
         android:id="@+id/humidity_progress_i"
         style="?android:attr/progressBarStyleHorizontal"
-        android:progressTint="#32CD32"
-        android:layout_width="377dp"
+        android:layout_width="375dp"
         android:layout_height="22dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="12dp"
+        android:progressTint="#32CD32"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/humidity_i" />
 
@@ -31,7 +31,7 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="375dp"
         android:layout_height="22dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="12dp"
         android:background="#FFFFFF"
         android:progressTint="#4169E1"
         android:scrollbarSize="4dp"
@@ -53,8 +53,8 @@
         android:id="@+id/water_i"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="48dp"
         android:text="Water"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintStart_toStartOf="parent"
@@ -63,11 +63,11 @@
     <ProgressBar
         android:id="@+id/sunshine_progress_i"
         style="?android:attr/progressBarStyleHorizontal"
-        android:progressTint="#FFFF00"
-        android:layout_width="377dp"
+        android:layout_width="375dp"
         android:layout_height="22dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="12dp"
         android:background="#FFFFFF"
+        android:progressTint="#FFFF00"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sunshine_i" />
 
@@ -75,8 +75,8 @@
         android:id="@+id/sunshine_i"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="16dp"
         android:text="Sunshine"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintStart_toStartOf="parent"
@@ -86,8 +86,8 @@
         android:id="@+id/humidity_i"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
         android:text="Humidity"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintStart_toStartOf="parent"
@@ -139,21 +139,56 @@
         app:layout_constraintHorizontal_bias="0.48"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/humidity_progress_i"
-        app:layout_constraintVertical_bias="0.601" />
+        app:layout_constraintVertical_bias="0.601" /><![CDATA[
         app:layout_constraintVertical_bias="0.976" />
+
+
+
+    ]]>
 
     <ImageButton
         android:id="@+id/capture_image_btn"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:background="#4CAF50"
-        app:layout_constraintBottom_toTopOf="@+id/water_i"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.016"
+        app:layout_constraintHorizontal_bias="0.043"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/plant_image_i"
-        app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@android:drawable/ic_menu_camera" />
+
+    <TextView
+        android:id="@+id/water_p"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="308dp"
+        android:text="%"
+        app:layout_constraintBottom_toTopOf="@+id/water_progress_i"
+        app:layout_constraintStart_toEndOf="@+id/water_i"
+        app:layout_constraintTop_toBottomOf="@+id/delete_plant"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/sunshine_p"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="284dp"
+        android:text="%"
+        app:layout_constraintBottom_toTopOf="@+id/sunshine_progress_i"
+        app:layout_constraintStart_toEndOf="@+id/sunshine_i"
+        app:layout_constraintTop_toBottomOf="@+id/water_progress_i"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/humidity_p"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="284dp"
+        android:text="%"
+        app:layout_constraintBottom_toTopOf="@+id/humidity_progress_i"
+        app:layout_constraintStart_toEndOf="@+id/humidity_i"
+        app:layout_constraintTop_toBottomOf="@+id/sunshine_progress_i"
+        app:layout_constraintVertical_bias="1.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
