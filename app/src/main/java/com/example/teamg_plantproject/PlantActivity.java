@@ -28,9 +28,16 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+
+
 
 public class PlantActivity extends AppCompatActivity {
 
@@ -38,6 +45,7 @@ public class PlantActivity extends AppCompatActivity {
     protected TextView plantType;
     protected TextView plantTemp;
     protected ImageView plantPicture;
+    protected GraphView graph;
     protected Button deletePlant;
     protected Button takePictureButton;
     private static final int PERMISSION_CODE = 1000;
@@ -143,6 +151,8 @@ public class PlantActivity extends AppCompatActivity {
                     }
                 });
 
+        setupGraph();
+
     }
 
     @Override
@@ -222,6 +232,7 @@ public class PlantActivity extends AppCompatActivity {
         sunBar = findViewById(R.id.sunshine_progress_i);
         plantTemp = findViewById(R.id.temperature_i);
         deletePlant = findViewById(R.id.delete_plant);
+        graph = findViewById(R.id.graph);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
@@ -229,5 +240,44 @@ public class PlantActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
+
+
+    protected void setupGraph()
+    {
+
+
+        sensorDataRef.orderBy("createdAt", Query.Direction.DESCENDING).limit(1)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value,
+                                        @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.w(MainActivity.class.getName(), "Listen failed.", e);
+                            return;
+                        }
+                        List<DataPoint> dataPoints = new ArrayList<>();
+                        int iteration = 0;
+                        for (QueryDocumentSnapshot doc : value) {
+                            if (doc.get("rawHumidity") != null) {
+                                iteration++;
+                                String i = Objects.requireNonNull(doc.get("rawSoilValue")).toString();
+                                int ii = (int) Math.floor(Double.parseDouble(i));
+                                String j = Objects.requireNonNull(doc.get("rawHumidity")).toString();
+                                int jj = (int) Math.floor(Double.parseDouble(j));
+                                String k = Objects.requireNonNull(doc.get("rawSolarValue")).toString();
+                                int kk = (int) Math.floor(Double.parseDouble(k));
+                                String l = Objects.requireNonNull(doc.get("rawTemp")).toString();
+
+                                dataPoints.add(new DataPoint(iteration, ii));
+
+                            }
+                        }
+                        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(dataPoints.toArray(new DataPoint[dataPoints.size()]));
+                        graph.addSeries(series);
+
+                    }
+                });
+    }
+
 
 }
