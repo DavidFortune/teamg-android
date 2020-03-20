@@ -37,25 +37,24 @@ public class PlantActivity extends AppCompatActivity {
     protected TextView plantName;
     protected TextView plantType;
     protected TextView plantTemp;
-
     protected ImageView plantPicture;
     protected Button deletePlant;
     protected Button takePictureButton;
     private static final int PERMISSION_CODE = 1000;
     private static final int IMAGE_CAPTURE_CODE = 1001 ;
     Uri image_uri;
-
     protected ProgressBar waterBar;
     protected ProgressBar humidityBar;
     protected ProgressBar sunBar;
     protected int plantID;
     protected DatabaseHelper db;
-    private static final String TAG = "_Plant_Indiv";
     protected String plantSensorID;
     private final int soilMax = 3000;
     private final int solarMax = 2000;
     private FirebaseFirestore fb = FirebaseFirestore.getInstance();
     private CollectionReference sensorDataRef;
+    private static final String TAG = "_Plant_Indiv";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +104,7 @@ public class PlantActivity extends AppCompatActivity {
         waterBar.setProgress(25);
         sunBar.setProgress(50);
         humidityBar.setProgress(75);
+        plantTemp.setText("N/A *C");
         if (!(db.getImage(plantID) == null))
             plantPicture.setImageBitmap(db.getImage(plantID));
 
@@ -216,7 +216,7 @@ public class PlantActivity extends AppCompatActivity {
     protected void setUpUI() {
 
         plantName = findViewById(R.id.plant_name_i);
-//        plantType = findViewById(R.id.plant_type_i);
+        plantType = findViewById(R.id.plant_type_i);
         waterBar = findViewById(R.id.water_progress_i);
         humidityBar = findViewById(R.id.humidity_progress_i);
         sunBar = findViewById(R.id.sunshine_progress_i);

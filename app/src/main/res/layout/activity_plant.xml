@@ -6,36 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".PlantActivity">
 
-
-<!--    <TextView
+    <TextView
         android:id="@+id/plant_type_i"
         android:layout_width="179dp"
         android:layout_height="37dp"
         android:layout_marginStart="8dp"
-&lt;!&ndash;&lt;!&ndash;<<<<<<< HEAD
-        android:text="Plant Type"
-=======
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
->>>>>>> 5c1391a99baa8bac9f96425b5e1e8a2b36c2d13c&ndash;&gt;
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintStart_toEndOf="@+id/plant_image_i"
         app:layout_constraintTop_toBottomOf="@+id/plant_name_i"
-        tools:text="Plant Type" />-->
+        tools:text="Plant Type" />
 
-<!--<<<<<<< HEAD-->
-
-<!--    &ndash;&gt;<Spinner
-        android:id="@+id/spinner1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Plant Type"
-        android:entries="@array/plant_type"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />-->
-
-=======
->>>>>>> 2083b64fb14dc628411a582ac0e1839c6300056c
     <ProgressBar
         android:id="@+id/humidity_progress_i"
         style="?android:attr/progressBarStyleHorizontal"
@@ -137,18 +117,18 @@
         app:layout_constraintStart_toEndOf="@+id/plant_image_i"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Plant Name" />
-    
-        <TextView
+
+
+    <TextView
         android:id="@+id/temperature_i"
         android:layout_width="91dp"
         android:layout_height="28dp"
-
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="12dp"
         android:layout_marginTop="44dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintStart_toEndOf="@+id/plant_image_i"
-        app:layout_constraintTop_toBottomOf="parent"
-        tools:text="temperature" />
-
+        app:layout_constraintTop_toBottomOf="@+id/plant_type_i"
+        tools:text="Temperature" />
 
     <Button
         android:id="@+id/delete_plant"
