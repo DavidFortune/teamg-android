@@ -5,121 +5,163 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DBHelper_PlantType extends SQLiteOpenHelper {
 
-    //Database Version
+    private static final String KEY_TYPE_ID = "type_id";
+    private static final String TYPE_NAME = "type_name";
+    private static final String AIR_HUMIDITY = "air_humidity";
+    private static final String AIR_TEMPERATURE = "air_temperature";
+    private static final String SOIL_MOISTURE = "soil_moisture";
+    private static final String SUNLIGHT = "sunlight";
+
+    private static final String TAG = "DB_PT CREATOR";
+
     private static final int DB_VERSION = 1;
-    //Database Information
-    private static final String DB_NAME = "plantTypeManager";
-    //Table Name;
-    private static final String TABLE_PLANTS = "PLANT TYPE SETTINGS";
-    //Table Columns;
-    private static final String PLANT_NAME = "plant_name";
-    private static final String PLANT_TYPE = "plant_type";
-    private static final String SENSOR_ID = "sensor_id";
 
-
-
+    private static final String DB_NAME = "plantType.db";
+    private static final String TABLE_TYPES = "PLANT TYPE SETTINGS";
 
     //Creating Table Query
-    private static final String CREATE_TABLE = "create table " +
-            TABLE_PLANTS + "(" + PLANT_NAME
-            + " TEXT NOT NULL" + PLANT_TYPE
-            + " TEXT NOT NULL" + SENSOR_ID
-            + " TEXT " + ") ";
+    private static final String CREATE_TABLE_TYPES = "create table " +
+            TABLE_TYPES + "("
+            + KEY_TYPE_ID + " INTEGER PRIMARY KEY,"
+            + TYPE_NAME + " TEXT,"
+            + AIR_HUMIDITY + " TEXT,"
+            + AIR_TEMPERATURE + " TEXT,"
+            + SOIL_MOISTURE + " TEXT,"
+            + SUNLIGHT + " TEXT" + ")";
 
-    //Constructor
-    public  DBHelper_PlantType(Context context){
+    public DBHelper_PlantType(Context context){
         super(context, DB_NAME, null, DB_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db){
         //Executing the Query
-        db.execSQL(CREATE_TABLE);
+        db.execSQL(CREATE_TABLE_TYPES);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PLANTS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TYPES);
         onCreate(db);
     }
 
-    void addPlant(Plant plant){
+    public long createType(Type type){
         SQLiteDatabase db = this.getWritableDatabase();
 
-        ContentValues values = new ContentValues();
-        values.put(PLANT_NAME, plant.getPlantName());
-        values.put(PLANT_TYPE, plant.getPlantType());
-        values.put(SENSOR_ID, plant.getSensorId());
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(AIR_HUMIDITY, type.getAirHumidity());
+        contentValues.put(TYPE_NAME, type.getTypeName());
+        contentValues.put(AIR_TEMPERATURE, type.getAirTemperature());
+        contentValues.put(SOIL_MOISTURE, type.getSoilMoisture());
+        contentValues.put(SUNLIGHT, type.getSunlight());
 
-        db.insert(TABLE_PLANTS, null, values);
-        db.close();
+        long type_id = db.insert(TABLE_TYPES, null, contentValues);
+
+        Log.d(TAG, "CREATED TYPE");
+        return type_id;
+//        db.insert(TABLE_TYPES, null, contentValues);
+//        db.close();
     }
 
-    Plant getPlant(String name){
+    //get 1 type ONLY from Type Table
+    public Type getType(int type_ID){
+
+        String selectQuery = "SELECT  * FROM " + TABLE_TYPES + " WHERE "
+                + KEY_TYPE_ID + " = " + type_ID;
+
         SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+/*        Cursor cursor = db.query(TABLE_TYPES, new String[]{TABLE_TYPES, AIR_HUMIDITY, AIR_TEMPERATURE,
+                        SOIL_MOISTURE, SUNLIGHT}, type_ID + "=?",
+        new String[]{String.valueOf(type_ID)}, null, null, null, null);*/
 
-        Cursor cursor = db.query(TABLE_PLANTS, new String[]{PLANT_NAME, PLANT_TYPE, SENSOR_ID}, PLANT_NAME + "=?",
-        new String[]{String.valueOf(name)}, null, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
 
-        if(cursor != null){
+        assert cursor != null;
+        if (cursor.moveToFirst()) {
+            Type type = new Type();
+
+            type.setTypeID(cursor.getInt(cursor.getColumnIndex(KEY_TYPE_ID)));
+            type.setTypeName(cursor.getString(cursor.getColumnIndex(TYPE_NAME)));
+            type.setAirHumidity(cursor.getString(cursor.getColumnIndex(AIR_HUMIDITY)));
+            type.setAirTemperature(cursor.getString(cursor.getColumnIndex(AIR_TEMPERATURE)));
+            type.setSoilMoisture(cursor.getString(cursor.getColumnIndex(SOIL_MOISTURE)));
+            type.setSunlight(cursor.getString(cursor.getColumnIndex(SUNLIGHT)));
+            cursor.close();
+            return type;
+
+        } else {
+            cursor.close();
+            return null;
+        }
+    }
+/*        if(cursor != null){
             cursor.moveToFirst();
         }
         Plant plant = new Plant();
         plant.setPlantName(cursor.getString(0));
         plant.setPlantType(cursor.getString(1));
         plant.setSensorId(cursor.getString(2));
-        return plant;
-    }
+        return plant;*/
 
-    public List<Plant> getAllPlants(){
-        List<Plant> plantList = new ArrayList<>();
-
-        String selectQuery = "SELECT FROM" + TABLE_PLANTS;
+    //get all types from the table
+    public ArrayList<Type> getAllTypes(){
+        ArrayList<Type> types = new ArrayList<>();
+        String selectQuery = "SELECT  * FROM " + TABLE_TYPES;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
-        if(cursor.moveToFirst()){
-            do {
-                Plant plant = new Plant();
-                plant.setPlantName(cursor.getString(0));
-                plant.setPlantType(cursor.getString(1));
-                plant.setSensorId(cursor.getString(2));
+        if (cursor.moveToFirst()) {
+            do{
+                Type type = new Type();
+                type.setTypeID(cursor.getInt(cursor.getColumnIndex(KEY_TYPE_ID)));
+                type.setTypeName(cursor.getString(cursor.getColumnIndex(TYPE_NAME)));
+                type.setAirHumidity(cursor.getString(cursor.getColumnIndex(AIR_HUMIDITY)));
+                type.setAirTemperature(cursor.getString(cursor.getColumnIndex(AIR_TEMPERATURE)));
+                type.setSoilMoisture(cursor.getString(cursor.getColumnIndex(SOIL_MOISTURE)));
+                type.setSunlight(cursor.getString(cursor.getColumnIndex(SUNLIGHT)));
 
-                plantList.add(plant);
+                types.add(type);
             } while (cursor.moveToNext());
         }
-
-        return plantList;
+        cursor.close();
+        return types;
     }
 
-    public int updatePlant(Plant plant){
+    public void deleteType(int typeID){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_TYPES, KEY_TYPE_ID + "=?",
+                new String[]{String.valueOf(typeID)});
+//        db.close();
+    }
+
+    public long updateType(Type type){
         SQLiteDatabase db = this.getWritableDatabase();
 
-        ContentValues values = new ContentValues();
-        values.put(PLANT_NAME, plant.getPlantName());
-        values.put(PLANT_TYPE, plant.getPlantType());
-        values.put(SENSOR_ID, plant.getSensorId());
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TYPE_NAME, type.getTypeName());
+        contentValues.put(AIR_HUMIDITY, type.getAirHumidity());
+        contentValues.put(AIR_TEMPERATURE, type.getAirTemperature());
+        contentValues.put(SOIL_MOISTURE, type.getSoilMoisture());
+        contentValues.put(SUNLIGHT, type.getSunlight());
 
-        return db.update(TABLE_PLANTS, values, PLANT_NAME + "=?",
-                new String[]{String.valueOf(plant.getPlantName())});
+        return db.update(TABLE_TYPES, contentValues, TYPE_NAME + "=?",
+                new String[]{String.valueOf(type.getTypeName())});
     }
 
-    public void deletePlant(Plant plant){
-        SQLiteDatabase db = this. getWritableDatabase();
-        db.delete(TABLE_PLANTS, PLANT_NAME + "=?",
-                new String[]{String.valueOf(plant.getPlantName())});
-        db.close();
-    }
 
-    public int getPlantsCount(){
-        String countQuery = "SELECT FROM" + TABLE_PLANTS;
+    public int getTypesCount(){
+        String countQuery = "SELECT FROM" + TABLE_TYPES;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
         cursor.close();
