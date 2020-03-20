@@ -6,10 +6,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,12 +26,16 @@ public class PlantDialog extends DialogFragment {
     private Button saveButton;
     private Button cancelButton;
     private EditText plantNameEdit;
-    private EditText plantTypeEdit;
+  //  private EditText plantTypeEdit;
+    private Spinner spinnerEdit;
     private EditText plantSensorEdit;
     private CollectionReference sensorDataRef;
     private String sensorID;
     private FirebaseFirestore fb = FirebaseFirestore.getInstance();
     protected static final String TAG = "_PLANT DIALOG";
+
+    SpinnerList spinnerList;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater
             , @Nullable ViewGroup container
@@ -39,17 +45,18 @@ public class PlantDialog extends DialogFragment {
         saveButton = view.findViewById(R.id.save);
         cancelButton = view.findViewById(R.id.cancel);
         plantNameEdit = view.findViewById(R.id.plant_name);
-//        plantTypeEdit = view.findViewById(R.id.plant_type);
+//      plantTypeEdit = view.findViewById(R.id.plant_type);
         plantSensorEdit = view.findViewById(R.id.plant_sensor_id);
 
-        SpinnerList spinnerList ;
+        spinnerEdit = view.findViewById(R.id.spinner1);
+
 
         //on save open DataBase and store new course, on cancel return to activity
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (TextUtils.isEmpty(plantNameEdit.getText().toString())
-                        || TextUtils.isEmpty(plantTypeEdit.getText().toString())
+                        || TextUtils.isEmpty(spinnerEdit.getSelectedItem().toString())
                         || TextUtils.isEmpty(plantSensorEdit.getText().toString())) {
                     Toast.makeText(getContext(), "Empty Fields Not Allowed", Toast.LENGTH_LONG).show();
                 }
@@ -66,7 +73,7 @@ public class PlantDialog extends DialogFragment {
 
                     Toast.makeText(getActivity(), "Plant Saved", Toast.LENGTH_LONG).show();
                     String plantName = plantNameEdit.getText().toString();
-                    String plantType = plantTypeEdit.getText().toString();
+                    String plantType = spinnerEdit.getSelectedItem().toString();
                     String plantId = plantSensorEdit.getText().toString();
                     plant.setPlantName(plantName);
                     plant.setPlantType(plantType);
@@ -77,6 +84,7 @@ public class PlantDialog extends DialogFragment {
                     getActivity().startActivityForResult(getActivity().getIntent(), 10);
                     dismiss();
                 }
+
             }
         });
 

@@ -15,14 +15,6 @@
         android:hint="Plant Name"
         android:inputType="textPersonName" />
 
-    <Spinner
-        android:id="@+id/spinner1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Plant Type"
-        android:entries="@array/plant_type"/>
-
-
     <EditText
         android:id="@+id/plant_sensor_id"
         android:layout_width="match_parent"
@@ -30,6 +22,26 @@
         android:ems="10"
         android:hint="Sensor ID"
         android:inputType="textPersonName" />
+
+<!--
+    <EditText
+        android:id="@+id/plant_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Plant Type"
+        android:inputType="textPersonName" />
+-->
+
+    <Spinner
+        android:id="@+id/spinner1"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:entries="@array/type_choices"
+        android:hint="Plant Type"
+        android:prompt="@string/plant_type_title"
+        android:spinnerMode="dropdown"/>
+
 
     <Button
         android:id="@+id/save"
