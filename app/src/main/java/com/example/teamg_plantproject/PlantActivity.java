@@ -58,7 +58,7 @@ public class PlantActivity extends AppCompatActivity {
     protected int plantID;
     protected DatabaseHelper db;
     protected String plantSensorID;
-    private final int soilMax = 3000;
+    private final int soilMax = 3300;
     private final int solarMax = 2000;
     private FirebaseFirestore fb = FirebaseFirestore.getInstance();
     private CollectionReference sensorDataRef;
@@ -145,7 +145,7 @@ public class PlantActivity extends AppCompatActivity {
                                 Log.d(TAG, "onEvent: " + (jj));
                                 sunBar.setProgress((kk * 100) / solarMax);
                                 Log.d(TAG, "onEvent: " + ((kk * 100) / solarMax));
-                                plantTemp.setText(l + "*C");
+                                plantTemp.setText(l + "°C");
                                 Log.d(TAG, "onEvent: " + l);
 
                             }
@@ -248,7 +248,7 @@ public class PlantActivity extends AppCompatActivity {
     {
 
 
-        sensorDataRef.orderBy("createdAt", Query.Direction.DESCENDING).limit(1)
+        sensorDataRef.orderBy("createdAt", Query.Direction.DESCENDING).limit(10)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value,
@@ -261,7 +261,7 @@ public class PlantActivity extends AppCompatActivity {
                         int iteration = 0;
                         for (QueryDocumentSnapshot doc : value) {
                             if (doc.get("rawHumidity") != null) {
-                                iteration++;
+
                                 String i = Objects.requireNonNull(doc.get("rawSoilValue")).toString();
                                 int ii = (int) Math.floor(Double.parseDouble(i));
                                 String j = Objects.requireNonNull(doc.get("rawHumidity")).toString();
@@ -269,9 +269,9 @@ public class PlantActivity extends AppCompatActivity {
                                 String k = Objects.requireNonNull(doc.get("rawSolarValue")).toString();
                                 int kk = (int) Math.floor(Double.parseDouble(k));
                                 String l = Objects.requireNonNull(doc.get("rawTemp")).toString();
-
-                                dataPoints.add(new DataPoint(iteration, ii));
-
+                                int soilPercent = ((ii * 100) / soilMax);
+                                dataPoints.add(new DataPoint(iteration, soilPercent));
+                                iteration++;
                             }
                         }
                         LineGraphSeries<DataPoint> series = new LineGraphSeries<>(dataPoints.toArray(new DataPoint[dataPoints.size()]));
