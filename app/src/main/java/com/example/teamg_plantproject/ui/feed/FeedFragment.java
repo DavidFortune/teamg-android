@@ -76,9 +76,9 @@ public class FeedFragment extends Fragment {
                             sensorDataText = sensorDataText +
                                         date.toString()
                                         + "\nAir Humidity: " + doc.get("rawHumidity")
-                                        + "  Solar: " + doc.get("rawSolarValue")
+                                        + "    Solar: " + doc.get("rawSolarValue")
                                         + "\nSoil humidity: " + doc.get("rawSoilValue")
-                                        + "  Temperature: " + doc.get("rawTemp")
+                                        + "    Temperature: " + doc.get("rawTemp")
                                         + "\n\n";
 
                             Log.d(MainActivity.class.getName(), sensorDataText);
