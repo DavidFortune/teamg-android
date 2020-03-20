@@ -400,7 +400,7 @@ public class PlantActivity extends AppCompatActivity {
                                     }
 
 
-
+                                    //this breaks the pinching
                                     return super.onDoubleTap(e);
                                 }
                             });
