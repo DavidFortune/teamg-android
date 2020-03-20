@@ -30,6 +30,8 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.LegendRenderer;
+import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
@@ -248,7 +250,7 @@ public class PlantActivity extends AppCompatActivity {
     {
 
 
-        sensorDataRef.orderBy("createdAt", Query.Direction.DESCENDING).limit(10)
+        sensorDataRef.orderBy("createdAt", Query.Direction.DESCENDING).limit(24)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value,
@@ -276,7 +278,20 @@ public class PlantActivity extends AppCompatActivity {
                         }
                         LineGraphSeries<DataPoint> series = new LineGraphSeries<>(dataPoints.toArray(new DataPoint[dataPoints.size()]));
                         graph.addSeries(series);
+                        series.setTitle("Soil Moisture %");
 
+                        //legend setup
+                        graph.getLegendRenderer().setVisible(true);
+                        graph.getLegendRenderer().setMargin(10);
+                        graph.getLegendRenderer().setTextSize(30);
+                        graph.getLegendRenderer().setBackgroundColor(0);
+                        graph.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
+                        //viewport setup
+                        graph.getViewport().setScalable(true); // allow pinching the zoom and stuff
+                        graph.getViewport().setScrollableY(true); //allow vertical scrolling
+                        // set axis labels
+                        graph.getGridLabelRenderer().setVerticalAxisTitle("Soil Moisture (%)");
+                        graph.getGridLabelRenderer().setHorizontalAxisTitle("Last 24 hours");
                     }
                 });
     }
