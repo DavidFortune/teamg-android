@@ -12,6 +12,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -47,7 +48,7 @@ public class PlantActivity extends AppCompatActivity {
     protected ImageView plantPicture;
     protected GraphView graph;
     protected Button deletePlant;
-    protected Button takePictureButton;
+    protected ImageButton takePictureButton;
     private static final int PERMISSION_CODE = 1000;
     private static final int IMAGE_CAPTURE_CODE = 1001 ;
     Uri image_uri;
@@ -105,6 +106,7 @@ public class PlantActivity extends AppCompatActivity {
         db = new DatabaseHelper(getApplicationContext());
         plantSensorID = db.getPlant(plantID).getSensorId();
         sensorDataRef = fb.collection("sensors/" + plantSensorID + "/data");
+        Log.d(TAG, "onCreate: " + sensorDataRef.get());
 
 
         plantName.setText(db.getPlant(plantID).getPlantName());
