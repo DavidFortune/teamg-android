@@ -38,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="44dp"
         android:entries="@array/type_choices"
-        android:hint="Plant Type"
+        android:hint="Plant Type Choices"
         android:prompt="@string/plant_type_title"
         android:spinnerMode="dropdown"/>
 
