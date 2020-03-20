@@ -122,7 +122,7 @@
         app:layout_constraintStart_toEndOf="@+id/plant_image_i"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Plant Name" />
-    
+
         <TextView
         android:id="@+id/temperature_i"
         android:layout_width="91dp"
