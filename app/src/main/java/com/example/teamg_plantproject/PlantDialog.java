@@ -34,8 +34,6 @@ public class PlantDialog extends DialogFragment {
     private FirebaseFirestore fb = FirebaseFirestore.getInstance();
     protected static final String TAG = "_PLANT DIALOG";
 
-    SpinnerList spinnerList;
-
 
     public View onCreateView(@NonNull LayoutInflater inflater
             , @Nullable ViewGroup container
@@ -49,7 +47,6 @@ public class PlantDialog extends DialogFragment {
         plantSensorEdit = view.findViewById(R.id.plant_sensor_id);
 
         spinnerEdit = view.findViewById(R.id.spinner1);
-
 
         //on save open DataBase and store new course, on cancel return to activity
         saveButton.setOnClickListener(new View.OnClickListener() {
