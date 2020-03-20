@@ -25,17 +25,7 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
 
+    <string name="plant_type_title">Plant Type Choices</string>
 
-    <string-array name="plant_type">
-        <item>Bulbous</item>
-        <item>Cactus</item>
-        <item>Easy and Low Light</item>
-        <item>Fern</item>
-        <item>Flowering</item>
-        <item>Foliage</item>
-        <item>Hanging Basket</item>
-        <item>Tree</item>
-        <item>Succulent</item>
-    </string-array>
 
 </resources>

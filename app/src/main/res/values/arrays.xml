@@ -9,4 +9,14 @@
         <item>reply</item>
         <item>reply_all</item>
     </string-array>
+
+    <string-array name="type_choices">
+        <item>Bulbous</item>
+        <item>Cactus</item>
+        <item>Easy and Low Light</item>
+        <item>Fern</item>
+        <item>Flowering</item>
+        <item>Foliage</item>
+        <item>Succulent</item>
+    </string-array>
 </resources>

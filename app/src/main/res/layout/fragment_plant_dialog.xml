@@ -23,12 +23,24 @@
         android:hint="Sensor ID"
         android:inputType="textPersonName" />
 
+<!--
+    <EditText
+        android:id="@+id/plant_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Plant Type"
+        android:inputType="textPersonName" />
+-->
+
     <Spinner
         android:id="@+id/spinner1"
         android:layout_width="match_parent"
         android:layout_height="44dp"
-        android:entries="@array/plant_type"
-        android:text="Plant Type" />
+        android:entries="@array/type_choices"
+        android:hint="Plant Type"
+        android:prompt="@string/plant_type_title"
+        android:spinnerMode="dropdown"/>
 
 
     <Button
