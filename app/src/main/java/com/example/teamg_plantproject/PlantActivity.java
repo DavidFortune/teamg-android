@@ -1,6 +1,7 @@
 package com.example.teamg_plantproject;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,6 +11,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -62,6 +65,7 @@ public class PlantActivity extends AppCompatActivity {
     protected String plantSensorID;
     private final int soilMax = 3300;
     private final int solarMax = 2000;
+    private String currentGraph  = "soil";
     private FirebaseFirestore fb = FirebaseFirestore.getInstance();
     private CollectionReference sensorDataRef;
     private static final String TAG = "_Plant_Indiv";
@@ -252,6 +256,7 @@ public class PlantActivity extends AppCompatActivity {
 
         sensorDataRef.orderBy("createdAt", Query.Direction.DESCENDING).limit(24)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @SuppressLint("ClickableViewAccessibility")
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value,
                                         @Nullable FirebaseFirestoreException e) {
@@ -259,7 +264,10 @@ public class PlantActivity extends AppCompatActivity {
                             Log.w(MainActivity.class.getName(), "Listen failed.", e);
                             return;
                         }
-                        List<DataPoint> dataPoints = new ArrayList<>();
+                        List<DataPoint> dataPointsSoil = new ArrayList<>();
+                        List<DataPoint> dataPointsSolar = new ArrayList<>();
+                        List<DataPoint> dataPointsAir = new ArrayList<>();
+                        List<DataPoint> dataPointsHum = new ArrayList<>();
                         int iteration = 0;
                         for (QueryDocumentSnapshot doc : value) {
                             if (doc.get("rawHumidity") != null) {
@@ -271,12 +279,21 @@ public class PlantActivity extends AppCompatActivity {
                                 String k = Objects.requireNonNull(doc.get("rawSolarValue")).toString();
                                 int kk = (int) Math.floor(Double.parseDouble(k));
                                 String l = Objects.requireNonNull(doc.get("rawTemp")).toString();
+                                int ll = (int) Math.floor(Double.parseDouble(l));
                                 int soilPercent = ((ii * 100) / soilMax);
-                                dataPoints.add(new DataPoint(iteration, soilPercent));
+                                dataPointsSoil.add(new DataPoint(iteration, soilPercent));
+                                dataPointsSolar.add(new DataPoint(iteration, kk));
+                                dataPointsAir.add(new DataPoint(iteration, ll));
+                                dataPointsHum.add(new DataPoint(iteration, jj));
+
                                 iteration++;
                             }
                         }
-                        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(dataPoints.toArray(new DataPoint[dataPoints.size()]));
+                       final LineGraphSeries<DataPoint> series = new LineGraphSeries<>(dataPointsSoil.toArray(new DataPoint[dataPointsSoil.size()]));
+                       final LineGraphSeries<DataPoint> series2 = new LineGraphSeries<>(dataPointsSolar.toArray(new DataPoint[dataPointsSolar.size()]));
+                       final LineGraphSeries<DataPoint> series3 = new LineGraphSeries<>(dataPointsAir.toArray(new DataPoint[dataPointsAir.size()]));
+                       final LineGraphSeries<DataPoint> series4 = new LineGraphSeries<>(dataPointsHum.toArray(new DataPoint[dataPointsHum.size()]));
+                       //our initial graph
                         graph.addSeries(series);
                         series.setTitle("Soil Moisture %");
 
@@ -292,6 +309,115 @@ public class PlantActivity extends AppCompatActivity {
                         // set axis labels
                         graph.getGridLabelRenderer().setVerticalAxisTitle("Soil Moisture (%)");
                         graph.getGridLabelRenderer().setHorizontalAxisTitle("Last 24 hours");
+                        //end of our initial graph
+
+
+
+                        graph.setOnTouchListener(new View.OnTouchListener() {
+                            private GestureDetector gestureDetector = new GestureDetector(getApplicationContext(), new GestureDetector.SimpleOnGestureListener() {
+                                @Override
+                                public boolean onDoubleTap(MotionEvent e) {
+                                    Log.d("TEST", "onDoubleTap : "+ currentGraph);
+                                    if(currentGraph=="soil"){currentGraph="solar";}
+                                    else if(currentGraph=="solar"){currentGraph="air";}
+                                    else if(currentGraph=="air"){currentGraph="humidity";}
+                                    else if(currentGraph=="humidity"){currentGraph="soil";}
+
+
+                                    if(currentGraph =="soil"){
+                                        graph.removeAllSeries();
+                                        graph.addSeries(series);
+                                        series.setTitle("Soil Moisture %");
+
+                                        //legend setup
+                                        graph.getLegendRenderer().setVisible(true);
+                                        graph.getLegendRenderer().setMargin(10);
+                                        graph.getLegendRenderer().setTextSize(30);
+                                        graph.getLegendRenderer().setBackgroundColor(0);
+                                        graph.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
+                                        //viewport setup
+                                        graph.getViewport().setScalable(true); // allow pinching the zoom and stuff
+                                        graph.getViewport().setScrollableY(true); //allow vertical scrolling
+                                        // set axis labels
+                                        graph.getGridLabelRenderer().setVerticalAxisTitle("Soil Moisture (%)");
+                                        graph.getGridLabelRenderer().setHorizontalAxisTitle("Last 24 hours");
+
+                                    }
+                                    else if(currentGraph =="solar"){
+                                        graph.removeAllSeries();
+                                        graph.addSeries(series2);
+                                        series2.setTitle("Sunlight");
+
+                                        //legend setup
+                                        graph.getLegendRenderer().setVisible(true);
+                                        graph.getLegendRenderer().setMargin(10);
+                                        graph.getLegendRenderer().setTextSize(30);
+                                        graph.getLegendRenderer().setBackgroundColor(0);
+                                        graph.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
+                                        //viewport setup
+                                        graph.getViewport().setScalable(true); // allow pinching the zoom and stuff
+                                        graph.getViewport().setScrollableY(true); //allow vertical scrolling
+                                        // set axis labels
+                                        graph.getGridLabelRenderer().setVerticalAxisTitle("Sunlight");
+                                        graph.getGridLabelRenderer().setHorizontalAxisTitle("Last 24 hours");
+                                    }
+                                    else if(currentGraph == "air"){
+                                        graph.removeAllSeries();
+                                        graph.addSeries(series3);
+                                        series3.setTitle("Air Temperature (°C)");
+
+                                        //legend setup
+                                        graph.getLegendRenderer().setVisible(true);
+                                        graph.getLegendRenderer().setMargin(10);
+                                        graph.getLegendRenderer().setTextSize(30);
+                                        graph.getLegendRenderer().setBackgroundColor(0);
+                                        graph.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
+                                        //viewport setup
+                                        graph.getViewport().setScalable(true); // allow pinching the zoom and stuff
+                                        graph.getViewport().setScrollableY(true); //allow vertical scrolling
+                                        // set axis labels
+                                        graph.getGridLabelRenderer().setVerticalAxisTitle("(°C)");
+                                        graph.getGridLabelRenderer().setHorizontalAxisTitle("Last 24 hours");
+                                    }
+                                    else if(currentGraph=="humidity"){
+
+                                        graph.removeAllSeries();
+                                        graph.addSeries(series4);
+                                        series4.setTitle("Air Humidity (%)");
+
+                                        //legend setup
+                                        graph.getLegendRenderer().setVisible(true);
+                                        graph.getLegendRenderer().setMargin(10);
+                                        graph.getLegendRenderer().setTextSize(30);
+                                        graph.getLegendRenderer().setBackgroundColor(0);
+                                        graph.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
+                                        //viewport setup
+                                        graph.getViewport().setScalable(true); // allow pinching the zoom and stuff
+                                        graph.getViewport().setScrollableY(true); //allow vertical scrolling
+                                        // set axis labels
+                                        graph.getGridLabelRenderer().setVerticalAxisTitle("Air Humidity (%)");
+                                        graph.getGridLabelRenderer().setHorizontalAxisTitle("Last 24 hours");
+                                    }
+
+
+
+                                    return super.onDoubleTap(e);
+                                }
+                            });
+
+                            @Override
+                            public boolean onTouch(View v, MotionEvent event) {
+                               // Log.d("TEST", "Raw event: " + event.getAction() + ", (" + event.getRawX() + ", " + event.getRawY() + ")");
+                                gestureDetector.onTouchEvent(event);
+                                return true;
+                            }
+                        });
+
+
+
+
+
+
                     }
                 });
     }
