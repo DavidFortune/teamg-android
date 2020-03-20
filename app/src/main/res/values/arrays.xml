@@ -11,6 +11,7 @@
     </string-array>
 
     <string-array name="type_choices">
+        <item>Plant Type</item>
         <item>Bulbous</item>
         <item>Cactus</item>
         <item>Easy and Low Light</item>
