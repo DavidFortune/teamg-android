@@ -19,12 +19,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String SENSOR_ID = "sensor_id";
     private static final String PLANT_PIC = "plant_picture";
 
+    private static final String KEY_TYPE_ID = "type_id";
+//    private static final String TYPE_NAME = "type_name";
+    private static final int AIR_HUMIDITY = 1;
+    private static final int AIR_TEMPERATURE = 1;
+    private static final int SOIL_MOISTURE = 1;
+
     private static final String TAG = "DB CREATOR";
 
     private static final int DATABASE_VERSION = 1;
 
     private static final String DATA_BASE_NAME = "PlantsList.db";
     private static final String TABLE_PLANTS = "Plants_Table";
+    private static final String TABLE_TYPES = "PLANT TYPE SETTINGS";
 
     //create plants table
     private static final String CREATE_TABLE_PLANTS = "CREATE TABLE "
@@ -35,6 +42,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + SENSOR_ID + " TEXT,"
             + PLANT_PIC + " BLOB" + ")";
 
+    private static final String CREATE_TABLE_TYPES = "create table " +
+            TABLE_TYPES + "("
+            + KEY_TYPE_ID + " INTEGER PRIMARY KEY,"
+            + PLANT_TYPE + " TEXT,"
+            + AIR_HUMIDITY + " INTEGER,"
+            + AIR_TEMPERATURE + " INTEGER,"
+            + SOIL_MOISTURE + " INTEGER" + ")";
 
     public DatabaseHelper(Context context) {
         super(context, DATA_BASE_NAME, null, DATABASE_VERSION);
@@ -49,6 +63,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PLANTS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TYPES);
     }
 
     public long createPlant(Plant plant) {
