@@ -89,7 +89,6 @@ public class DBHelper_PlantType extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             PlantType plantType = new PlantType();
 
-            plantType.setTypeID(cursor.getInt(cursor.getColumnIndex(KEY_TYPE_ID)));
             plantType.setTypeName(cursor.getString(cursor.getColumnIndex(TYPE_NAME)));
             plantType.setAirHumidity(cursor.getInt(cursor.getColumnIndex(String.valueOf(AIR_HUMIDITY))));
             plantType.setAirTemperature(cursor.getInt(cursor.getColumnIndex(String.valueOf(AIR_TEMPERATURE))));
@@ -122,7 +121,7 @@ public class DBHelper_PlantType extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do{
                 PlantType plantType = new PlantType();
-                plantType.setTypeID(cursor.getInt(cursor.getColumnIndex(KEY_TYPE_ID)));
+
                 plantType.setTypeName(cursor.getString(cursor.getColumnIndex(TYPE_NAME)));
                 plantType.setAirHumidity(cursor.getInt(cursor.getColumnIndex(String.valueOf(AIR_HUMIDITY))));
                 plantType.setAirTemperature(cursor.getInt(cursor.getColumnIndex(String.valueOf(AIR_TEMPERATURE))));

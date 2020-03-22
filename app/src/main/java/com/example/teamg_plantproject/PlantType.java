@@ -1,7 +1,6 @@
 package com.example.teamg_plantproject;
 
 public class PlantType {
-    private int typeID;
     private String typeName;
     private int airHumidity;
     private int airTemperature;
@@ -10,20 +9,11 @@ public class PlantType {
     public PlantType() {
     }
 
-    public PlantType(int typeID, String typeName, int airHumidity, int airTemperature, int soilMoisture) {
-        this.typeID = typeID;
+    public PlantType(String typeName, int airHumidity, int airTemperature, int soilMoisture) {
         this.typeName = typeName;
         this.airHumidity = airHumidity;
         this.airTemperature = airTemperature;
         this.soilMoisture = soilMoisture;
-    }
-
-    public int getTypeID() {
-        return typeID;
-    }
-
-    public void setTypeID(int typeID) {
-        this.typeID = typeID;
     }
 
     public String getTypeName() { return typeName; }
