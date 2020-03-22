@@ -19,11 +19,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String SENSOR_ID = "sensor_id";
     private static final String PLANT_PIC = "plant_picture";
 
-    private static final String KEY_TYPE_ID = "type_id";
+/*    private static final String KEY_TYPE_ID = "type_id";*/
 //    private static final String TYPE_NAME = "type_name";
-    private static final int AIR_HUMIDITY = 1;
+/*    private static final int AIR_HUMIDITY = 1;
     private static final int AIR_TEMPERATURE = 1;
-    private static final int SOIL_MOISTURE = 1;
+    private static final int SOIL_MOISTURE = 1;*/
 
     private static final String TAG = "DB CREATOR";
 
@@ -31,7 +31,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATA_BASE_NAME = "PlantsList.db";
     private static final String TABLE_PLANTS = "Plants_Table";
-    private static final String TABLE_TYPES = "PLANT TYPE SETTINGS";
+//    private static final String TABLE_TYPES = "PLANT TYPE SETTINGS";
 
     //create plants table
     private static final String CREATE_TABLE_PLANTS = "CREATE TABLE "
@@ -42,13 +42,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + SENSOR_ID + " TEXT,"
             + PLANT_PIC + " BLOB" + ")";
 
-    private static final String CREATE_TABLE_TYPES = "create table " +
+/*    private static final String CREATE_TABLE_TYPES = "create table " +
             TABLE_TYPES + "("
             + KEY_TYPE_ID + " INTEGER PRIMARY KEY,"
             + PLANT_TYPE + " TEXT,"
             + AIR_HUMIDITY + " INTEGER,"
             + AIR_TEMPERATURE + " INTEGER,"
-            + SOIL_MOISTURE + " INTEGER" + ")";
+            + SOIL_MOISTURE + " INTEGER" + ")";*/
 
     public DatabaseHelper(Context context) {
         super(context, DATA_BASE_NAME, null, DATABASE_VERSION);
@@ -57,14 +57,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE_PLANTS);
-        db.execSQL(CREATE_TABLE_TYPES);
+//        db.execSQL(CREATE_TABLE_TYPES);
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PLANTS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TYPES);
+//        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TYPES);
     }
 
     public long createPlant(Plant plant) {
@@ -82,7 +82,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return plant_id;
     }
 
-    public long createType(PlantType plantType){
+/*    public long createType(PlantType plantType){
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
@@ -95,7 +95,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         Log.d(TAG, "CREATED TYPE");
         return type_id;
-    }
+    }*/
 
     //get 1 plant
     public Plant getPlant(int plant_id) {
@@ -128,7 +128,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    //get 1 type ONLY from Type Table
+/*    //get 1 type ONLY from Type Table
     public PlantType getType(int type_ID){
 
         String selectQuery = "SELECT  * FROM " + TABLE_TYPES + " WHERE "
@@ -136,9 +136,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
-/*        Cursor cursor = db.query(TABLE_TYPES, new String[]{TABLE_TYPES, AIR_HUMIDITY, AIR_TEMPERATURE,
+*//*        Cursor cursor = db.query(TABLE_TYPES, new String[]{TABLE_TYPES, AIR_HUMIDITY, AIR_TEMPERATURE,
                         SOIL_MOISTURE, SUNLIGHT}, type_ID + "=?",
-        new String[]{String.valueOf(type_ID)}, null, null, null, null);*/
+        new String[]{String.valueOf(type_ID)}, null, null, null, null);*//*
 
         if (cursor != null) {
             cursor.moveToFirst();
@@ -159,7 +159,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor.close();
             return null;
         }
-    }
+    }*/
 
     //Get all plant from plant table
     public ArrayList<Plant> getAllPlants() {
@@ -227,7 +227,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return null;
         }
     }
-    public void deleteType(int typeID){
+   /* public void deleteType(int typeID){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_TYPES, KEY_TYPE_ID + "=?",
                 new String[]{String.valueOf(typeID)});
@@ -253,7 +253,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(countQuery, null);
         cursor.close();
         return cursor.getCount();
-    }
+    }*/
 
 }
 
