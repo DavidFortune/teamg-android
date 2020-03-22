@@ -22,27 +22,27 @@ public class SpinnerList extends AppCompatActivity implements AdapterView.OnItem
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plant);
 
-            // database handler
-            DBHelper_PlantType db = new DBHelper_PlantType(getApplicationContext());
-            // Spinner Drop down elements
-            ArrayList<PlantType> types = db.getAllTypes();
-            //1.get a reference to the spinner
-
-//            String spinnerSelectedItem = spinner.getSelectedItem().toString();
-            //2.create a simple static list of strings
-            ArrayList<String> spinnerArray = new ArrayList<>();
-            spinnerArray.add("Bulbous");
-            spinnerArray.add("Cactus");
-            spinnerArray.add("Common House");
-            spinnerArray.add("Fern");
-            spinnerArray.add("Flowering");
-            spinnerArray.add("Foliage");
-            spinnerArray.add("Succulent");
-
-        String[] spinnerString = {"Bulbous","Cactus","Common House","Fern","Flowering",
-                "Foliage","Succulent"};
+        // database handler
+        DBHelper_PlantType db = new DBHelper_PlantType(getApplicationContext());
+        // Spinner Drop down elements
+        ArrayList<PlantType> types = db.getAllTypes();
+        //1.get a reference to the spinner
         Spinner spinner = (Spinner) findViewById(R.id.spinner1);
-            //3.create an adapter from the list
+        //String spinnerSelectedItem = spinner.getSelectedItem().toString();
+        //2.create a simple static list of strings
+        ArrayList<String> spinnerArray = new ArrayList<>();
+        spinnerArray.add("Bulbous");
+        spinnerArray.add("Cactus");
+        spinnerArray.add("Common House");
+        spinnerArray.add("Fern");
+        spinnerArray.add("Flowering");
+        spinnerArray.add("Foliage");
+        spinnerArray.add("Succulent");
+
+        String[] spinnerString = {"Bulbous", "Cactus", "Common House", "Fern", "Flowering",
+                "Foliage", "Succulent"};
+
+        //3.create an adapter from the list
         ArrayAdapter<String> spinnerArrayAdapter1 = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_dropdown_item, spinnerArray);
         ArrayAdapter<String> spinnerArrayAdapter2 = new ArrayAdapter<String>(this,
@@ -59,13 +59,13 @@ public class SpinnerList extends AppCompatActivity implements AdapterView.OnItem
         spinner.setAdapter(spinnerArrayAdapter3);
 /*            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                     R.array.type_choices, android.R.layout.simple_spinner_item);*/
-            spinner.setOnItemSelectedListener(this);
-        }
+        spinner.setOnItemSelectedListener(this);
+    }
 
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        String text= parent.getItemAtPosition(position).toString();
+        String text = parent.getItemAtPosition(position).toString();
         Toast.makeText(parent.getContext(),text,Toast.LENGTH_SHORT).show();
     }
 
