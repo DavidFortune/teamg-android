@@ -51,6 +51,11 @@ public class PlantActivity extends AppCompatActivity {
     protected TextView plantType;
     protected TextView plantTemp;
     protected ImageView plantPicture;
+
+    protected  TextView water_percentage;
+    protected  TextView sunshine_percentage;
+    protected  TextView humidity_percentage;
+
     protected GraphView graph;
     protected Button deletePlant;
     protected ImageButton takePictureButton;
@@ -120,6 +125,9 @@ public class PlantActivity extends AppCompatActivity {
         waterBar.setProgress(25);
         sunBar.setProgress(50);
         humidityBar.setProgress(75);
+        water_percentage.setText("N/A %");
+        sunshine_percentage.setText("N/A %");
+        humidity_percentage.setText("N/A %");
         plantTemp.setText("N/A *C");
         if (!(db.getImage(plantID) == null))
             plantPicture.setImageBitmap(db.getImage(plantID));
@@ -154,6 +162,13 @@ public class PlantActivity extends AppCompatActivity {
                                 plantTemp.setText(l + "°C");
                                 Log.d(TAG, "onEvent: " + l);
 
+                                int water_p = ((ii * 100) / soilMax);
+                                water_percentage.setText(water_p + " %");
+
+                                int sunshine_p = ((kk * 100) / solarMax);
+                                sunshine_percentage.setText(sunshine_p + " %");
+
+                                humidity_percentage.setText(jj + " %");
                             }
                         }
                     }
@@ -232,7 +247,9 @@ public class PlantActivity extends AppCompatActivity {
     }
 
     protected void setUpUI() {
-
+        water_percentage = findViewById(R.id.water_p);
+        sunshine_percentage = findViewById(R.id.sunshine_p);
+        humidity_percentage = findViewById(R.id.humidity_p);
         plantName = findViewById(R.id.plant_name_i);
         plantType = findViewById(R.id.plant_type_i);
         waterBar = findViewById(R.id.water_progress_i);

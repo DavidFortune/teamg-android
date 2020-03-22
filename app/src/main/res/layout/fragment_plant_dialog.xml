@@ -23,6 +23,14 @@
         android:hint="Sensor ID"
         android:inputType="textPersonName" />
 
+    <ListView
+        android:id="@+id/plant_type_threshold"
+        android:layout_width="179dp"
+        android:layout_height="37dp"
+        android:layout_marginStart="8dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        tools:text="Plant Type Threshold" />
+
 <!--
     <EditText
         android:id="@+id/plant_type"
@@ -38,7 +46,7 @@
         android:layout_width="match_parent"
         android:layout_height="44dp"
         android:entries="@array/type_choices"
-        android:hint="Plant Type"
+        android:hint="Plant Type Choices"
         android:prompt="@string/plant_type_title"
         android:spinnerMode="dropdown"/>
 
@@ -47,12 +55,14 @@
         android:id="@+id/save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#D3FFC107"
         android:text="SAVE" />
 
     <Button
         android:id="@+id/cancel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#57FFC107"
         android:text="CANCEL" />
 
 </LinearLayout>
