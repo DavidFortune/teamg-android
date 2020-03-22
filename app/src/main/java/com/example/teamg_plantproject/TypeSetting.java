@@ -39,6 +39,43 @@ public class TypeSetting extends AppCompatActivity {
         db.createType(plantType6);
         db.createType(plantType7);
 
+        db = new DBHelper_PlantType(getApplicationContext());
+        plantType1.setTypeID(1);
+        plantType2.setTypeID(2);
+        plantType3.setTypeID(3);
+        plantType4.setTypeID(4);
+        plantType5.setTypeID(5);
+        plantType6.setTypeID(6);
+        plantType7.setTypeID(7);
+        plantType1.setTypeName("Bulbous");
+        plantType2.setTypeName("Cactus");
+        plantType3.setTypeName("Common House");
+        plantType4.setTypeName("Fern");
+        plantType5.setTypeName("Flowering");
+        plantType6.setTypeName("Foliage");
+        plantType7.setTypeName("Succulent");
+        plantType1.setAirHumidity(55);
+        plantType2.setAirHumidity(20);
+        plantType3.setAirHumidity(40);
+        plantType4.setAirHumidity(40);
+        plantType5.setAirHumidity(45);
+        plantType6.setAirHumidity(40);
+        plantType7.setAirHumidity(20);
+        plantType1.setAirTemperature(4);
+        plantType2.setAirTemperature(18);
+        plantType3.setAirTemperature(16);
+        plantType4.setAirTemperature(21);
+        plantType5.setAirTemperature(14);
+        plantType6.setAirTemperature(20);
+        plantType7.setAirTemperature(16);
+        plantType1.setSoilMoisture(75);
+        plantType2.setSoilMoisture(30);
+        plantType3.setSoilMoisture(50);
+        plantType4.setSoilMoisture(50);
+        plantType5.setSoilMoisture(55);
+        plantType6.setSoilMoisture(45);
+        plantType7.setSoilMoisture(30);
+
         ArrayList<PlantType> plantTypes = db.getAllTypes();
 
         if (plantTypes != null) {
