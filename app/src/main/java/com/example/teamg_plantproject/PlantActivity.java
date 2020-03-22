@@ -1,11 +1,27 @@
 package com.example.teamg_plantproject;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,24 +32,44 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.LegendRenderer;
+import com.jjoe64.graphview.helper.StaticLabelsFormatter;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 
+import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+
+
 
 public class PlantActivity extends AppCompatActivity {
 
     protected TextView plantName;
     protected TextView plantType;
     protected TextView plantTemp;
+    protected ImageView plantPicture;
+    protected GraphView graph;
+    protected Button deletePlant;
+    protected ImageButton takePictureButton;
+    private static final int PERMISSION_CODE = 1000;
+    private static final int IMAGE_CAPTURE_CODE = 1001 ;
+    Uri image_uri;
     protected ProgressBar waterBar;
     protected ProgressBar humidityBar;
     protected ProgressBar sunBar;
     protected int plantID;
     protected DatabaseHelper db;
-    private static final String TAG = "_Plant_Indiv";
-    private final int soilMax = 3000;
+    protected String plantSensorID;
+    private final int soilMax = 3300;
     private final int solarMax = 2000;
+    private String currentGraph  = "soil";
     private FirebaseFirestore fb = FirebaseFirestore.getInstance();
-    private CollectionReference sensorDataRef = fb.collection("sensors/z1QgZ1bVjYnUyrszlU9b/data");
+    private CollectionReference sensorDataRef;
+    private static final String TAG = "_Plant_Indiv";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,15 +77,53 @@ public class PlantActivity extends AppCompatActivity {
         setContentView(R.layout.activity_plant);
         setUpUI();
 
+        plantPicture = findViewById(R.id.plant_image_i);
+        takePictureButton = findViewById(R.id.capture_image_btn);
+
+        //button click listener
+        takePictureButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //if system is >= Marshmallow, request runtime permission
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                    if (checkSelfPermission(Manifest.permission.CAMERA) ==
+                            PackageManager.PERMISSION_DENIED ||
+                            checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
+                                    PackageManager.PERMISSION_DENIED){
+                        //permission not enabled, request it
+                        String [] permission = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                        //show popup to request user permission
+                        requestPermissions(permission, PERMISSION_CODE);
+                    }
+                    else {
+                        //permission is already granted
+                        openCamera();
+                    }
+                }
+                else {
+                    //system < marshmallow
+                    openCamera();
+                }
+            }
+        });
+
         Intent intent = getIntent();
         plantID = intent.getIntExtra("PlantID", 0);
         db = new DatabaseHelper(getApplicationContext());
+        plantSensorID = db.getPlant(plantID).getSensorId();
+        sensorDataRef = fb.collection("sensors/" + plantSensorID + "/data");
+        Log.d(TAG, "onCreate: " + sensorDataRef.get());
+
 
         plantName.setText(db.getPlant(plantID).getPlantName());
         plantType.setText(db.getPlant(plantID).getPlantType());
-        waterBar.setProgress(0);
-        humidityBar.setProgress(0);
-        sunBar.setProgress(0);
+        waterBar.setProgress(25);
+        sunBar.setProgress(50);
+        humidityBar.setProgress(75);
+        plantTemp.setText("N/A *C");
+        if (!(db.getImage(plantID) == null))
+            plantPicture.setImageBitmap(db.getImage(plantID));
+
 
         sensorDataRef.orderBy("createdAt", Query.Direction.DESCENDING).limit(1)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -60,9 +134,6 @@ public class PlantActivity extends AppCompatActivity {
                             Log.w(MainActivity.class.getName(), "Listen failed.", e);
                             return;
                         }
-
-                        String sensorDataText = "";
-
                         for (QueryDocumentSnapshot doc : value) {
                             if (doc.get("rawHumidity") != null) {
 
@@ -80,7 +151,7 @@ public class PlantActivity extends AppCompatActivity {
                                 Log.d(TAG, "onEvent: " + (jj));
                                 sunBar.setProgress((kk * 100) / solarMax);
                                 Log.d(TAG, "onEvent: " + ((kk * 100) / solarMax));
-                                plantTemp.setText(l + "*C");
+                                plantTemp.setText(l + "°C");
                                 Log.d(TAG, "onEvent: " + l);
 
                             }
@@ -88,9 +159,71 @@ public class PlantActivity extends AppCompatActivity {
                     }
                 });
 
+        setupGraph();
+
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        deletePlant.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                db.deletePlant(plantID);
+                goToPlantList();
+            }
+        });
+    }
 
+    private void openCamera() {
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.TITLE, "New Picture");
+        values.put(MediaStore.Images.Media.DESCRIPTION, "From camera");
+        image_uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+
+        //Camera intent
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri);
+        startActivityForResult(cameraIntent, IMAGE_CAPTURE_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //called when image is captured by camera
+        super.onActivityResult(requestCode, resultCode, data);
+        db = new DatabaseHelper(getApplicationContext());
+        if (resultCode == RESULT_OK) {
+            //set the image capture to our ImageView
+            plantPicture.setDrawingCacheEnabled(true);
+            plantPicture.buildDrawingCache();
+            plantPicture.setImageURI(image_uri);
+            Bitmap bitmap = plantPicture.getDrawingCache();
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+            byte[] dataMy = byteArrayOutputStream.toByteArray();
+            db.addImage(dataMy, plantID);
+        }
+    }
+
+    //to handle permissions
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        //this method is called when the user presses allow or deny from Permission request popup
+        switch (requestCode){
+            case PERMISSION_CODE:{
+                if (grantResults.length > 0 && grantResults[0]
+                        == PackageManager.PERMISSION_GRANTED){
+                    //permission was granted
+                    openCamera();
+                }
+                else {
+                    //permission was denied
+                    Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        }
+    }
     @Override
     public boolean onSupportNavigateUp() {
         Intent intent = new Intent(this, MainActivity.class);
@@ -105,8 +238,189 @@ public class PlantActivity extends AppCompatActivity {
         waterBar = findViewById(R.id.water_progress_i);
         humidityBar = findViewById(R.id.humidity_progress_i);
         sunBar = findViewById(R.id.sunshine_progress_i);
-        plantTemp = findViewById(R.id.temerature_i);
+        plantTemp = findViewById(R.id.temperature_i);
+        deletePlant = findViewById(R.id.delete_plant);
+        graph = findViewById(R.id.graph);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
+
+    protected void goToPlantList() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+
+    protected void setupGraph()
+    {
+
+
+        sensorDataRef.orderBy("createdAt", Query.Direction.DESCENDING).limit(24)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @SuppressLint("ClickableViewAccessibility")
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value,
+                                        @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.w(MainActivity.class.getName(), "Listen failed.", e);
+                            return;
+                        }
+                        List<DataPoint> dataPointsSoil = new ArrayList<>();
+                        List<DataPoint> dataPointsSolar = new ArrayList<>();
+                        List<DataPoint> dataPointsAir = new ArrayList<>();
+                        List<DataPoint> dataPointsHum = new ArrayList<>();
+                        int iteration = 0;
+                        for (QueryDocumentSnapshot doc : value) {
+                            if (doc.get("rawHumidity") != null) {
+
+                                String i = Objects.requireNonNull(doc.get("rawSoilValue")).toString();
+                                int ii = (int) Math.floor(Double.parseDouble(i));
+                                String j = Objects.requireNonNull(doc.get("rawHumidity")).toString();
+                                int jj = (int) Math.floor(Double.parseDouble(j));
+                                String k = Objects.requireNonNull(doc.get("rawSolarValue")).toString();
+                                int kk = (int) Math.floor(Double.parseDouble(k));
+                                String l = Objects.requireNonNull(doc.get("rawTemp")).toString();
+                                int ll = (int) Math.floor(Double.parseDouble(l));
+                                int soilPercent = ((ii * 100) / soilMax);
+                                dataPointsSoil.add(new DataPoint(iteration, soilPercent));
+                                dataPointsSolar.add(new DataPoint(iteration, kk));
+                                dataPointsAir.add(new DataPoint(iteration, ll));
+                                dataPointsHum.add(new DataPoint(iteration, jj));
+
+                                iteration++;
+                            }
+                        }
+                       final LineGraphSeries<DataPoint> series = new LineGraphSeries<>(dataPointsSoil.toArray(new DataPoint[dataPointsSoil.size()]));
+                       final LineGraphSeries<DataPoint> series2 = new LineGraphSeries<>(dataPointsSolar.toArray(new DataPoint[dataPointsSolar.size()]));
+                       final LineGraphSeries<DataPoint> series3 = new LineGraphSeries<>(dataPointsAir.toArray(new DataPoint[dataPointsAir.size()]));
+                       final LineGraphSeries<DataPoint> series4 = new LineGraphSeries<>(dataPointsHum.toArray(new DataPoint[dataPointsHum.size()]));
+                       //our initial graph
+                        graph.addSeries(series);
+                        series.setTitle("Soil Moisture %");
+
+                        //legend setup
+                        graph.getLegendRenderer().setVisible(true);
+                        graph.getLegendRenderer().setMargin(10);
+                        graph.getLegendRenderer().setTextSize(30);
+                        graph.getLegendRenderer().setBackgroundColor(0);
+                        graph.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
+                        //viewport setup
+                        graph.getViewport().setScalable(true); // allow pinching the zoom and stuff
+                        graph.getViewport().setScrollableY(true); //allow vertical scrolling
+                        // set axis labels
+                        graph.getGridLabelRenderer().setVerticalAxisTitle("Soil Moisture (%)");
+                        graph.getGridLabelRenderer().setHorizontalAxisTitle("Last 24 hours");
+                        //end of our initial graph
+
+
+
+                        graph.setOnTouchListener(new View.OnTouchListener() {
+                            private GestureDetector gestureDetector = new GestureDetector(getApplicationContext(), new GestureDetector.SimpleOnGestureListener() {
+                                @Override
+                                public boolean onDoubleTap(MotionEvent e) {
+                                    Log.d("TEST", "onDoubleTap : "+ currentGraph);
+                                    if(currentGraph=="soil"){currentGraph="solar";}
+                                    else if(currentGraph=="solar"){currentGraph="air";}
+                                    else if(currentGraph=="air"){currentGraph="humidity";}
+                                    else if(currentGraph=="humidity"){currentGraph="soil";}
+
+
+                                    if(currentGraph =="soil"){
+                                        graph.removeAllSeries();
+                                        graph.addSeries(series);
+                                        series.setTitle("Soil Moisture %");
+
+                                        //legend setup
+                                        graph.getLegendRenderer().setVisible(true);
+                                        graph.getLegendRenderer().setMargin(10);
+                                        graph.getLegendRenderer().setTextSize(30);
+                                        graph.getLegendRenderer().setBackgroundColor(0);
+                                        graph.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
+                                        //viewport setup
+                                        graph.getViewport().setScalable(true); // allow pinching the zoom and stuff
+                                        graph.getViewport().setScrollableY(true); //allow vertical scrolling
+                                        // set axis labels
+                                        graph.getGridLabelRenderer().setVerticalAxisTitle("Soil Moisture (%)");
+                                        graph.getGridLabelRenderer().setHorizontalAxisTitle("Last 24 hours");
+
+                                    }
+                                    else if(currentGraph =="solar"){
+                                        graph.removeAllSeries();
+                                        graph.addSeries(series2);
+                                        series2.setTitle("Sunlight");
+
+                                        //legend setup
+                                        graph.getLegendRenderer().setVisible(true);
+                                        graph.getLegendRenderer().setMargin(10);
+                                        graph.getLegendRenderer().setTextSize(30);
+                                        graph.getLegendRenderer().setBackgroundColor(0);
+                                        graph.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
+                                        //viewport setup
+                                        graph.getViewport().setScalable(true); // allow pinching the zoom and stuff
+                                        graph.getViewport().setScrollableY(true); //allow vertical scrolling
+                                        // set axis labels
+                                        graph.getGridLabelRenderer().setVerticalAxisTitle("Sunlight");
+                                        graph.getGridLabelRenderer().setHorizontalAxisTitle("Last 24 hours");
+                                    }
+                                    else if(currentGraph == "air"){
+                                        graph.removeAllSeries();
+                                        graph.addSeries(series3);
+                                        series3.setTitle("Air Temperature (°C)");
+
+                                        //legend setup
+                                        graph.getLegendRenderer().setVisible(true);
+                                        graph.getLegendRenderer().setMargin(10);
+                                        graph.getLegendRenderer().setTextSize(30);
+                                        graph.getLegendRenderer().setBackgroundColor(0);
+                                        graph.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
+                                        //viewport setup
+                                        graph.getViewport().setScalable(true); // allow pinching the zoom and stuff
+                                        graph.getViewport().setScrollableY(true); //allow vertical scrolling
+                                        // set axis labels
+                                        graph.getGridLabelRenderer().setVerticalAxisTitle("(°C)");
+                                        graph.getGridLabelRenderer().setHorizontalAxisTitle("Last 24 hours");
+                                    }
+                                    else if(currentGraph=="humidity"){
+
+                                        graph.removeAllSeries();
+                                        graph.addSeries(series4);
+                                        series4.setTitle("Air Humidity (%)");
+
+                                        //legend setup
+                                        graph.getLegendRenderer().setVisible(true);
+                                        graph.getLegendRenderer().setMargin(10);
+                                        graph.getLegendRenderer().setTextSize(30);
+                                        graph.getLegendRenderer().setBackgroundColor(0);
+                                        graph.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
+                                        //viewport setup
+                                        graph.getViewport().setScalable(true); // allow pinching the zoom and stuff
+                                        graph.getViewport().setScrollableY(true); //allow vertical scrolling
+                                        // set axis labels
+                                        graph.getGridLabelRenderer().setVerticalAxisTitle("Air Humidity (%)");
+                                        graph.getGridLabelRenderer().setHorizontalAxisTitle("Last 24 hours");
+                                    }
+
+
+                                    //this breaks the pinching
+                                    return super.onDoubleTap(e);
+                                }
+                            });
+
+                            @Override
+                            public boolean onTouch(View v, MotionEvent event) {
+                               // Log.d("TEST", "Raw event: " + event.getAction() + ", (" + event.getRawX() + ", " + event.getRawY() + ")");
+                                gestureDetector.onTouchEvent(event);
+                                return true;
+                            }
+                        });
+
+
+
+
+
+
+                    }
+                });
+    }
+
 
 }
