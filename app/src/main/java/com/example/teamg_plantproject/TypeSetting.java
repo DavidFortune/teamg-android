@@ -31,6 +31,7 @@ public class TypeSetting extends AppCompatActivity {
         PlantType plantType6 = new PlantType(6, "Foliage", 40, 20, 45);
         PlantType plantType7 = new PlantType(7, "Succulent", 20, 16, 30);
 
+
         db.createType(plantType1);
         db.createType(plantType2);
         db.createType(plantType3);
@@ -40,7 +41,7 @@ public class TypeSetting extends AppCompatActivity {
         db.createType(plantType7);
 
         db = new DBHelper_PlantType(getApplicationContext());
-        plantType1.setTypeID(1);
+        /*plantType1.setTypeID(1);
         plantType2.setTypeID(2);
         plantType3.setTypeID(3);
         plantType4.setTypeID(4);
@@ -75,8 +76,16 @@ public class TypeSetting extends AppCompatActivity {
         plantType5.setSoilMoisture(55);
         plantType6.setSoilMoisture(45);
         plantType7.setSoilMoisture(30);
-
+*/
         ArrayList<PlantType> plantTypes = db.getAllTypes();
+        plantTypes.add(plantType1);
+        plantTypes.add(plantType2);
+        plantTypes.add(plantType3);
+        plantTypes.add(plantType4);
+        plantTypes.add(plantType5);
+        plantTypes.add(plantType6);
+        plantTypes.add(plantType7);
+
 
         if (plantTypes != null) {
             String[] plantItems = new String[plantTypes.size()];

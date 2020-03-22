@@ -111,7 +111,7 @@ public class DBHelper_PlantType extends SQLiteOpenHelper {
         plant.setSensorId(cursor.getString(2));
         return plant;*/
 
-    //get all types from the table
+    //get all plant types from the table
     public ArrayList<PlantType> getAllTypes(){
         ArrayList<PlantType> types = new ArrayList<>();
         String selectQuery = "SELECT  * FROM " + TABLE_TYPES;
@@ -155,7 +155,6 @@ public class DBHelper_PlantType extends SQLiteOpenHelper {
                 new String[]{String.valueOf(plantType.getTypeName())});
     }
 
-
     public int getTypesCount(){
         String countQuery = "SELECT FROM" + TABLE_TYPES;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -163,6 +162,5 @@ public class DBHelper_PlantType extends SQLiteOpenHelper {
         cursor.close();
         return cursor.getCount();
     }
-
 
 }
