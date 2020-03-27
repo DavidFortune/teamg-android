@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/open_plant_info"
+        android:title="Plant Info"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/edit_plant_info"
+        android:title="Edit Plant"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/delete_plant_option"
+        android:title="Delete Plant"
+        app:showAsAction="never" />
+</menu>

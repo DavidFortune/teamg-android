@@ -12,6 +12,9 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -24,6 +27,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
@@ -34,7 +38,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.LegendRenderer;
-import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
@@ -44,7 +47,6 @@ import java.util.List;
 import java.util.Objects;
 
 
-
 public class PlantActivity extends AppCompatActivity {
 
     protected TextView plantName;
@@ -52,15 +54,15 @@ public class PlantActivity extends AppCompatActivity {
     protected TextView plantTemp;
     protected ImageView plantPicture;
 
-    protected  TextView water_percentage;
-    protected  TextView sunshine_percentage;
-    protected  TextView humidity_percentage;
+    private static final int IMAGE_CAPTURE_CODE = 1001;
+    protected TextView water_percentage;
+    protected TextView sunshine_percentage;
 
     protected GraphView graph;
     protected Button deletePlant;
     protected ImageButton takePictureButton;
     private static final int PERMISSION_CODE = 1000;
-    private static final int IMAGE_CAPTURE_CODE = 1001 ;
+    protected TextView humidity_percentage;
     Uri image_uri;
     protected ProgressBar waterBar;
     protected ProgressBar humidityBar;
@@ -70,7 +72,7 @@ public class PlantActivity extends AppCompatActivity {
     protected String plantSensorID;
     private final int soilMax = 3300;
     private final int solarMax = 2000;
-    private String currentGraph  = "soil";
+    private String currentGraph = "soil";
     private FirebaseFirestore fb = FirebaseFirestore.getInstance();
     private CollectionReference sensorDataRef;
     private static final String TAG = "_Plant_Indiv";
@@ -90,22 +92,20 @@ public class PlantActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //if system is >= Marshmallow, request runtime permission
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (checkSelfPermission(Manifest.permission.CAMERA) ==
                             PackageManager.PERMISSION_DENIED ||
                             checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
-                                    PackageManager.PERMISSION_DENIED){
+                                    PackageManager.PERMISSION_DENIED) {
                         //permission not enabled, request it
-                        String [] permission = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                        String[] permission = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
                         //show popup to request user permission
                         requestPermissions(permission, PERMISSION_CODE);
-                    }
-                    else {
+                    } else {
                         //permission is already granted
                         openCamera();
                     }
-                }
-                else {
+                } else {
                     //system < marshmallow
                     openCamera();
                 }
@@ -114,6 +114,7 @@ public class PlantActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         plantID = intent.getIntExtra("PlantID", 0);
+        System.out.println(plantID + "--------------------------------------");
         db = new DatabaseHelper(getApplicationContext());
         plantSensorID = db.getPlant(plantID).getSensorId();
         sensorDataRef = fb.collection("sensors/" + plantSensorID + "/data");
@@ -181,13 +182,6 @@ public class PlantActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        deletePlant.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                db.deletePlant(plantID);
-                goToPlantList();
-            }
-        });
     }
 
     private void openCamera() {
@@ -224,14 +218,13 @@ public class PlantActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         //this method is called when the user presses allow or deny from Permission request popup
-        switch (requestCode){
-            case PERMISSION_CODE:{
+        switch (requestCode) {
+            case PERMISSION_CODE: {
                 if (grantResults.length > 0 && grantResults[0]
-                        == PackageManager.PERMISSION_GRANTED){
+                        == PackageManager.PERMISSION_GRANTED) {
                     //permission was granted
                     openCamera();
-                }
-                else {
+                } else {
                     //permission was denied
                     Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
 
@@ -239,6 +232,7 @@ public class PlantActivity extends AppCompatActivity {
             }
         }
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         Intent intent = new Intent(this, MainActivity.class);
@@ -267,8 +261,7 @@ public class PlantActivity extends AppCompatActivity {
     }
 
 
-    protected void setupGraph()
-    {
+    protected void setupGraph() {
 
 
         sensorDataRef.orderBy("createdAt", Query.Direction.DESCENDING).limit(24)
@@ -306,11 +299,11 @@ public class PlantActivity extends AppCompatActivity {
                                 iteration++;
                             }
                         }
-                       final LineGraphSeries<DataPoint> series = new LineGraphSeries<>(dataPointsSoil.toArray(new DataPoint[dataPointsSoil.size()]));
-                       final LineGraphSeries<DataPoint> series2 = new LineGraphSeries<>(dataPointsSolar.toArray(new DataPoint[dataPointsSolar.size()]));
-                       final LineGraphSeries<DataPoint> series3 = new LineGraphSeries<>(dataPointsAir.toArray(new DataPoint[dataPointsAir.size()]));
-                       final LineGraphSeries<DataPoint> series4 = new LineGraphSeries<>(dataPointsHum.toArray(new DataPoint[dataPointsHum.size()]));
-                       //our initial graph
+                        final LineGraphSeries<DataPoint> series = new LineGraphSeries<>(dataPointsSoil.toArray(new DataPoint[dataPointsSoil.size()]));
+                        final LineGraphSeries<DataPoint> series2 = new LineGraphSeries<>(dataPointsSolar.toArray(new DataPoint[dataPointsSolar.size()]));
+                        final LineGraphSeries<DataPoint> series3 = new LineGraphSeries<>(dataPointsAir.toArray(new DataPoint[dataPointsAir.size()]));
+                        final LineGraphSeries<DataPoint> series4 = new LineGraphSeries<>(dataPointsHum.toArray(new DataPoint[dataPointsHum.size()]));
+                        //our initial graph
                         graph.addSeries(series);
                         series.setTitle("Soil Moisture %");
 
@@ -329,19 +322,23 @@ public class PlantActivity extends AppCompatActivity {
                         //end of our initial graph
 
 
-
                         graph.setOnTouchListener(new View.OnTouchListener() {
                             private GestureDetector gestureDetector = new GestureDetector(getApplicationContext(), new GestureDetector.SimpleOnGestureListener() {
                                 @Override
                                 public boolean onDoubleTap(MotionEvent e) {
-                                    Log.d("TEST", "onDoubleTap : "+ currentGraph);
-                                    if(currentGraph=="soil"){currentGraph="solar";}
-                                    else if(currentGraph=="solar"){currentGraph="air";}
-                                    else if(currentGraph=="air"){currentGraph="humidity";}
-                                    else if(currentGraph=="humidity"){currentGraph="soil";}
+                                    Log.d("TEST", "onDoubleTap : " + currentGraph);
+                                    if (currentGraph == "soil") {
+                                        currentGraph = "solar";
+                                    } else if (currentGraph == "solar") {
+                                        currentGraph = "air";
+                                    } else if (currentGraph == "air") {
+                                        currentGraph = "humidity";
+                                    } else if (currentGraph == "humidity") {
+                                        currentGraph = "soil";
+                                    }
 
 
-                                    if(currentGraph =="soil"){
+                                    if (currentGraph == "soil") {
                                         graph.removeAllSeries();
                                         graph.addSeries(series);
                                         series.setTitle("Soil Moisture %");
@@ -359,8 +356,7 @@ public class PlantActivity extends AppCompatActivity {
                                         graph.getGridLabelRenderer().setVerticalAxisTitle("Soil Moisture (%)");
                                         graph.getGridLabelRenderer().setHorizontalAxisTitle("Last 24 hours");
 
-                                    }
-                                    else if(currentGraph =="solar"){
+                                    } else if (currentGraph == "solar") {
                                         graph.removeAllSeries();
                                         graph.addSeries(series2);
                                         series2.setTitle("Sunlight");
@@ -377,8 +373,7 @@ public class PlantActivity extends AppCompatActivity {
                                         // set axis labels
                                         graph.getGridLabelRenderer().setVerticalAxisTitle("Sunlight");
                                         graph.getGridLabelRenderer().setHorizontalAxisTitle("Last 24 hours");
-                                    }
-                                    else if(currentGraph == "air"){
+                                    } else if (currentGraph == "air") {
                                         graph.removeAllSeries();
                                         graph.addSeries(series3);
                                         series3.setTitle("Air Temperature (°C)");
@@ -395,8 +390,7 @@ public class PlantActivity extends AppCompatActivity {
                                         // set axis labels
                                         graph.getGridLabelRenderer().setVerticalAxisTitle("(°C)");
                                         graph.getGridLabelRenderer().setHorizontalAxisTitle("Last 24 hours");
-                                    }
-                                    else if(currentGraph=="humidity"){
+                                    } else if (currentGraph == "humidity") {
 
                                         graph.removeAllSeries();
                                         graph.addSeries(series4);
@@ -424,20 +418,43 @@ public class PlantActivity extends AppCompatActivity {
 
                             @Override
                             public boolean onTouch(View v, MotionEvent event) {
-                               // Log.d("TEST", "Raw event: " + event.getAction() + ", (" + event.getRawX() + ", " + event.getRawY() + ")");
+                                // Log.d("TEST", "Raw event: " + event.getAction() + ", (" + event.getRawX() + ", " + event.getRawY() + ")");
                                 gestureDetector.onTouchEvent(event);
                                 return true;
                             }
                         });
-
-
-
-
-
-
                     }
                 });
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.my_menu, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.open_plant_info) {
+            Intent intent = new Intent(getApplicationContext(), PlantInfo.class);
+            intent.putExtra("PlantID", plantID);
+            startActivity(intent);
+        } else if (item.getItemId() == R.id.edit_plant_info) {
+            Bundle sendData = new Bundle();
+            sendData.putInt("PlantId", plantID);
+            showDialog(this, sendData);
+        } else if (item.getItemId() == R.id.delete_plant_option) {
+            db.deletePlant(plantID);
+            goToPlantList();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void showDialog(PlantActivity plantActivity, Bundle sendData) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        EditDialog editDialog = new EditDialog();
+        editDialog.setArguments(sendData);
+        editDialog.show(fragmentManager, "Plant Edit");
+    }
 }

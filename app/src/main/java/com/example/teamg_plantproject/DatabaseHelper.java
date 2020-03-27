@@ -227,6 +227,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return null;
         }
     }
+
+    public int updatePlantName(int plantID, String newName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(PLANT_NAME, newName);
+        return db.update(TABLE_PLANTS, values, KEY_PLANT_ID + " = ?", new String[]{String.valueOf(plantID)});
+    }
+
+    public int updatePlantSensorId(int plantID, String newID) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(SENSOR_ID, newID);
+        return db.update(TABLE_PLANTS, values, KEY_PLANT_ID + " = ?", new String[]{String.valueOf(plantID)});
+    }
    /* public void deleteType(int typeID){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_TYPES, KEY_TYPE_ID + "=?",
