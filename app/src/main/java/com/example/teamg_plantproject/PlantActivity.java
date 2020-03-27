@@ -250,7 +250,6 @@ public class PlantActivity extends AppCompatActivity {
         humidityBar = findViewById(R.id.humidity_progress_i);
         sunBar = findViewById(R.id.sunshine_progress_i);
         plantTemp = findViewById(R.id.temperature_i);
-        deletePlant = findViewById(R.id.delete_plant);
         graph = findViewById(R.id.graph);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
