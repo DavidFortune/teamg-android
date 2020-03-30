@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PlantInfo"></activity>
+        <activity android:name=".ImageArchive"></activity>
+        <activity android:name=".PlantInfo" />
 
         <service
             android:name=".FbMessagingService"

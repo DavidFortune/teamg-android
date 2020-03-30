@@ -175,5 +175,19 @@
         app:layout_constraintTop_toBottomOf="@+id/sunshine_progress_i"
         app:layout_constraintVertical_bias="1.0" />
 
+    <Button
+        android:id="@+id/image_archive_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#00BCD4"
+        android:text="Photo Archive"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toTopOf="@+id/water_progress_i"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.891"
+        app:layout_constraintStart_toEndOf="@+id/capture_image_btn"
+        app:layout_constraintTop_toBottomOf="@+id/plant_type_i"
+        app:layout_constraintVertical_bias="0.555" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
