@@ -10,7 +10,7 @@
         <item>reply_all</item>
     </string-array>
 
-    <string-array name="type_choices">
+   <!-- <string-array name="type_choices">
     <item>Plant Type</item>
         <item>Bulbous</item>
         <item>Cactus</item>
@@ -18,6 +18,6 @@
         <item>Fern</item>
         <item>Flowering</item>
         <item>Foliage</item>
-        <item>Succulent</item>-->
-    </string-array>
+        <item>Succulent</item>&ndash;&gt;
+    </string-array>-->
 </resources>
