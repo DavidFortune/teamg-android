@@ -16,6 +16,10 @@
         android:theme="@style/AppTheme">
         <activity android:name=".ImageDisplayActivity" />
         <activity android:name=".ImageArchive" />
+        <activity android:name=".QRCodeScanActivity"
+            android:label="QR Code Scan"
+            ></activity>
+        <activity android:name=".ImageArchive" />
         <activity android:name=".PlantInfo" />
 
         <service
@@ -55,6 +59,11 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+
+
+            <meta-data android:name="com.google.android.gms.vision.DEPENDENCIES" android:value="barcode" />
+
 
     </application>
 

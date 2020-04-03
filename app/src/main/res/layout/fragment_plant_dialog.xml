@@ -21,6 +21,9 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Sensor ID"
+
+        android:focusable="false"
+
         android:inputType="textPersonName" />
 
     <ListView
@@ -40,7 +43,7 @@
         android:hint="Plant Type"
         android:inputType="textPersonName" />
 -->
-
+<!--
     <Spinner
         android:id="@+id/spinner1"
         android:layout_width="match_parent"
@@ -48,8 +51,15 @@
         android:entries="@array/type_choices"
         android:hint="Plant Type Choices"
         android:prompt="@string/plant_type_title"
-        android:spinnerMode="dropdown"/>
+        android:spinnerMode="dropdown"/>-->
 
+    <Spinner
+        android:id="@+id/sp_Text"
+        android:layout_width="match_parent"
+        android:textColor="@android:color/holo_green_light"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:spinnerMode="dropdown"/>
 
     <Button
         android:id="@+id/save"
