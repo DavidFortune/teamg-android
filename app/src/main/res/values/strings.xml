@@ -27,6 +27,7 @@
 
     <string name="plant_type_title">Plant Type Choices</string>
     <string name="plant_info">Plant Info</string>
+    <string name="appSettings" />
 
 
 </resources>
