@@ -19,7 +19,6 @@
         <activity android:name=".QRCodeScanActivity"
             android:label="QR Code Scan"
             ></activity>
-        <activity android:name=".ImageArchive" />
         <activity android:name=".PlantInfo" />
 
         <service
