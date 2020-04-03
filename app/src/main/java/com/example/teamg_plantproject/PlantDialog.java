@@ -3,6 +3,7 @@ package com.example.teamg_plantproject;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -68,7 +69,6 @@ public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
             @Override
             public void onClick(View v) {
                 if (TextUtils.isEmpty(plantNameEdit.getText().toString())
-
                         || TextUtils.isEmpty(spinEdit.getSelectedItem().toString())
                         || TextUtils.isEmpty(plantSensorEdit.getText().toString())) {
                     Toast.makeText(getContext(), "Empty Fields Not Allowed", Toast.LENGTH_LONG).show();
@@ -109,6 +109,65 @@ public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
                 dismiss();
             }
         });
+        String[] plants = new String[]{
+                "Plant Type",
+                "Bulbous",
+                "Cactus",
+                "Common House",
+                "Fern",
+                "Flowering",
+                "Foliage",
+                "Succulent"
+        };
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                this.getActivity(), android.R.layout.simple_spinner_dropdown_item, plants) {
+            @Override
+            public boolean isEnabled(int position) {
+                if (position == 0) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+
+            @Override
+            public View getDropDownView(int position, View convertView,
+                                        ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                TextView tv = (TextView) view;
+                if (position == 0) {
+                    // Set the hint text color gray
+                    tv.setTextColor(Color.GRAY);
+                } else {
+                    tv.setTextColor(Color.BLACK);
+                }
+                return view;
+            }
+        };
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinEdit.setAdapter(arrayAdapter);
+        ArrayAdapter myAdapter = ((ArrayAdapter) spinEdit.getAdapter());
+
+        myAdapter.notifyDataSetChanged();
+
+        spinEdit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItemText = (String) parent.getItemAtPosition(position);
+
+                if (position > 0) {
+                    // Notify the selected item text
+                    Toast.makeText(getActivity().getApplicationContext(),
+                            "Selected : " + selectedItemText, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
 
         plantSensorEdit.setOnClickListener(new View.OnClickListener() {
             @Override
