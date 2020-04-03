@@ -39,7 +39,6 @@ public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
     private EditText plantNameEdit;
   //  private EditText plantTypeEdit;
 //    private Spinner spinnerEdit;
-
     private Spinner spinEdit;
     DBHelper_PlantType dbHelper_plantType;
     private EditText plantSensorEdit;
