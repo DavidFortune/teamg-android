@@ -14,11 +14,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".PlantType_Custom" />
         <activity android:name=".ImageDisplayActivity" />
         <activity android:name=".ImageArchive" />
-        <activity android:name=".QRCodeScanActivity"
-            android:label="QR Code Scan"
-            ></activity>
+        <activity
+            android:name=".QRCodeScanActivity"
+            android:label="QR Code Scan" />
         <activity android:name=".PlantInfo" />
 
         <service
@@ -52,18 +53,16 @@
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.your.package.fileProvider"
-            android:grantUriPermissions="true"
-            android:exported="false">
+            android:exported="false"
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
 
-
-
-            <meta-data android:name="com.google.android.gms.vision.DEPENDENCIES" android:value="barcode" />
-
-
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="barcode" />
     </application>
 
 </manifest>

@@ -69,7 +69,7 @@ public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
 //      plantTypeEdit = view.findViewById(R.id.plant_type);
 //      spinnerEdit = view.findViewById(R.id.spinner1);
         plantSensorEdit = view.findViewById(R.id.plant_sensor_id);
-//        plantSensorEdit.setText("z1QgZ1bVjYnUyrsz1U9b");
+        plantSensorEdit.setText("z1QgZ1bVjYnUyrsz1U9b");
         spinEdit = view.findViewById(R.id.sp_Text);
 
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -176,8 +176,8 @@ public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
                     Toast.makeText(getActivity().getApplicationContext(), "Selected : "
                             + selectedItemText, Toast.LENGTH_SHORT).show();
                     if (parent.getItemAtPosition(position).equals("Create A New Plant Type...")) {
-                        Intent intent = new Intent(getActivity(),
-                                PlantType_Add.class);
+                        Intent intent = new Intent(PlantDialog.this.getActivity(),
+                                PlantType_Custom.class);
 //                        intent.putExtra("B",spinEdit.toString());
                         Bundle sendData = new Bundle();
                         intent.putExtra("TypeID", selectedItemText);
