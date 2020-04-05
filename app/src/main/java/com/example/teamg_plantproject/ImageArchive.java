@@ -2,6 +2,8 @@ package com.example.teamg_plantproject;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
+
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -201,9 +203,10 @@ public class ImageArchive extends AppCompatActivity {
         String timeStamp = new SimpleDateFormat("yyyyMMdd").format( new Date());
         //Log.d(TAG, "Time Stamp: " + timeStamp);
         String imageFileName = "JPEG_" + timeStamp + "_" ;
-        File storageDir = Environment.getExternalStoragePublicDirectory(Environment. DIRECTORY_PICTURES);
+        //File storageDir = Environment.getExternalStoragePublicDirectory(Environment. DIRECTORY_PICTURES);
+        File image = File.createTempFile(imageFileName, ".jpg", this.getCacheDir());
         //File image = File.createTempFile(imageFileName, ".jpg", storageDir);
-        File image = new File(this.getCacheDir(), imageFileName);
+        //File image = new File(this.getCacheDir(), imageFileName);
          //Save a file: path for use with ACTION_VIEW intents
         PhotoPath = image.getAbsolutePath();
         return image;
@@ -217,7 +220,8 @@ public class ImageArchive extends AppCompatActivity {
             {
                 // Save Image To Gallery
                 Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                File f = new File(PhotoPath);
+                //File f = new File(PhotoPath);
+                File f = new File("file://"+ Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES));
                 Log.d(TAG, "PhotoPath " + PhotoPath);
                 Uri contentUri = Uri.fromFile(f);
                 mediaScanIntent.setData(contentUri);
