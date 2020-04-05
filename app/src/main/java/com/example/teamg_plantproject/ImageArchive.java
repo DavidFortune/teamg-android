@@ -1,10 +1,12 @@
 package com.example.teamg_plantproject;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -21,6 +23,8 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -32,31 +36,15 @@ public class ImageArchive extends AppCompatActivity {
 
     private static final String TAG = "My Activity";
     protected Button addImageButton;
-    //protected DatabaseHelper db;
+    protected DatabaseHelper db;
     protected int plantID;
     static final int IMAGE_CAPTURE_CODE = 1001;
+    static final int SELECT_FILE = 1000;
+    private static final int CAMERA_REQUEST = 1;
+    private static final int PICK_FROM_GALLERY = 2;
     protected List<String> myList;
     protected GridView gridView;
     protected String PhotoPath;
-
-    /*@Override
-    protected void onStop()
-    {
-        super.onStop();
-
-        SharedPreferences settings = getSharedPreferences(getString(R.string.appSettings), MODE_PRIVATE);
-        SharedPreferences.Editor editor = settings.edit();
-
-        // Save Image List Size
-        editor.putInt("myList.size()", myList.size());
-
-        // Save Image List
-        for (int i=0; i < myList.size(); i++)
-        {
-            editor.putString(String.format("myList[%d]", i), myList.get(i));
-        }
-        editor.commit();
-    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,29 +71,45 @@ public class ImageArchive extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                takePicture();
-                /*final CharSequence[] items= {"Camera", "Gallery", "Cancel"};
+                final CharSequence[] items= {"Camera", "Gallery", "Cancel"};
                 AlertDialog.Builder builder =  new AlertDialog.Builder(ImageArchive.this);
                 builder.setTitle("Select image from");
                 builder.setItems(items, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (items[which].equals("Camera")){
-                            openCamera();
+                            takePicture();
                         }else if (items[which].equals("Gallery")){
-                            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore
+                            Intent intent = new Intent();
+                            intent.setType("image/*");
+                            intent.setAction(Intent.ACTION_GET_CONTENT);
+                            intent.putExtra("crop", "true");
+                            intent.putExtra("aspectX", 0);
+                            intent.putExtra("aspectY", 0);
+                            intent.putExtra("outputX", 200);
+                            intent.putExtra("outputY", 150);
+                            intent.putExtra("return-data", true);
+                            startActivityForResult(
+                                    Intent.createChooser(intent, "Complete action using"),
+                                    PICK_FROM_GALLERY);
+                            /*Intent intent = new Intent(Intent.ACTION_PICK, MediaStore
                                     .Images.Media.EXTERNAL_CONTENT_URI);
                             intent.setType("image/*");
                             startActivityForResult(intent.createChooser(intent, "Select File"),
-                                    SELECT_FILE);
+                                    SELECT_FILE);*/
                         }else if (items[which].equals("Cancel")){
                             dialog.dismiss();
                         }
                     }
                 });
-                builder.show();*/
+                builder.show();
             }
         });
+
+        Intent intent = getIntent();
+        plantID = intent.getIntExtra("PlantID", 0);
+        db = new DatabaseHelper(getApplicationContext());
+
 
         gridView.setAdapter(new ImageAdapter(this));
         // Initialize GridView Thumbnail Click Handler
@@ -168,12 +172,17 @@ public class ImageArchive extends AppCompatActivity {
 
     private void takePicture()
     {
-        Log.d(TAG, "user in takePicture");
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        //ensure there is a camera activity to handle intent
+        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        cameraIntent.putExtra("crop", "true");
+        cameraIntent.putExtra("aspectX", 0);
+        cameraIntent.putExtra("aspectY", 0);
+        cameraIntent.putExtra("outputX", 200);
+        cameraIntent.putExtra("outputY", 150);
+        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+        /*//ensure there is a camera activity to handle intent
         if (takePictureIntent.resolveActivity(getPackageManager()) != null)
         {
-            Log.d(TAG, "in first if condition");
+            //Log.d(TAG, "in first if condition");
             // Create the File where picture should go
             File photoFile=null;
             try
@@ -194,9 +203,9 @@ public class ImageArchive extends AppCompatActivity {
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, apkURI);
                 startActivityForResult(takePictureIntent, IMAGE_CAPTURE_CODE);
             }
-        }
+        }*/
     }
-    private File createImageFile() throws IOException
+    /*private File createImageFile() throws IOException
     {
         Log.d(TAG, "in createImageFile function");
         // Create image file name
@@ -210,15 +219,16 @@ public class ImageArchive extends AppCompatActivity {
          //Save a file: path for use with ACTION_VIEW intents
         PhotoPath = image.getAbsolutePath();
         return image;
-    }
+    }*/
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         Log.d(TAG, "in onActivity for Result");
         super.onActivityResult(requestCode, resultCode, data);
+        db = new DatabaseHelper(getApplicationContext());
             if (requestCode == IMAGE_CAPTURE_CODE && resultCode == RESULT_OK)
             {
-                // Save Image To Gallery
+                /*// Save Image To Gallery
                 Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                 //File f = new File(PhotoPath);
                 File f = new File("file://"+ Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES));
@@ -229,8 +239,47 @@ public class ImageArchive extends AppCompatActivity {
                 // Add Image Path To List
                 myList.add(PhotoPath);
                 // Refresh Gridview Image Thumbnails
-                //gridView.invalidateViews();
+                //gridView.invalidateViews();*/
+
+        switch (requestCode) {
+                case CAMERA_REQUEST:
+
+                Bundle extras = data.getExtras();
+                if (extras != null) {
+                    Bitmap yourImage = extras.getParcelable("data");
+                    // convert bitmap to byte
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    yourImage.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    byte imageInByte[] = stream.toByteArray();
+
+                    // Inserting plant picture
+                    db.addPlantPicture(imageInByte, plantID);
+                    Intent i = new Intent(ImageArchive.this,
+                            ImageArchive.class);
+                    startActivity(i);
+                    finish();
+                    // }
+                }
+
+            case PICK_FROM_GALLERY:
+            Bundle extras2 = data.getExtras();
+
+            if (extras2 != null) {
+                Bitmap yourImage = extras2.getParcelable("data");
+                // convert bitmap to byte
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                yourImage.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte imageInByte[] = stream.toByteArray();
+                // Inserting plant picture
+                db.addPlantPicture(imageInByte, plantID);
+                Intent i = new Intent(ImageArchive.this, ImageArchive.class);
+                startActivity(i);
+                finish();
             }
+
+            }
+
+        }
     }
 }
 
