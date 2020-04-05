@@ -127,17 +127,9 @@ public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
                 "Succulent",
                 "Create A New Plant Type..."
         };
-
 /*        List<String> plantChoices = new ArrayList<>();
-        plantChoices.add(0, "Plant Type:");
-        plantChoices.add("Bulbous");
-        plantChoices.add("Cactus");
-        plantChoices.add("Common House");
-        plantChoices.add("Fern");
-        plantChoices.add("Flowering");
-        plantChoices.add("Foliage");
-        plantChoices.add("Succulent");
-        plantChoices.add("Create A New Plant Type...");*/
+        plantChoices.add(0, "Plant Type:"); */
+
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 this.getActivity(), android.R.layout.simple_spinner_dropdown_item, plantChoices) {
