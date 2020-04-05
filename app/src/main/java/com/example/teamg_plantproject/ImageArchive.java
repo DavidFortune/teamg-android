@@ -158,7 +158,8 @@ public class ImageArchive extends AppCompatActivity {
             bmOptions. inPurgeable = true ;
             Bitmap bitmap = BitmapFactory.decodeFile(myList.get(position), bmOptions);
 
-            imageView.setImageBitmap(bitmap);
+            //imageView.setImageBitmap(bitmap);
+            imageView.setImageBitmap(db.getPlantPictures(plantID));
             return imageView;
         }
     }

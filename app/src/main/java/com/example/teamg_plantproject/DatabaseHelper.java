@@ -18,7 +18,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String PLANT_TYPE = "plant_type";
     private static final String SENSOR_ID = "sensor_id";
     private static final String PLANT_PIC = "plant_picture";
+    private static final String PICTURE_NO = "picture_number";
     private static final String PLANT_PICTURES = "plant_pictures";
+    private static final String DATE_CREATED = "date_created";
 
     private static final String TAG = "DB CREATOR";
     private static final int DATABASE_VERSION = 1;
@@ -39,7 +41,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //create plant pictures table
     private static final String CREATE_PLANT_PICTURES = "CREATE TABLE "
             + TABLE_PLANT_PICTURES + "("
-            + KEY_PLANT_ID + " INTEGER PRIMARY KEY,"
+            + PICTURE_NO + " INTEGER PRIMARY KEY,"
+            + SENSOR_ID + " TEXT,"
+            + DATE_CREATED + " TEXT,"
             + PLANT_PICTURES + " BLOB" + ")";
 
     public DatabaseHelper(Context context) {
