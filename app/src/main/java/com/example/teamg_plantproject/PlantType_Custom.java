@@ -11,7 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class PlantType_Custom extends AppCompatActivity {
+public class PlantType_Custom extends AppCompatActivity implements PlantTypeAddDialog.PlantTypeAddDialogListener{
     private TextView mrUser;
     private TextView textViewPlantType;
     private TextView textViewAirHumidity;
@@ -31,23 +31,28 @@ public class PlantType_Custom extends AppCompatActivity {
         setContentView(R.layout.activity_plant_type__custom);
 
         mrUser = (TextView) findViewById(R.id.mr_user);
+        TextView textViewPlantType = (TextView) findViewById(R.id.tv_new_plant_type);
+        TextView textViewAirHumidity = (TextView) findViewById(R.id.tv_new_air_humidity);
+        TextView textViewAirTemperature = (TextView) findViewById(R.id.tv_new_air_temperature);
+        TextView textViewSoilMoisture = (TextView) findViewById(R.id.tv_new_soil_moisture);
         inputButton = (Button) findViewById(R.id.input_custom);
-        saveTypeButton = (Button) findViewById(R.id.save_new_plant_type);
+/*        saveTypeButton = (Button) findViewById(R.id.save_new_plant_type);
         cancelTypeButton = (Button) findViewById(R.id.cancel_new_plant_type);
         plantTypeEdit = findViewById(R.id.plant_type_edit);
         airHumidityEdit = findViewById(R.id.air_humidity_edit);
         airTemperatureEdit = findViewById(R.id.air_temperature_edit);
-        soilMoistureEdit = findViewById(R.id.soil_moisture_edit);
+        soilMoistureEdit = findViewById(R.id.soil_moisture_edit);*/
 
-/*        inputButton.setOnClickListener(new View.OnClickListener() {
+        inputButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openDialog();
             }
 
-        });*/
+        });
+    }
 
-        inputButton.setOnClickListener(new View.OnClickListener() {
+ /*       inputButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Build an AlertDialog
@@ -99,9 +104,9 @@ public class PlantType_Custom extends AppCompatActivity {
                 // Display the custom alert dialog on interface
                 dialog.show();
             }
-        });
+        });*/
 
-/*    public void openDialog(){
+    public void openDialog(){
         PlantTypeAddDialog plantTypeAddDialog = new PlantTypeAddDialog();
         plantTypeAddDialog.show(getSupportFragmentManager(),"PlantType_Add");
     }
@@ -112,6 +117,5 @@ public class PlantType_Custom extends AppCompatActivity {
         textViewAirHumidity.setText(airHumidity);
         textViewAirTemperature.setText(airTemperature);
         textViewSoilMoisture.setText(soilMoisture);
-    }*/
     }
 }

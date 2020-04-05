@@ -64,8 +64,6 @@ public class PlantTypeAddDialog extends AppCompatDialogFragment {
             throw new ClassCastException((context.toString() +
                     "must implement PlantTypeAddDialogListener"));
         }
-
-
     }
 
     public interface PlantTypeAddDialogListener{
