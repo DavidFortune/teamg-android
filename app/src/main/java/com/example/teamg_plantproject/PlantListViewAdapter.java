@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
@@ -147,8 +150,20 @@ public class PlantListViewAdapter extends BaseAdapter {
                 context.startActivity(intent);
             }
         });
+
+        convertView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Bundle sendData = new Bundle();
+                sendData.putInt("PlantID", plantArrayList.get(position).getPlantID());
+                FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
+                ListViewDialog listViewDialog = new ListViewDialog();
+                listViewDialog.setArguments(sendData);
+                listViewDialog.show(fragmentManager, "Option delete");
+
+                return true;
+            }
+        });
         return convertView;
     }
-
-
 }
