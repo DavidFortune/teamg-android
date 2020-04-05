@@ -19,6 +19,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String SENSOR_ID = "sensor_id";
     private static final String PLANT_PIC = "plant_picture";
     private static final String PLANT_PICTURES = "plant_pictures";
+    private static final String PICTURE_NUMBER = "picture_number";
+    private static final String DATE_CREATED = "date_created";
 
     private static final String TAG = "DB CREATOR";
     private static final int DATABASE_VERSION = 1;
@@ -39,8 +41,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //create plant pictures table
     private static final String CREATE_PLANT_PICTURES = "CREATE TABLE "
             + TABLE_PLANT_PICTURES + "("
-            + KEY_PLANT_ID + " TEXT,"
+            + PICTURE_NUMBER + " INTEGER PRIMARY KEY,"
             + SENSOR_ID + " TEXT,"
+            + DATE_CREATED + " TEXT,"
             + PLANT_PICTURES + " BLOB" + ")";
 
     public DatabaseHelper(Context context) {
@@ -194,12 +197,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 new String[]{String.valueOf(plant_id)});
     }
 
-    public void addPlantPicture(byte[] image, int plant_id) {
+    public void addPlantPicture(byte[] image, String sensorid,String date) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(KEY_PLANT_ID, plant_id);
+        contentValues.put(SENSOR_ID, sensorid);
+        contentValues.put(DATE_CREATED, date);
         contentValues.put(PLANT_PICTURES, image);
         db.insert(TABLE_PLANT_PICTURES, null, contentValues);
+
     }
 
     public Bitmap getImage(int plant_id) {

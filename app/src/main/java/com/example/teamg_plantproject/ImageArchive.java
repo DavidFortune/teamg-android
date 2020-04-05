@@ -225,7 +225,7 @@ public class ImageArchive extends AppCompatActivity {
                     byte imageInByte[] = stream.toByteArray();
 
                     // Inserting plant picture
-                    db.addPlantPicture(imageInByte, plantID);
+                    db.addPlantPicture(imageInByte, "TEMPz1qwerwe","TEMP22-04-20//12:40:12");
                 Log.d("TAG", "onActivityResult: inserted picture");
                     Intent i = new Intent(ImageArchive.this,
                             ImageArchive.class);
