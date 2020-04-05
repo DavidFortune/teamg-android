@@ -40,6 +40,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_PLANT_PICTURES = "CREATE TABLE "
             + TABLE_PLANT_PICTURES + "("
             + KEY_PLANT_ID + " INTEGER PRIMARY KEY,"
+            + SENSOR_ID + " TEXT,"
             + PLANT_PICTURES + " BLOB" + ")";
 
     public DatabaseHelper(Context context) {
@@ -196,9 +197,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void addPlantPicture(byte[] image, int plant_id) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
+        contentValues.put(SENSOR_ID, plant_id);
         contentValues.put(PLANT_PICTURES, image);
-        db.update(TABLE_PLANT_PICTURES, contentValues, KEY_PLANT_ID + " = ?",
-                new String[]{String.valueOf(plant_id)});
+        db.insert(TABLE_PLANT_PICTURES, null, contentValues);
     }
 
     public Bitmap getImage(int plant_id) {

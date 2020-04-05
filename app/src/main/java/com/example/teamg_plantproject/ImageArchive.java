@@ -211,12 +211,12 @@ public class ImageArchive extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        Log.d(TAG, "in onActivity for Result");
+        Log.d("TAG", "in onActivity for Result");
         super.onActivityResult(requestCode, resultCode, data);
         db = new DatabaseHelper(getApplicationContext());
-            if (requestCode == IMAGE_CAPTURE_CODE && resultCode == RESULT_OK)
+            if ( resultCode == RESULT_OK)
             {
-                if (requestCode == CAMERA_REQUEST){
+                Log.d("TAG", "onActivityResult: getting there");
                     Bundle bundle = data.getExtras();
                     Bitmap myImage = bundle.getParcelable("data");
                     // convert bitmap to byte
@@ -226,24 +226,13 @@ public class ImageArchive extends AppCompatActivity {
 
                     // Inserting plant picture
                     db.addPlantPicture(imageInByte, plantID);
+                Log.d("TAG", "onActivityResult: inserted picture");
                     Intent i = new Intent(ImageArchive.this,
                             ImageArchive.class);
                     startActivity(i);
                     finish();
 
-                }else if(requestCode == SELECT_FILE){
-                    Bundle bundle = data.getExtras();
-                    Bitmap myImage = bundle.getParcelable("data");
-                    // convert bitmap to byte
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    myImage.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                    byte imageInByte[] = stream.toByteArray();
-                    // Inserting plant picture
-                    db.addPlantPicture(imageInByte, plantID);
-                    Intent i = new Intent(ImageArchive.this, ImageArchive.class);
-                    startActivity(i);
-                    finish();
-                }
+
                 /*// Save Image To Gallery
                 Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                 //File f = new File(PhotoPath);
@@ -259,17 +248,26 @@ public class ImageArchive extends AppCompatActivity {
 
        /* switch (requestCode) {
                 case CAMERA_REQUEST:
+                    Log.d("CAMERA_REQUEST", "onActivityResult in the case request ");
 
                 Bundle extras = data.getExtras();
                 if (extras != null) {
+                    Log.d("CAMERA_REQUEST", "onActivityResult i have extras ");
+
                     Bitmap yourImage = extras.getParcelable("data");
                     // convert bitmap to byte
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     yourImage.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    Log.d("CAMERA_REQUEST", "onActivityResult we have our picture ");
+
                     byte imageInByte[] = stream.toByteArray();
 
                     // Inserting plant picture
+                    Log.d("CAMERA_REQUEST", "onActivityResult about to insert picture ");
+
                     db.addPlantPicture(imageInByte, plantID);
+                    Log.d("CAMERA_REQUEST", "onActivityResult picture is in DB now ");
+
                     Intent i = new Intent(ImageArchive.this,
                             ImageArchive.class);
                     startActivity(i);
