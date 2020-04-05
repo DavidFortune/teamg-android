@@ -148,6 +148,34 @@ public class DBHelper_PlantType extends SQLiteOpenHelper {
                 new String[]{String.valueOf(plantType.getPlantType())});
     }
 
+    public int updateType(int typeID, String newPlantType) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(PLANT_TYPE, newPlantType);
+        return db.update(TABLE_TYPES, values, KEY_TYPE_ID + " = ?", new String[]{String.valueOf(typeID)});
+    }
+
+    public int updateAirHumidity(int typeID, String newAirHumidity) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(PLANT_TYPE, newAirHumidity);
+        return db.update(TABLE_TYPES, values, KEY_TYPE_ID + " = ?", new String[]{String.valueOf(typeID)});
+    }
+
+    public int updateAirTemperature(int typeID, String newAirTemperature) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(PLANT_TYPE, newAirTemperature);
+        return db.update(TABLE_TYPES, values, KEY_TYPE_ID + " = ?", new String[]{String.valueOf(typeID)});
+    }
+
+    public int updateSoilMoisture(int typeID, String newSoilMoisture) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(PLANT_TYPE, newSoilMoisture);
+        return db.update(TABLE_TYPES, values, KEY_TYPE_ID + " = ?", new String[]{String.valueOf(typeID)});
+    }
+
     public int getTypesCount() {
         String countQuery = "SELECT FROM" + TABLE_TYPES;
         SQLiteDatabase db = this.getReadableDatabase();

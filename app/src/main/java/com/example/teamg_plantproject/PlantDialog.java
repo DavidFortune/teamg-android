@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -15,6 +18,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ArrayAdapter;
 import android.widget.SimpleCursorAdapter;
+import androidx.fragment.app.FragmentManager;
 import android.widget.Spinner;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -23,6 +27,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -31,7 +36,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-
+import java.util.List;
 
 
 public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
@@ -41,12 +46,14 @@ public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
   //  private EditText plantTypeEdit;
 //    private Spinner spinnerEdit;
     private Spinner spinEdit;
+    protected int typeID;
     DBHelper_PlantType dbHelper_plantType;
     private EditText plantSensorEdit;
     private CollectionReference sensorDataRef;
     private String sensorID;
     private FirebaseFirestore fb = FirebaseFirestore.getInstance();
     protected static final String TAG = "_PLANT DIALOG";
+    protected SharedPreferencesHelper sharedPreferencesHelper;
 
     ArrayList<Plant> plants = null;
     ArrayList<Type> types = null;
@@ -55,14 +62,14 @@ public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
             , @Nullable ViewGroup container
             , @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_plant_dialog, container, false);
+        final View view = inflater.inflate(R.layout.fragment_plant_dialog, container, false);
         saveButton = view.findViewById(R.id.save);
         cancelButton = view.findViewById(R.id.cancel);
         plantNameEdit = view.findViewById(R.id.plant_name);
 //      plantTypeEdit = view.findViewById(R.id.plant_type);
 //      spinnerEdit = view.findViewById(R.id.spinner1);
         plantSensorEdit = view.findViewById(R.id.plant_sensor_id);
-
+//        plantSensorEdit.setText("z1QgZ1bVjYnUyrsz1U9b");
         spinEdit = view.findViewById(R.id.sp_Text);
 
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -109,7 +116,7 @@ public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
                 dismiss();
             }
         });
-        String[] plants = new String[]{
+        String[] plantChoices = new String[]{
                 "Plant Type",
                 "Bulbous",
                 "Cactus",
@@ -117,11 +124,23 @@ public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
                 "Fern",
                 "Flowering",
                 "Foliage",
-                "Succulent"
+                "Succulent",
+                "Create A New Plant Type..."
         };
 
+/*        List<String> plantChoices = new ArrayList<>();
+        plantChoices.add(0, "Plant Type:");
+        plantChoices.add("Bulbous");
+        plantChoices.add("Cactus");
+        plantChoices.add("Common House");
+        plantChoices.add("Fern");
+        plantChoices.add("Flowering");
+        plantChoices.add("Foliage");
+        plantChoices.add("Succulent");
+        plantChoices.add("Create A New Plant Type...");*/
+
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-                this.getActivity(), android.R.layout.simple_spinner_dropdown_item, plants) {
+                this.getActivity(), android.R.layout.simple_spinner_dropdown_item, plantChoices) {
             @Override
             public boolean isEnabled(int position) {
                 if (position == 0) {
@@ -144,7 +163,9 @@ public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
                 }
                 return view;
             }
+
         };
+
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinEdit.setAdapter(arrayAdapter);
         ArrayAdapter myAdapter = ((ArrayAdapter) spinEdit.getAdapter());
@@ -154,20 +175,28 @@ public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
         spinEdit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedItemText = (String) parent.getItemAtPosition(position);
+                String selectedItemText = parent.getItemAtPosition(position).toString();
+                if (parent.getItemAtPosition(position).equals("Plant Type:")){
+                    // do nothing
+                }
+                else {
 
-                if (position > 0) {
-                    // Notify the selected item text
-                    Toast.makeText(getActivity().getApplicationContext(),
-                            "Selected : " + selectedItemText, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity().getApplicationContext(), "Selected : "
+                            + selectedItemText, Toast.LENGTH_SHORT).show();
+                    if (parent.getItemAtPosition(position).equals("Create A New Plant Type...")) {
+                        Intent intent = new Intent(getActivity(),
+                                PlantType_Add.class);
+//                        intent.putExtra("B",spinEdit.toString());
+                        Bundle sendData = new Bundle();
+                        intent.putExtra("TypeID", selectedItemText);
+                        startActivity(intent);
+                    }
                 }
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-
 
         plantSensorEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -178,9 +207,34 @@ public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
             }
         });
 
-
-
         return view;
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getActivity().getMenuInflater();
+        menuInflater.inflate(R.menu.menu_add_plant_type, menu);
+        return true;
+    }
+
+    protected void goToPlantDialog() {
+        Intent intent = new Intent(this.getActivity(), MainActivity.class);
+        startActivity(intent);
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.add_plant_type) {
+            Intent intent = new Intent(getActivity().getApplicationContext(), PlantDialog.class);
+            intent.putExtra("TypeID", typeID);
+            startActivity(intent);
+        } else if (item.getItemId() == R.id.edit_plant_type_info) {
+            Bundle sendData = new Bundle();
+            sendData.putInt("TypeId", typeID);
+            showDialog(this, sendData);
+        }else if (item.getItemId() == R.id.cancel_new_plant_type) {
+
+            goToPlantDialog();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -200,5 +254,12 @@ public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
         else {
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    private void showDialog(PlantDialog plantdialog, Bundle sendData) {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        EditDialog editDialog = new EditDialog();
+        editDialog.setArguments(sendData);
+        editDialog.show(fragmentManager, "Plant Type Add");
     }
 }

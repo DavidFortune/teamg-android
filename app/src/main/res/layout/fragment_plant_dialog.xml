@@ -34,25 +34,6 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         tools:text="Plant Type Threshold" />
 
-<!--
-    <EditText
-        android:id="@+id/plant_type"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Plant Type"
-        android:inputType="textPersonName" />
--->
-<!--
-    <Spinner
-        android:id="@+id/spinner1"
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:entries="@array/type_choices"
-        android:hint="Plant Type Choices"
-        android:prompt="@string/plant_type_title"
-        android:spinnerMode="dropdown"/>-->
-
     <Spinner
         android:id="@+id/sp_Text"
         android:layout_width="match_parent"
