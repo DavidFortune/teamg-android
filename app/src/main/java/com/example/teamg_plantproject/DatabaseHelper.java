@@ -197,7 +197,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 new String[]{String.valueOf(plant_id)});
     }
 
-    public void addPlantPicture(byte[] image, int sensorid,String date) {
+    public void addPlantPicture(byte[] image, String sensorid,String date) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(SENSOR_ID, sensorid);
