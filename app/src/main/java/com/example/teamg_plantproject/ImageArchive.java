@@ -80,18 +80,11 @@ public class ImageArchive extends AppCompatActivity {
                         if (items[which].equals("Camera")){
                             takePicture();
                         }else if (items[which].equals("Gallery")){
-                            Intent intent = new Intent();
+                            Intent intent = new Intent(Intent.ACTION_PICK,
+                                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                             intent.setType("image/*");
-                            intent.setAction(Intent.ACTION_GET_CONTENT);
-                            intent.putExtra("crop", "true");
-                            intent.putExtra("aspectX", 0);
-                            intent.putExtra("aspectY", 0);
-                            intent.putExtra("outputX", 200);
-                            intent.putExtra("outputY", 150);
-                            intent.putExtra("return-data", true);
-                            startActivityForResult(
-                                    Intent.createChooser(intent, "Complete action using"),
-                                    PICK_FROM_GALLERY);
+                            startActivityForResult(Intent.createChooser
+                                            (intent, "Select file"), PICK_FROM_GALLERY);
                             /*Intent intent = new Intent(Intent.ACTION_PICK, MediaStore
                                     .Images.Media.EXTERNAL_CONTENT_URI);
                             intent.setType("image/*");
@@ -173,11 +166,6 @@ public class ImageArchive extends AppCompatActivity {
     private void takePicture()
     {
         Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        cameraIntent.putExtra("crop", "true");
-        cameraIntent.putExtra("aspectX", 0);
-        cameraIntent.putExtra("aspectY", 0);
-        cameraIntent.putExtra("outputX", 200);
-        cameraIntent.putExtra("outputY", 150);
         startActivityForResult(cameraIntent, CAMERA_REQUEST);
         /*//ensure there is a camera activity to handle intent
         if (takePictureIntent.resolveActivity(getPackageManager()) != null)
@@ -228,6 +216,34 @@ public class ImageArchive extends AppCompatActivity {
         db = new DatabaseHelper(getApplicationContext());
             if (requestCode == IMAGE_CAPTURE_CODE && resultCode == RESULT_OK)
             {
+                if (requestCode == CAMERA_REQUEST){
+                    Bundle bundle = data.getExtras();
+                    Bitmap myImage = bundle.getParcelable("data");
+                    // convert bitmap to byte
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    myImage.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    byte imageInByte[] = stream.toByteArray();
+
+                    // Inserting plant picture
+                    db.addPlantPicture(imageInByte, plantID);
+                    Intent i = new Intent(ImageArchive.this,
+                            ImageArchive.class);
+                    startActivity(i);
+                    finish();
+
+                }else if(requestCode == SELECT_FILE){
+                    Bundle bundle = data.getExtras();
+                    Bitmap myImage = bundle.getParcelable("data");
+                    // convert bitmap to byte
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    myImage.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    byte imageInByte[] = stream.toByteArray();
+                    // Inserting plant picture
+                    db.addPlantPicture(imageInByte, plantID);
+                    Intent i = new Intent(ImageArchive.this, ImageArchive.class);
+                    startActivity(i);
+                    finish();
+                }
                 /*// Save Image To Gallery
                 Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                 //File f = new File(PhotoPath);
@@ -241,7 +257,7 @@ public class ImageArchive extends AppCompatActivity {
                 // Refresh Gridview Image Thumbnails
                 //gridView.invalidateViews();*/
 
-        switch (requestCode) {
+       /* switch (requestCode) {
                 case CAMERA_REQUEST:
 
                 Bundle extras = data.getExtras();
@@ -277,7 +293,7 @@ public class ImageArchive extends AppCompatActivity {
                 finish();
             }
 
-            }
+            }*/
 
         }
     }
