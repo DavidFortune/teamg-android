@@ -25,7 +25,7 @@
         android:layout_centerVertical="true"
         android:text="Please input your new plant type here"
         android:textSize="30dp"
-        android:onClick="openDialog"
+
         android:padding="17dip"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 

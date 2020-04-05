@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp">
 
+    <TextView
+        android:id="@+id/add_dialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Details of Plant Type:"
+        android:padding="5dp"
+        android:background="#d5dda6"
+        android:textSize="15dp"
+        />
+
     <EditText
         android:id="@+id/plant_type_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="15"
+        android:ems="10"
         android:hint="New Plant Type"
         android:inputType="textPersonName" />
 
@@ -17,7 +27,7 @@
         android:id="@+id/air_humidity_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="15"
+        android:ems="10"
         android:hint="New Air Humidity"
         android:inputType="textPersonName" />
 
@@ -25,7 +35,7 @@
         android:id="@+id/air_temperature_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="15"
+        android:ems="10"
         android:hint="New Air Temperature"
         android:inputType="textPersonName" />
 
@@ -33,7 +43,7 @@
         android:id="@+id/soil_moisture_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="15"
+        android:ems="10"
         android:hint="New Soil Moisture"
         android:inputType="textPersonName" />
 
@@ -48,4 +58,4 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Cancel This" />
-</RelativeLayout>
+</LinearLayout>
