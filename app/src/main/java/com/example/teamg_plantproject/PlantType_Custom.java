@@ -3,6 +3,7 @@ package com.example.teamg_plantproject;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -84,11 +85,11 @@ public class PlantType_Custom extends AppCompatActivity{
                 textViewPlantType.setText("Added Plant Type is: "
                         + editPlantType.getText().toString()+";");
                 textViewAirHumidity.setText("Added Air Humidity is: "
-                        + editAirHumidity.getText().toString()+";");
+                        + editAirHumidity.getText().toString()+" %;");
                 textViewAirTemperature.setText("Added Air Temperature is:"
-                        + editAirTemperature.getText().toString()+";");
+                        + editAirTemperature.getText().toString()+" degrees;");
                 textViewSoilMoisture.setText("Added Soil Moisture is:"
-                        + editSoilMoisture.getText().toString()+";");
+                        + editSoilMoisture.getText().toString()+" %;");
                 }
             }
         });
@@ -96,11 +97,20 @@ public class PlantType_Custom extends AppCompatActivity{
         buttonCancelType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(PlantType_Custom.this, "Input Data Erased",
-                        Toast.LENGTH_LONG).show();
-                //1st Click to erase typed words;
-                finish();
-                //2nd Click to return the last page.
+                if (TextUtils.isEmpty(editPlantType.getText().toString())
+                        && TextUtils.isEmpty(editAirHumidity.getText().toString())
+                        && TextUtils.isEmpty(editAirTemperature.getText().toString())
+                        && TextUtils.isEmpty(editSoilMoisture.getText().toString())) {
+                    finish();
+                } else {
+                    editPlantType.getText().clear();
+                    editAirHumidity.getText().clear();
+                    editAirTemperature.getText().clear();
+                    editSoilMoisture.getText().clear();
+                    Toast.makeText(PlantType_Custom.this, "Input Data Erased; " +
+                                    "Click Again to Return to the Last Page",
+                            Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -134,14 +144,13 @@ public class PlantType_Custom extends AppCompatActivity{
                     dbHelper_plantType.createType(plantType);
                     Log.d(TAG, "onClick: " + dbHelper_plantType.getType(1));
 
-                   Intent intent = new Intent(PlantType_Custom.this,
-                            PlantDialog.class);
+/*                   Intent intent = new Intent(PlantType_Custom.this,
+                            PlantDialog.class);*/
 /*                    Bundle bundle = new Bundle();
                     bundle.putString(plantTypeName,editPlantType.getText().toString());
                     intent.putExtras(bundle);*/
                     finish();
                 }
-
             }
         });
     }
