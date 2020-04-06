@@ -34,18 +34,18 @@ public class PlantType_Custom extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plant_type__custom);
 
-        mrUser = (TextView) findViewById(R.id.user_welcome);
-        TextView textViewPlantType = (TextView) findViewById(R.id.tv_new_plant_type);
-        TextView textViewAirHumidity = (TextView) findViewById(R.id.tv_new_air_humidity);
-        TextView textViewAirTemperature = (TextView) findViewById(R.id.tv_new_air_temperature);
-        TextView textViewSoilMoisture = (TextView) findViewById(R.id.tv_new_soil_moisture);
-//        inputButton = (Button) findViewById(R.id.save_new_plant_type);
-        saveTypeButton = (Button) findViewById(R.id.save_new_plant_type);
-        cancelTypeButton = (Button) findViewById(R.id.cancel_new_plant_type);
-        plantTypeEdit = findViewById(R.id.edit_new_plant_type);
-        airHumidityEdit = findViewById(R.id.edit_new_air_humidity);
-        airTemperatureEdit = findViewById(R.id.edit_new_air_temperature);
-        soilMoistureEdit = findViewById(R.id.edit_new_soil_moisture);
+            mrUser = (TextView) findViewById(R.id.user_welcome);
+            saveTypeButton = (Button) findViewById(R.id.save_new_plant_type);
+            cancelTypeButton = (Button) findViewById(R.id.cancel_new_plant_type);
+            plantTypeEdit = (EditText) findViewById(R.id.edit_new_plant_type);
+            airHumidityEdit = (EditText) findViewById(R.id.edit_new_air_humidity);
+            airTemperatureEdit = (EditText) findViewById(R.id.edit_new_air_temperature);
+            soilMoistureEdit = (EditText) findViewById(R.id.edit_new_soil_moisture);
+            textViewPlantType = (TextView) findViewById(R.id.tv_new_plant_type);
+            textViewAirHumidity = (TextView) findViewById(R.id.tv_new_air_humidity);
+            textViewAirTemperature = (TextView) findViewById(R.id.tv_new_air_temperature);
+            textViewSoilMoisture = (TextView) findViewById(R.id.tv_new_soil_moisture);
+
 
         if (savedInstanceState != null){
             String savedPlantType = savedInstanceState.getString(KEY_PLANTTYPE);
@@ -65,18 +65,22 @@ public class PlantType_Custom extends AppCompatActivity{
 
         saveTypeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                plantTypeEdit = findViewById(R.id.edit_new_plant_type);
-                airHumidityEdit = findViewById(R.id.edit_new_air_humidity);
-                airTemperatureEdit = findViewById(R.id.edit_new_air_temperature);
-                soilMoistureEdit = findViewById(R.id.edit_new_soil_moisture);
-                TextView textViewPlantType = (TextView) findViewById(R.id.tv_new_plant_type);
-                TextView textViewAirHumidity = (TextView) findViewById(R.id.tv_new_air_humidity);
-                TextView textViewAirTemperature = (TextView) findViewById(R.id.tv_new_air_temperature);
-                TextView textViewSoilMoisture = (TextView) findViewById(R.id.tv_new_soil_moisture);
-                textViewPlantType.setText("Added Plant Type is: "+plantTypeEdit.getText().toString()+";");
-                textViewAirHumidity.setText("Added Air Humidity is: "+airHumidityEdit.getText().toString()+";");
-                textViewAirTemperature.setText("Added Air Temperature is:"+airTemperatureEdit.getText().toString()+";");
-                textViewSoilMoisture.setText("Added Soil Moisture is:"+soilMoistureEdit.getText().toString()+";");
+                textViewPlantType.setText("Added Plant Type is: "
+                        + plantTypeEdit.getText().toString()+";");
+                textViewAirHumidity.setText("Added Air Humidity is: "
+                        + airHumidityEdit.getText().toString()+";");
+                textViewAirTemperature.setText("Added Air Temperature is:"
+                        + airTemperatureEdit.getText().toString()+";");
+                textViewSoilMoisture.setText("Added Soil Moisture is:"
+                        + soilMoistureEdit.getText().toString()+";");
+            }
+        });
+        cancelTypeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                Toast.makeText(getApplication(),
+                        "No button clicked", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -139,16 +143,7 @@ public class PlantType_Custom extends AppCompatActivity{
                 });
 
                 // Set negative/no button click listener
-                cancelTypeButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // Dismiss/cancel the alert dialog
-                        //dialog.cancel();
-                        dialog.dismiss();
-                        Toast.makeText(getApplication(),
-                                "No button clicked", Toast.LENGTH_SHORT).show();
-                    }
-                });
+
 
                 // Display the custom alert dialog on interface
                 dialog.show();
