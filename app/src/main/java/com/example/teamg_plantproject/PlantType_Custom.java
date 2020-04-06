@@ -129,6 +129,8 @@ public class PlantType_Custom extends AppCompatActivity{
                     String airTemperature  = editAirTemperature.getText().toString();
                     String soilMoisture = editSoilMoisture.getText().toString();
 
+                  //  Log.d("TAG", "onClick SOIL MOISTURE: "+soilMoisture);
+
                     DBHelper_PlantType dbHelper_plantType;
                     dbHelper_plantType = new DBHelper_PlantType(PlantType_Custom.this);
                     PlantType plantType= new PlantType();
@@ -139,7 +141,7 @@ public class PlantType_Custom extends AppCompatActivity{
                     int intAirT = Integer.parseInt(airTemperature);
                     plantType.setAirTemperature(intAirT);
                     int intSoilM = Integer.parseInt(soilMoisture);
-                    plantType.setAirTemperature(intSoilM);
+                    plantType.setSoilMoisture(intSoilM);
 
                     dbHelper_plantType.createType(plantType);
                     Log.d(TAG, "onClick: " + dbHelper_plantType.getType(1));

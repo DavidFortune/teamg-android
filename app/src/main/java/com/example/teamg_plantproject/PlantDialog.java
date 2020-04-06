@@ -34,6 +34,7 @@ import com.google.android.gms.vision.barcode.Barcode;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -119,6 +120,22 @@ public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
                 dismiss();
             }
         });
+
+
+        DBHelper_PlantType db2 = new DBHelper_PlantType(this.getContext());
+        ArrayList<PlantType> plants = new ArrayList<>();
+
+        plants = db2.getAllTypes();
+      //  String[] plantChoices = new String[plants.size()];
+        ArrayList<String> plantChoices = new ArrayList<>();
+
+        for (int i = 0; i < plants.size(); i++) {
+            //plantChoices[i] = plants.get(i).getPlantType();
+            plantChoices.add(plants.get(i).getPlantType());
+        }
+       plantChoices.add( "Create A New Plant Type...");
+
+        /*
         final String[] plantChoices = new String[]{
                 "Plant Type",
                 "Bulbous",
@@ -131,10 +148,11 @@ public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
                 "Create A New Plant Type..."
         };
 
+        */
+
 /*        final List<String> plantChoices = new ArrayList<>();
         plantChoices.add(0, "Plant Type:");
         plantChoices.add("Bulbous");*/
-
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 this.getActivity(), android.R.layout.simple_spinner_dropdown_item, plantChoices) {
             @Override

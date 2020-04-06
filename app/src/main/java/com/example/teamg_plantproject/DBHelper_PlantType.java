@@ -34,7 +34,7 @@ public class DBHelper_PlantType extends SQLiteOpenHelper {
 
 
     //Creating Table Query
-    private static final String CREATE_TABLE_TYPES = "create table " +
+    private static final String CREATE_TABLE_TYPES = "CREATE TABLE " +
             TABLE_TYPES + "("
             + KEY_TYPE_ID + " INTEGER PRIMARY KEY,"
             + PLANT_TYPE + " TEXT NOT NULL,"
@@ -50,12 +50,35 @@ public class DBHelper_PlantType extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         //Executing the Query
         db.execSQL(CREATE_TABLE_TYPES);
+        //Add initial seed of hardcoded plant types
+
+
+        createType(db,"Bulbous", 55, 4, 75);
+        createType(db,"Cactus", 20, 18, 30);
+        createType(db,"Common House", 40, 16, 50);
+        createType(db,"Fern", 40, 21, 50);
+        createType(db,"Flowering", 45, 14, 55);
+        createType(db,"Foliage", 40, 20, 45);
+        createType(db,"Succulent", 20, 16, 30);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TYPES);
         onCreate(db);
+    }
+    public int createType(SQLiteDatabase db,String plant_Name, int humiditypercent, int temperaturepercent, int soilmoisturepercent) {
+
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(PLANT_TYPE, plant_Name);
+        contentValues.put(AIR_HUMIDITY, humiditypercent);
+        contentValues.put(AIR_TEMPERATURE, temperaturepercent);
+        contentValues.put(SOIL_MOISTURE, soilmoisturepercent);
+        db.insert(TABLE_TYPES, null, contentValues);
+
+        Log.d(TAG, "createType: "+plant_Name+""+humiditypercent+""+temperaturepercent+""+soilmoisturepercent);
+        return 1;
     }
 
     public long createType(PlantType plantType) {
@@ -69,7 +92,7 @@ public class DBHelper_PlantType extends SQLiteOpenHelper {
 
         long type_id = db.insert(TABLE_TYPES, null, contentValues);
 
-        Log.d(TAG, "CREATED TYPE");
+        Log.d(TAG, "CREATED TYPE" +plantType.getAirHumidity() + "  " +plantType.getAirTemperature() + "  " +  plantType.getSoilMoisture() );
         return type_id;
     }
 
@@ -184,6 +207,8 @@ public class DBHelper_PlantType extends SQLiteOpenHelper {
         return cursor.getCount();
     }
 
+
+
     public class TypeSetting extends AppCompatActivity {
 
         private DBHelper_PlantType db;
@@ -193,8 +218,8 @@ public class DBHelper_PlantType extends SQLiteOpenHelper {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.fragment_plant_dialog);
 
-            db = new DBHelper_PlantType(this);
 
+/*
             PlantType plantType1 = new PlantType("Bulbous", 55, 4, 75);
             PlantType plantType2 = new PlantType("Cactus", 20, 18, 30);
             PlantType plantType3 = new PlantType("Common House", 40, 16, 50);
@@ -202,6 +227,7 @@ public class DBHelper_PlantType extends SQLiteOpenHelper {
             PlantType plantType5 = new PlantType("Flowering", 45, 14, 55);
             PlantType plantType6 = new PlantType("Foliage", 40, 20, 45);
             PlantType plantType7 = new PlantType("Succulent", 20, 16, 30);
+
 
 
             db.createType(plantType1);
@@ -222,7 +248,8 @@ public class DBHelper_PlantType extends SQLiteOpenHelper {
             plantTypes.add(plantType5);
             plantTypes.add(plantType6);
             plantTypes.add(plantType7);
-
+*/
+/*
 
             if (plantTypes != null) {
                 String[] plantItems = new String[plantTypes.size()];
@@ -230,9 +257,20 @@ public class DBHelper_PlantType extends SQLiteOpenHelper {
                 for (int i = 0; i < plantTypes.size(); i++) {
                     plantItems[i] = plantTypes.get(i).toString();
                 }
-
+*/
                 // display like string instances
-                ListView list = (ListView) findViewById(R.id.plant_type_threshold);
+            db = new DBHelper_PlantType(this);
+            ArrayList<PlantType> plants = new ArrayList<>();
+
+            plants = db.getAllTypes();
+
+            if (plants != null) {
+                String[] plantItems = new String[plants.size()];
+
+                for (int i = 0; i < plants.size(); i++) {
+                    plantItems[i] = plants.get(i).getPlantType();
+                }
+            ListView list = (ListView) findViewById(R.id.plant_type_threshold);
                 list.setAdapter(new ArrayAdapter<String>(this,
                         android.R.layout.simple_list_item_1, android.R.id.list, plantItems));
 
