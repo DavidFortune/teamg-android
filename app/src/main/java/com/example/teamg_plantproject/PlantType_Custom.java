@@ -38,7 +38,7 @@ public class PlantType_Custom extends AppCompatActivity{
         setContentView(R.layout.activity_plant_type__custom);
 
             mrUser = (TextView) findViewById(R.id.user_welcome);
-            buttonSaveType = (Button) findViewById(R.id.save_new_plant_type);
+            buttonSaveType = (Button) findViewById(R.id.show_new_plant_type);
             buttonCancelType = (Button) findViewById(R.id.cancel_new_plant_type);
             buttonConfirmType = (Button) findViewById(R.id.confirm_goback);
             editPlantType = (EditText) findViewById(R.id.edit_new_plant_type);
@@ -64,7 +64,7 @@ public class PlantType_Custom extends AppCompatActivity{
             String savedSoilMoisture = savedInstanceState.getString(KEY_SOILMOISTURE);
             textViewSoilMoisture.setText(savedSoilMoisture);
         } else {
-            Toast.makeText(this, "New Entry", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "New Entry to Add Plant Type", Toast.LENGTH_SHORT).show();
         }
 
         buttonSaveType.setOnClickListener(new View.OnClickListener() {
@@ -115,6 +115,7 @@ public class PlantType_Custom extends AppCompatActivity{
                     Toast.makeText(PlantType_Custom.this, "Please Click CANCEL to Go Back",
                             Toast.LENGTH_LONG).show();
                 } else {
+
                     Intent intent = new Intent(PlantType_Custom.this,
                             PlantDialog.class);
                     Bundle sendData = new Bundle();
