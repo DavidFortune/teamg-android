@@ -125,18 +125,7 @@ public class PlantType_Custom extends AppCompatActivity{
             }
         });
     }
-
-    public void onSavedInstanceState(Bundle savedInstanceState){
-        savedInstanceState.putString(KEY_PLANTTYPE,textViewPlantType.getText().toString());
-        savedInstanceState.putString(KEY_AIRHUMIDITY,textViewAirHumidity.getText().toString());
-        savedInstanceState.putString(KEY_AIRTEMPERATURE,textViewAirTemperature.getText().toString());
-        savedInstanceState.putString(KEY_SOILMOISTURE,textViewSoilMoisture.getText().toString());
-
-        super.onSaveInstanceState(savedInstanceState);
-    }
-
-
-
+}
 
  /*       inputButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -182,5 +171,3 @@ public class PlantType_Custom extends AppCompatActivity{
                 dialog.show();
             }
         });*/
-
-}

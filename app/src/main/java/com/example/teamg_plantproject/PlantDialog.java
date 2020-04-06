@@ -42,6 +42,7 @@ import java.util.List;
 public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
     private Button saveButton;
     private Button cancelButton;
+//    private Button buttonConfirmNewType;
     private EditText plantNameEdit;
   //  private EditText plantTypeEdit;
     private Spinner spinEdit;
@@ -69,6 +70,7 @@ public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
         plantSensorEdit = view.findViewById(R.id.plant_sensor_id);
 //        plantSensorEdit.setText("z1QgZ1bVjYnUyrsz1U9b");
         spinEdit = view.findViewById(R.id.sp_Text);
+//        buttonConfirmNewType = view.findViewById(R.id.button_confirm_new_type);
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,9 +127,10 @@ public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
                 "Succulent",
                 "Create A New Plant Type..."
         };
-/*        List<String> plantChoices = new ArrayList<>();
-        plantChoices.add(0, "Plant Type:"); */
 
+/*        final List<String> plantChoices = new ArrayList<>();
+        plantChoices.add(0, "Plant Type:");
+        plantChoices.add("Bulbous");*/
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 this.getActivity(), android.R.layout.simple_spinner_dropdown_item, plantChoices) {
