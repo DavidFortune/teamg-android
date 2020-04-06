@@ -364,6 +364,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         return plantPictures;
     }
+    public ArrayList<Image> getAllImages(String sensor_id) {
+        ArrayList<Image> imagearray = new ArrayList<Image>();
+        String selectQuery = "SELECT  * FROM " + TABLE_PLANT_PICTURES;
 
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                byte[] myImage;
+                myImage = cursor.getBlob(cursor.getColumnIndex(PLANT_PICTURES));
+                Image image = new Image();
+                image.setImage(BitmapFactory.decodeByteArray(myImage, 0, myImage.length));
+                image.setImageDate(cursor.getString(cursor.getColumnIndex(DATE_CREATED)));
+                image.setImageNumber((cursor.getColumnIndex(PICTURE_NUMBER)));
+
+                imagearray.add(image);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return imagearray;
+
+    }
 
 }

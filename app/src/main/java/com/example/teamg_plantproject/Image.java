@@ -6,15 +6,15 @@ public class Image {
 
     private String date;
     private Bitmap image;
-    private Integer image_number;
+    private int imageNumber;
 
     public Image() {
     }
 
-    public Image(String date, Bitmap image, int image_number) {
+    public Image(String date, Bitmap image,int imageNumber) {
         this.date = date;
         this.image = image;
-        this.image_number = image_number;
+        this.imageNumber = imageNumber;
     }
 
     public String getImageDate() {
@@ -33,12 +33,12 @@ public class Image {
         this.image = image;
     }
 
-    public Integer getImageNumber() {
-        return image_number;
+    public int getImageNumber() {
+        return imageNumber;
     }
 
-    public void setImage_number(Integer image_number) {
-        this.image_number = image_number;
+    public void setImageNumber(int imageNumber) {
+        this.imageNumber = imageNumber;
     }
 
 }
