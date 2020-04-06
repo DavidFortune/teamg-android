@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -13,10 +14,10 @@ import android.widget.Toast;
 
 public class PlantType_Custom extends AppCompatActivity{
     private TextView mrUser;
-    private EditText plantTypeEdit;
-    private EditText airHumidityEdit;
-    private EditText airTemperatureEdit;
-    private EditText soilMoistureEdit;
+    private EditText editPlantType;
+    private EditText editAirHumidity;
+    private EditText editAirTemperature;
+    private EditText editSoilMoisture;
     private Button cancelTypeButton;
     private Button saveTypeButton;
     private TextView textViewPlantType;
@@ -37,10 +38,10 @@ public class PlantType_Custom extends AppCompatActivity{
             mrUser = (TextView) findViewById(R.id.user_welcome);
             saveTypeButton = (Button) findViewById(R.id.save_new_plant_type);
             cancelTypeButton = (Button) findViewById(R.id.cancel_new_plant_type);
-            plantTypeEdit = (EditText) findViewById(R.id.edit_new_plant_type);
-            airHumidityEdit = (EditText) findViewById(R.id.edit_new_air_humidity);
-            airTemperatureEdit = (EditText) findViewById(R.id.edit_new_air_temperature);
-            soilMoistureEdit = (EditText) findViewById(R.id.edit_new_soil_moisture);
+            editPlantType = (EditText) findViewById(R.id.edit_new_plant_type);
+            editAirHumidity = (EditText) findViewById(R.id.edit_new_air_humidity);
+            editAirTemperature = (EditText) findViewById(R.id.edit_new_air_temperature);
+            editSoilMoisture = (EditText) findViewById(R.id.edit_new_soil_moisture);
             textViewPlantType = (TextView) findViewById(R.id.tv_new_plant_type);
             textViewAirHumidity = (TextView) findViewById(R.id.tv_new_air_humidity);
             textViewAirTemperature = (TextView) findViewById(R.id.tv_new_air_temperature);
@@ -65,14 +66,31 @@ public class PlantType_Custom extends AppCompatActivity{
 
         saveTypeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+                if (TextUtils.isEmpty(editPlantType.getText().toString())
+                        || TextUtils.isEmpty(editAirHumidity.getText().toString())
+                        || TextUtils.isEmpty(editAirTemperature.getText().toString())
+                        || TextUtils.isEmpty(editSoilMoisture.getText().toString())) {
+                    Toast.makeText(PlantType_Custom.this, "Empty Input Is Not Allowed",
+                            Toast.LENGTH_LONG).show();
+                }
+                else{
+
+                    DBHelper_PlantType dbHelper_plantType;
+                    dbHelper_plantType = new DBHelper_PlantType(PlantType_Custom.this);
+                    final PlantType plantType;
+                    plantType = new PlantType();
+
+                    Toast.makeText(PlantType_Custom.this, "Plant Saved",
+                            Toast.LENGTH_LONG).show();
                 textViewPlantType.setText("Added Plant Type is: "
-                        + plantTypeEdit.getText().toString()+";");
+                        + editPlantType.getText().toString()+";");
                 textViewAirHumidity.setText("Added Air Humidity is: "
-                        + airHumidityEdit.getText().toString()+";");
+                        + editAirHumidity.getText().toString()+";");
                 textViewAirTemperature.setText("Added Air Temperature is:"
-                        + airTemperatureEdit.getText().toString()+";");
+                        + editAirTemperature.getText().toString()+";");
                 textViewSoilMoisture.setText("Added Soil Moisture is:"
-                        + soilMoistureEdit.getText().toString()+";");
+                        + editSoilMoisture.getText().toString()+";");
+                }
             }
         });
         cancelTypeButton.setOnClickListener(new View.OnClickListener() {
@@ -96,10 +114,10 @@ public class PlantType_Custom extends AppCompatActivity{
     }
 
     public void saveView(View view){
-        textViewPlantType.setText(plantTypeEdit.getText().toString().trim());
-        textViewAirHumidity.setText(airHumidityEdit.getText().toString().trim());
-        textViewAirTemperature.setText(airTemperatureEdit.getText().toString().trim());
-        textViewSoilMoisture.setText(soilMoistureEdit.getText().toString().trim());
+        textViewPlantType.setText(editPlantType.getText().toString().trim());
+        textViewAirHumidity.setText(editAirHumidity.getText().toString().trim());
+        textViewAirTemperature.setText(editSoilMoisture.getText().toString().trim());
+        textViewSoilMoisture.setText(editSoilMoisture.getText().toString().trim());
 
     }
 
