@@ -56,6 +56,8 @@ public class ImageAdapter extends BaseAdapter
         plantPic.setImageBitmap(imagesAll.get(position).getImage());
         date.setText(imagesAll.get(position).getImageDate());
 
+
+
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,12 +66,12 @@ public class ImageAdapter extends BaseAdapter
                 context.startActivity(intent);
 
                 Intent intent2 = new Intent(context, ImageDisplayActivity.class);
-                intent.putExtra("Date", imagesAll.get(position).getImageDate());
-                context.startActivity(intent);
+                intent2.putExtra("Date", imagesAll.get(position).getImageDate());
+                context.startActivity(intent2);
 
                 Intent intent3 = new Intent(context, ImageDisplayActivity.class);
-                intent.putExtra("SensorID", sensorID);
-                context.startActivity(intent);
+                intent3.putExtra("SensorID", sensorID);
+                context.startActivity(intent3);
             }
         });
         return convertView;

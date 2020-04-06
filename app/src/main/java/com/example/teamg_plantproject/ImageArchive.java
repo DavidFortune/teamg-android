@@ -102,18 +102,6 @@ public class ImageArchive extends AppCompatActivity {
         ImageAdapter imageAdapter = new ImageAdapter(this, plantPictures, images, sensorID);
         gridView.setAdapter(imageAdapter);
 
-        // Initialize GridView Thumbnail Click Handler
-        /*gridView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView parent, View v, int position, long id)
-            {
-
-                Intent intent = new Intent(getApplicationContext(), ImageDisplayActivity.class);
-                intent.putExtra("DATA", sensorID);
-                startActivity(intent);
-            }
-        });*/
     }   //end of onCreate
 
     @Override

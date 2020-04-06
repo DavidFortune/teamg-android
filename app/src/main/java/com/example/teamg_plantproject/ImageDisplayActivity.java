@@ -21,18 +21,20 @@ import java.util.Date;
 public class ImageDisplayActivity extends AppCompatActivity {
     protected String path;
     protected TextView date;
-    //protected Button deleteImgButton;
+    protected Button deleteImgButton;
     protected String sensorID;
     protected DatabaseHelper db;
     Bitmap image;
     String image_date;
+    int picture_number;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_display);
+        db = new DatabaseHelper(getApplicationContext());
 
-        //deleteImgButton = findViewById(R.id.delete_img_button);
+        deleteImgButton = findViewById(R.id.delete_img_button);
         ImageView imageView = (ImageView)findViewById(R.id.imageView);
         date = findViewById(R.id.dateStamp);
 
@@ -40,24 +42,28 @@ public class ImageDisplayActivity extends AppCompatActivity {
         image_date = getIntent().getStringExtra("Date");
         sensorID = getIntent().getStringExtra("SensorID");
 
+        //image = db.getPlantImage(sensorID).getImage();
+        //image_date = db.getPlantImage(sensorID).getImageDate();
+
         imageView.setImageBitmap(image);
         date.setText(image_date);
 
-        /*deleteImgButton.setOnClickListener(new View.OnClickListener() {
+
+        deleteImgButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                  //Deleting records from database
-
                 db = new DatabaseHelper(getApplicationContext());
-                db.deletePlantPicture(sensorID);
+                picture_number = db.getPlantImage(sensorID).getImageNumber();
+                db.deletePlantPicture(picture_number);
 
                 //after deleting data go to main page
                 Intent intent = new Intent(ImageDisplayActivity.this, ImageArchive.class);
                 startActivity(intent);
                 finish();
             }
-        });*/
+        });
     }
     @Override
     public boolean onSupportNavigateUp() {
