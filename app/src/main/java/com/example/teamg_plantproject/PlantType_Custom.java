@@ -121,8 +121,8 @@ public class PlantType_Custom extends AppCompatActivity{
 
                     DBHelper_PlantType dbHelper_plantType;
                     dbHelper_plantType = new DBHelper_PlantType(PlantType_Custom.this);
-                    final PlantType plantType;
-                    plantType = new PlantType();
+                    PlantType plantType= new PlantType();
+
                     plantType.setPlantType(plantTypeName);
                     int intAirH = Integer.parseInt(airHumidity);
                     plantType.setAirHumidity(intAirH);
@@ -134,12 +134,11 @@ public class PlantType_Custom extends AppCompatActivity{
                     dbHelper_plantType.createType(plantType);
                     Log.d(TAG, "onClick: " + dbHelper_plantType.getType(1));
 
-                    Intent intent = new Intent(PlantType_Custom.this.getApplicationContext(),
+                   Intent intent = new Intent(PlantType_Custom.this,
                             PlantDialog.class);
-                    Bundle bundle = new Bundle();
+/*                    Bundle bundle = new Bundle();
                     bundle.putString(plantTypeName,editPlantType.getText().toString());
-                    intent.putExtras(bundle);
-                    startActivity(intent);
+                    intent.putExtras(bundle);*/
                     finish();
                 }
 
@@ -147,48 +146,3 @@ public class PlantType_Custom extends AppCompatActivity{
         });
     }
 }
-
- /*       inputButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Build an AlertDialog
-                AlertDialog.Builder builder = new AlertDialog.Builder(PlantType_Custom.this);
-
-                LayoutInflater inflater = getLayoutInflater();
-                View dialogView = inflater.inflate(R.layout.plant_type_add_dialog, null);
-
-                // Specify alert dialog is not cancelable/not ignorable
-                builder.setCancelable(false);
-
-                // Set the custom layout as alert dialog view
-                builder.setView(dialogView);
-
-                // Get the custom alert dialog view widgets reference
-                Button saveTypeButton = (Button) dialogView.findViewById(R.id.save_new_plant_type);
-                Button cancelTypeButton = (Button) dialogView.findViewById(R.id.cancel_new_plant_type);
-                final EditText plantTypeEdit = (EditText) dialogView.findViewById(R.id.plant_type_edit);
-
-                // Create the alert dialog
-                final AlertDialog dialog = builder.create();
-
-                // Set positive/yes button click listener
-                saveTypeButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // Dismiss the alert dialog
-                        dialog.cancel();
-                        String plantType = plantTypeEdit.getText().toString();
-                        Toast.makeText(getApplication(),
-                                "Submitted name : " + plantType, Toast.LENGTH_SHORT).show();
-                        // Say hello to the submitter
-                        textViewPlantType.setText("Your Added Plant Type" + plantType + "!");
-                    }
-                });
-
-                // Set negative/no button click listener
-
-
-                // Display the custom alert dialog on interface
-                dialog.show();
-            }
-        });*/

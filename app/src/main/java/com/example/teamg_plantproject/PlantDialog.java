@@ -180,10 +180,10 @@ public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
                     Toast.makeText(getActivity().getApplicationContext(), "Selected : "
                             + selectedItemText, Toast.LENGTH_SHORT).show();
                     if (parent.getItemAtPosition(position).equals("Create A New Plant Type...")) {
-                        Intent intent = new Intent(getActivity().getApplicationContext(),
+                        Intent intent = new Intent(view.getContext(),
                                 PlantType_Custom.class);
+                        startActivityForResult(intent,0);
                         intent.putExtra(extra,selectedItemText);
-                        startActivityForResult(intent,1);
 //                        intent.putExtra("B",spinEdit.toString());
                         Bundle sendData = new Bundle();
                         intent.putExtra("TypeID", selectedItemText);
