@@ -49,8 +49,8 @@ public class ImageAdapter extends BaseAdapter
         }
 
         final ImageView plantPic = (ImageView)convertView.findViewById(R.id.imageview_plant_pic);
-        final TextView date = (TextView)convertView.findViewById(R.id.textview_date);
-        plantPic.setImageBitmap(db.getPlantPictures(sensorID));
+       // final TextView date = (TextView)convertView.findViewById(R.id.textview_date);
+        plantPic.setImageBitmap(plantPicturesAll.get(position));
         //date.setText(plantArrayList.get(position));
 
         return convertView;

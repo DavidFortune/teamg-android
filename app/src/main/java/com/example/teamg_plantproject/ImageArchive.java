@@ -132,7 +132,7 @@ public class ImageArchive extends AppCompatActivity {
                 // Adding plant picture
                 //db.addPlantPicture(imageInByte, "TEMPz1qwerwe","TEMP22-04-20//12:40:12");
                 db.addPlantPicture(imageInByte, sensorID, format);
-                plantPictures.add(myImage);
+                //plantPictures.add(myImage);
                 Log.d(TAG, "onActivityResult: inserted picture");
                 Log.d(TAG, "onActivityResult: sensor ID: " + sensorID + "date " + format);
                 Intent i = new Intent(ImageArchive.this, ImageArchive.class);
