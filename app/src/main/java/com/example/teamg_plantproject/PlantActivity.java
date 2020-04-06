@@ -185,7 +185,9 @@ public class PlantActivity extends AppCompatActivity {
         imagesButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(PlantActivity.this, ImageArchive.class));
+                Intent intent = new Intent(getBaseContext(), ImageArchive.class);
+                intent.putExtra("SENSOR_ID", plantSensorID);
+                startActivity(intent);
             }
         });
     }

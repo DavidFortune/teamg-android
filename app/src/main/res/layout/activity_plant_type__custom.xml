@@ -2,59 +2,98 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.teamg_plantproject.PlantType_Custom" >
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.example.teamg_plantproject.PlantType_Custom">
 
     <TextView
-        android:id="@+id/mr_user"
+        android:id="@+id/user_welcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:text="Dear Mr.User"
-        android:textSize="30dp"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-    <Button
-        android:id="@+id/input_custom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="Please input your new plant type here"
-        android:textSize="30dp"
+        android:text="Dear User, please enter the details of your new plant type below:"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="15dp" />
 
-        android:padding="17dip"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <EditText
+        android:id="@+id/edit_new_plant_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="15"
+        android:hint="New Plant Type"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/edit_new_air_humidity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="15"
+        android:hint="New Air Humidity"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/edit_new_air_temperature"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="15"
+        android:hint="New Air Temperature"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/edit_new_soil_moisture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="15"
+        android:hint="New Soil Moisture"
+        android:inputType="textPersonName" />
+
+    <Button
+        android:id="@+id/show_new_plant_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#57FFC107"
+        android:text="Show Result" />
+
+    <Button
+        android:id="@+id/confirm_goback"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#D3FFC107"
+        android:text="Confirm" />
+
+    <Button
+        android:id="@+id/cancel_new_plant_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cancel" />
 
     <TextView
         android:id="@+id/tv_new_plant_type"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="15"
-        android:inputType="textPersonName" />
+        android:textSize="15dp" />
 
-    <EditText
+    <TextView
         android:id="@+id/tv_new_air_humidity"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="15"
-        android:inputType="textPersonName" />
+        android:textSize="15dp" />
 
-    <EditText
+    <TextView
         android:id="@+id/tv_new_air_temperature"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="15"
-        android:inputType="textPersonName" />
+        android:textSize="15dp" />
 
-    <EditText
+    <TextView
         android:id="@+id/tv_new_soil_moisture"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="15"
-        android:inputType="textPersonName" />
+        android:textSize="15dp" />
 
 </LinearLayout>

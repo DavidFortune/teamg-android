@@ -42,10 +42,11 @@ import java.util.List;
 public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
     private Button saveButton;
     private Button cancelButton;
+//    private Button buttonConfirmNewType;
     private EditText plantNameEdit;
   //  private EditText plantTypeEdit;
-//    private Spinner spinnerEdit;
     private Spinner spinEdit;
+    private static String extra = "extraPlant";
     protected int typeID;
     DBHelper_PlantType dbHelper_plantType;
     private EditText plantSensorEdit;
@@ -67,10 +68,11 @@ public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
         cancelButton = view.findViewById(R.id.cancel);
         plantNameEdit = view.findViewById(R.id.plant_name);
 //      plantTypeEdit = view.findViewById(R.id.plant_type);
-//      spinnerEdit = view.findViewById(R.id.spinner1);
         plantSensorEdit = view.findViewById(R.id.plant_sensor_id);
 //        plantSensorEdit.setText("z1QgZ1bVjYnUyrsz1U9b");
         spinEdit = view.findViewById(R.id.sp_Text);
+
+//        buttonConfirmNewType = view.findViewById(R.id.button_confirm_new_type);
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,7 +95,6 @@ public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
 
                     Toast.makeText(getActivity(), "Plant Saved", Toast.LENGTH_LONG).show();
                     String plantName = plantNameEdit.getText().toString();
-
                     String plantType = spinEdit.getSelectedItem().toString();
                     String plantId = plantSensorEdit.getText().toString();
                     plant.setPlantName(plantName);
@@ -102,6 +103,8 @@ public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
                     db.createPlant(plant);
                     Log.d(TAG, "onClick: " + db.getPlant(1));
 
+                    Intent spin = new Intent();
+                    spin.putExtra("G", spinEdit.getSelectedItem().toString());
                     getActivity().startActivityForResult(getActivity().getIntent(), 10);
                     dismiss();
                 }
@@ -116,7 +119,7 @@ public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
                 dismiss();
             }
         });
-        String[] plantChoices = new String[]{
+        final String[] plantChoices = new String[]{
                 "Plant Type",
                 "Bulbous",
                 "Cactus",
@@ -127,11 +130,12 @@ public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
                 "Succulent",
                 "Create A New Plant Type..."
         };
-/*        List<String> plantChoices = new ArrayList<>();
-        plantChoices.add(0, "Plant Type:"); */
 
+/*        final List<String> plantChoices = new ArrayList<>();
+        plantChoices.add(0, "Plant Type:");
+        plantChoices.add("Bulbous");*/
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 this.getActivity(), android.R.layout.simple_spinner_dropdown_item, plantChoices) {
             @Override
             public boolean isEnabled(int position) {
@@ -160,14 +164,14 @@ public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
 
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinEdit.setAdapter(arrayAdapter);
-        ArrayAdapter myAdapter = ((ArrayAdapter) spinEdit.getAdapter());
 
-        myAdapter.notifyDataSetChanged();
 
         spinEdit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedItemText = parent.getItemAtPosition(position).toString();
+                ArrayAdapter arrayAdapter1 = ((ArrayAdapter) spinEdit.getAdapter());
+                arrayAdapter1.notifyDataSetChanged();
                 if (parent.getItemAtPosition(position).equals("Plant Type:")){
                     // do nothing
                 }
@@ -176,15 +180,19 @@ public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
                     Toast.makeText(getActivity().getApplicationContext(), "Selected : "
                             + selectedItemText, Toast.LENGTH_SHORT).show();
                     if (parent.getItemAtPosition(position).equals("Create A New Plant Type...")) {
-                        Intent intent = new Intent(PlantDialog.this.getActivity(),
+                        Intent intent = new Intent(view.getContext(),
                                 PlantType_Custom.class);
+                        startActivityForResult(intent,0);
+                        intent.putExtra(extra,selectedItemText);
 //                        intent.putExtra("B",spinEdit.toString());
                         Bundle sendData = new Bundle();
                         intent.putExtra("TypeID", selectedItemText);
                         startActivity(intent);
                     }
                 }
+
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
