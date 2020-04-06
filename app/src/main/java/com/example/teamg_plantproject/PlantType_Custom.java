@@ -3,6 +3,7 @@ package com.example.teamg_plantproject;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -18,8 +19,9 @@ public class PlantType_Custom extends AppCompatActivity{
     private EditText editAirHumidity;
     private EditText editAirTemperature;
     private EditText editSoilMoisture;
-    private Button cancelTypeButton;
-    private Button saveTypeButton;
+    private Button buttonSaveType;
+    private Button buttonCancelType;
+    private Button buttonConfirmType;
     private TextView textViewPlantType;
     private TextView textViewAirHumidity;
     private TextView textViewAirTemperature;
@@ -36,8 +38,9 @@ public class PlantType_Custom extends AppCompatActivity{
         setContentView(R.layout.activity_plant_type__custom);
 
             mrUser = (TextView) findViewById(R.id.user_welcome);
-            saveTypeButton = (Button) findViewById(R.id.save_new_plant_type);
-            cancelTypeButton = (Button) findViewById(R.id.cancel_new_plant_type);
+            buttonSaveType = (Button) findViewById(R.id.save_new_plant_type);
+            buttonCancelType = (Button) findViewById(R.id.cancel_new_plant_type);
+            buttonConfirmType = (Button) findViewById(R.id.confirm_goback);
             editPlantType = (EditText) findViewById(R.id.edit_new_plant_type);
             editAirHumidity = (EditText) findViewById(R.id.edit_new_air_humidity);
             editAirTemperature = (EditText) findViewById(R.id.edit_new_air_temperature);
@@ -64,7 +67,7 @@ public class PlantType_Custom extends AppCompatActivity{
             Toast.makeText(this, "New Entry", Toast.LENGTH_SHORT).show();
         }
 
-        saveTypeButton.setOnClickListener(new View.OnClickListener() {
+        buttonSaveType.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 if (TextUtils.isEmpty(editPlantType.getText().toString())
                         || TextUtils.isEmpty(editAirHumidity.getText().toString())
@@ -80,7 +83,7 @@ public class PlantType_Custom extends AppCompatActivity{
                     final PlantType plantType;
                     plantType = new PlantType();
 
-                    Toast.makeText(PlantType_Custom.this, "Plant Saved",
+                    Toast.makeText(PlantType_Custom.this, "New Plant Type Info Is Saved",
                             Toast.LENGTH_LONG).show();
                 textViewPlantType.setText("Added Plant Type is: "
                         + editPlantType.getText().toString()+";");
@@ -93,7 +96,8 @@ public class PlantType_Custom extends AppCompatActivity{
                 }
             }
         });
-        cancelTypeButton.setOnClickListener(new View.OnClickListener() {
+
+        buttonCancelType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -102,6 +106,23 @@ public class PlantType_Custom extends AppCompatActivity{
             }
         });
 
+        buttonConfirmType.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                if (TextUtils.isEmpty(editPlantType.getText().toString())
+                        || TextUtils.isEmpty(editAirHumidity.getText().toString())
+                        || TextUtils.isEmpty(editAirTemperature.getText().toString())
+                        || TextUtils.isEmpty(editSoilMoisture.getText().toString())) {
+                    Toast.makeText(PlantType_Custom.this, "Please Click CANCEL to Go Back",
+                            Toast.LENGTH_LONG).show();
+                } else {
+                    Intent intent = new Intent(PlantType_Custom.this,
+                            PlantDialog.class);
+                    Bundle sendData = new Bundle();
+                    startActivity(intent);
+                }
+
+            }
+        });
     }
 
     public void onSavedInstanceState(Bundle savedInstanceState){
@@ -113,13 +134,6 @@ public class PlantType_Custom extends AppCompatActivity{
         super.onSaveInstanceState(savedInstanceState);
     }
 
-    public void saveView(View view){
-        textViewPlantType.setText(editPlantType.getText().toString().trim());
-        textViewAirHumidity.setText(editAirHumidity.getText().toString().trim());
-        textViewAirTemperature.setText(editSoilMoisture.getText().toString().trim());
-        textViewSoilMoisture.setText(editSoilMoisture.getText().toString().trim());
-
-    }
 
 
 
