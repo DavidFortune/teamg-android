@@ -465,6 +465,7 @@ public class PlantActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
             }
 
+
             private void showDialog(PlantActivity plantActivity, Bundle sendData) {
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 EditDialog editDialog = new EditDialog();

@@ -138,6 +138,8 @@ public class PlantListViewAdapter extends BaseAdapter {
         //Setup listener for when use click on any of the listView entities to redirect to
         //plant activity of that plant
 
+
+
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

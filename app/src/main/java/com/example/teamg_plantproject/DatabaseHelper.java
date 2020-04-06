@@ -265,4 +265,51 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(SENSOR_ID, newID);
         return db.update(TABLE_PLANTS, values, KEY_PLANT_ID + " = ?", new String[]{String.valueOf(plantID)});
     }
+
+    public ArrayList<Bitmap> getArchivePictures(String sensor_id) {
+/*
+        + TABLE_PLANT_PICTURES + "("
+                + PICTURE_NUMBER + " INTEGER PRIMARY KEY,"
+                + SENSOR_ID + " TEXT,"
+                + DATE_CREATED + " TEXT,"
+                + PLANT_PICTURES + " BLOB" + ")";
+        */
+
+
+
+        /*
+        if (cursor.moveToFirst()) {
+            ArrayList<Bitmap> plantPictures = new ArrayList<Bitmap>();
+            byte[] myImage;
+            myImage = cursor.getBlob(cursor.getColumnIndex(PLANT_PICTURES))
+            plantPictures.add(BitmapFactory.decodeByteArray(myImage, 0, myImage.length););
+
+
+            cursor.close();
+            return plantPictures;
+
+        } else {
+            cursor.close();
+            return null;
+        }  */
+
+
+        ArrayList<Bitmap> plantPictures = new ArrayList<Bitmap>();
+        String selectQuery = "SELECT  * FROM " + TABLE_PLANT_PICTURES;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                byte[] myImage;
+                myImage = cursor.getBlob(cursor.getColumnIndex(PLANT_PICTURES));
+                plantPictures.add(BitmapFactory.decodeByteArray(myImage, 0, myImage.length));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return plantPictures;
+    }
+
+
 }
