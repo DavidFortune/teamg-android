@@ -109,47 +109,6 @@ public class ImageArchive extends AppCompatActivity {
         });
     }   //end of onCreate
 
-    public class ImageAdapter extends BaseAdapter
-    {
-        private Context context;
-        //ArrayList<Plant> plantArrayList;
-        ArrayList <Bitmap> plantPictures;
-
-        public ImageAdapter(Context c, ArrayList <Bitmap> plantPictures)
-        {
-            context = c;
-            this.plantPictures = plantPictures;
-        }
-        public int getCount()
-        {
-           return plantPictures.size();
-        }
-        public Object getItem(int position)
-        {
-            return null;
-        }
-        public long getItemId(int position)
-        {
-            return 0;
-        }
-        public View getView(int position, View convertView, ViewGroup parent)
-        {
-            final DatabaseHelper db = new DatabaseHelper(context);
-            //final Plant plant = plantArrayList.get(position);
-            if (convertView == null)
-            {
-                final LayoutInflater layoutInflater = LayoutInflater.from(context);
-                convertView = layoutInflater.inflate(R.layout.gridview_layout, null);
-            }
-
-            final ImageView plantPic = (ImageView)convertView.findViewById(R.id.imageview_plant_pic);
-            final TextView date = (TextView)convertView.findViewById(R.id.textview_date);
-            plantPic.setImageBitmap(db.getPlantPictures(sensorID));
-            //date.setText(plantArrayList.get(position));
-
-            return convertView;
-        }
-    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
