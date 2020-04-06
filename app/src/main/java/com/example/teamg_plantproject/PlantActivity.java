@@ -74,7 +74,7 @@ public class PlantActivity extends AppCompatActivity {
     protected DatabaseHelper db;
     protected String plantSensorID;
     private final int soilMax = 3300;
-    private final int solarMax = 2000;
+    private final int solarMax = 2200;
     private String currentGraph = "soil";
     private FirebaseFirestore fb = FirebaseFirestore.getInstance();
     private CollectionReference sensorDataRef;

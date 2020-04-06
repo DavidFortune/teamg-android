@@ -76,7 +76,7 @@ public class PlantListViewAdapter extends BaseAdapter {
         final DatabaseHelper db = new DatabaseHelper(context);
         FirebaseFirestore fb = FirebaseFirestore.getInstance();
         final int soilMax = 3000;
-        final int solarMax = 2000;
+        final int solarMax = 2200;
         final int[] ii = new int[1];
         final int[] jj = new int[1];
         final int[] kk = new int[1];
@@ -127,16 +127,12 @@ public class PlantListViewAdapter extends BaseAdapter {
                 });
 
         TextView plantName = convertView.findViewById(R.id.plant_name_listview);
-        TextView plantType = convertView.findViewById(R.id.plant_type_listview);
-        TextView plantSensor = convertView.findViewById(R.id.plant_sensor_listview);
         ImageView plantPicture = convertView.findViewById(R.id.plant_image_view);
         int plantId = plantArrayList.get(position).getPlantID();
         Log.d(TAG, "getView: " + plantId);
 
         //Link and Fill in values
-        plantName.setText("  Plant name: " + plantArrayList.get(position).getPlantName());
-        plantType.setText("  Plant type: " + plantArrayList.get(position).getPlantType());
-        plantSensor.setText("  Plant sensor ID: " + plantArrayList.get(position).getSensorId());
+        plantName.setText(plantArrayList.get(position).getPlantName());
         plantPicture.setImageBitmap(db.getImage(plantId));
 //        Log.d(TAG, "getView: "+db.getImage(position));
         //Setup listener for when use click on any of the listView entities to redirect to
