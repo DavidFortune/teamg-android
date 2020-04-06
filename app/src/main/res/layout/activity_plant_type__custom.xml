@@ -15,8 +15,8 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:text="Dear User, please input the details of your new plant type here:"
-        android:textSize="20dp"
+        android:text="Dear User, please enter the details of your new plant type below:"
+        android:textSize="15dp"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
 
@@ -25,6 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="15"
+        android:hint="New Plant Type"
         android:inputType="textPersonName" />
 
     <EditText
@@ -32,6 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="15"
+        android:hint="New Air Humidity"
         android:inputType="textPersonName" />
 
     <EditText
@@ -39,6 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="15"
+        android:hint="New Air Temperature"
         android:inputType="textPersonName" />
 
     <EditText
@@ -46,23 +49,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="15"
+        android:hint="New Soil Moisture"
         android:inputType="textPersonName" />
 
     <Button
         android:id="@+id/save_new_plant_type"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Save This" />
+        android:text="Save and Go Back" />
 
     <Button
         android:id="@+id/cancel_new_plant_type"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Cancel This" />
+        android:text="Cancel This Change" />
 
-    <Button
+<!--    <Button
         android:id="@+id/confirm_goback"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Confirm and Go Back " />
+        android:text="Confirm and Go Back " />-->
 </LinearLayout>

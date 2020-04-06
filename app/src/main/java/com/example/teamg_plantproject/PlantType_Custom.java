@@ -11,19 +11,23 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class PlantType_Custom extends AppCompatActivity implements PlantTypeAddDialog.PlantTypeAddDialogListener{
+public class PlantType_Custom extends AppCompatActivity{
     private TextView mrUser;
-    private TextView textViewPlantType;
-    private TextView textViewAirHumidity;
-    private TextView textViewAirTemperature;
-    private TextView textViewSoilMoisture;
-    private Button inputButton;
-    private Button cancelTypeButton;
-    private Button saveTypeButton;
     private EditText plantTypeEdit;
     private EditText airHumidityEdit;
     private EditText airTemperatureEdit;
     private EditText soilMoistureEdit;
+    private Button cancelTypeButton;
+    private Button saveTypeButton;
+    private TextView textViewPlantType;
+    private TextView textViewAirHumidity;
+    private TextView textViewAirTemperature;
+    private TextView textViewSoilMoisture;
+    private static final String KEY_PLANTTYPE = "planttype_key";
+    private static final String KEY_AIRHUMIDITY = "airhumidity_key";
+    private static final String KEY_AIRTEMPERATURE = "airtemperature_key";
+    private static final String KEY_SOILMOISTURE = "soilmoisture_key";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,21 +39,45 @@ public class PlantType_Custom extends AppCompatActivity implements PlantTypeAddD
         TextView textViewAirHumidity = (TextView) findViewById(R.id.tv_new_air_humidity);
         TextView textViewAirTemperature = (TextView) findViewById(R.id.tv_new_air_temperature);
         TextView textViewSoilMoisture = (TextView) findViewById(R.id.tv_new_soil_moisture);*/
-        inputButton = (Button) findViewById(R.id.save_new_plant_type);
+//        inputButton = (Button) findViewById(R.id.save_new_plant_type);
         saveTypeButton = (Button) findViewById(R.id.save_new_plant_type);
         cancelTypeButton = (Button) findViewById(R.id.cancel_new_plant_type);
         plantTypeEdit = findViewById(R.id.edit_new_plant_type);
         airHumidityEdit = findViewById(R.id.edit_new_air_humidity);
         airTemperatureEdit = findViewById(R.id.edit_new_air_temperature);
         soilMoistureEdit = findViewById(R.id.edit_new_soil_moisture);
+        if (savedInstanceState != null){
+            String savedPlantType = savedInstanceState.getString(KEY_PLANTTYPE);
+            textViewPlantType.setText(savedPlantType);
 
-        inputButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openDialog();
-            }
+            String savedAirHumidity = savedInstanceState.getString(KEY_AIRHUMIDITY);
+            textViewAirHumidity.setText(savedAirHumidity);
 
-        });
+            String savedAirTemperature = savedInstanceState.getString(KEY_AIRTEMPERATURE);
+            textViewAirTemperature.setText(savedAirTemperature);
+
+            String savedSoilMoisture = savedInstanceState.getString(KEY_SOILMOISTURE);
+            textViewSoilMoisture.setText(savedSoilMoisture);
+        } else {
+            Toast.makeText(this, "New Entry", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void onSavedInstanceState(Bundle savedInstanceState){
+        savedInstanceState.putString(KEY_PLANTTYPE,textViewPlantType.getText().toString());
+        savedInstanceState.putString(KEY_AIRHUMIDITY,textViewAirHumidity.getText().toString());
+        savedInstanceState.putString(KEY_AIRTEMPERATURE,textViewAirTemperature.getText().toString());
+        savedInstanceState.putString(KEY_SOILMOISTURE,textViewSoilMoisture.getText().toString());
+
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    public void saveView(View view){
+        textViewPlantType.setText(plantTypeEdit.getText().toString().trim());
+        textViewAirHumidity.setText(airHumidityEdit.getText().toString().trim());
+        textViewAirTemperature.setText(airTemperatureEdit.getText().toString().trim());
+        textViewSoilMoisture.setText(soilMoistureEdit.getText().toString().trim());
+
     }
 
  /*       inputButton.setOnClickListener(new View.OnClickListener() {
@@ -106,16 +134,4 @@ public class PlantType_Custom extends AppCompatActivity implements PlantTypeAddD
             }
         });*/
 
-    public void openDialog(){
-        PlantTypeAddDialog plantTypeAddDialog = new PlantTypeAddDialog();
-        plantTypeAddDialog.show(getSupportFragmentManager(),"PlantType_Add");
-    }
-    @Override
-    public void applyTexts(String plantType, String airHumidity, String airTemperature,
-                String soilMoisture) {
-        textViewPlantType.setText(plantType);
-        textViewAirHumidity.setText(airHumidity);
-        textViewAirTemperature.setText(airTemperature);
-        textViewSoilMoisture.setText(soilMoisture);
-    }
 }
