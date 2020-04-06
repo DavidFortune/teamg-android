@@ -74,7 +74,7 @@ public class PlantActivity extends AppCompatActivity {
     protected DatabaseHelper db;
     protected String plantSensorID;
     private final int soilMax = 3300;
-    private final int solarMax = 2000;
+    private final int solarMax = 2200;
     private String currentGraph = "soil";
     private FirebaseFirestore fb = FirebaseFirestore.getInstance();
     private CollectionReference sensorDataRef;
@@ -185,7 +185,9 @@ public class PlantActivity extends AppCompatActivity {
         imagesButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(PlantActivity.this, ImageArchive.class));
+                Intent intent = new Intent(getBaseContext(), ImageArchive.class);
+                intent.putExtra("SENSOR_ID", plantSensorID);
+                startActivity(intent);
             }
         });
     }

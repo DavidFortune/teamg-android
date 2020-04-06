@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -18,7 +19,9 @@ public class ImageDisplayActivity extends AppCompatActivity {
     protected String path;
     protected TextView date;
     protected Button deleteImgButton;
-    protected int plantId;
+    protected int plantID;
+    protected String sensorID;
+    protected DatabaseHelper db;
     Bitmap theImage;
     int imageId;
     @Override
@@ -32,6 +35,11 @@ public class ImageDisplayActivity extends AppCompatActivity {
         SimpleDateFormat s = new SimpleDateFormat("MMM-dd-yyyy");
         String format = s.format(new Date());
         date.setText("Created on " + format);
+
+        Intent intent = getIntent();
+        plantID = intent.getIntExtra("PlantID", 0);
+        db = new DatabaseHelper(this);
+        sensorID = db.getPlant(plantID).getSensorId();
 
         // Get Image Path
         //path = getIntent().getExtras().getString("path");
@@ -56,10 +64,8 @@ public class ImageDisplayActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                  //create DatabaseHandler object
-
-                DatabaseHelper db = new DatabaseHelper(ImageDisplayActivity.this);
                  //Deleting records from database
-                db.deletePlantPicture(plantId);
+                db.deletePlantPicture(sensorID);
                 // /after deleting data go to main page
                 Intent intent = new Intent(ImageDisplayActivity.this, ImageArchive.class);
                 startActivity(intent);

@@ -73,7 +73,7 @@ public class PlantListViewAdapter extends BaseAdapter {
         final DatabaseHelper db = new DatabaseHelper(context);
         FirebaseFirestore fb = FirebaseFirestore.getInstance();
         final int soilMax = 3000;
-        final int solarMax = 2000;
+        final int solarMax = 2200;
         final int[] ii = new int[1];
         final int[] jj = new int[1];
         final int[] kk = new int[1];

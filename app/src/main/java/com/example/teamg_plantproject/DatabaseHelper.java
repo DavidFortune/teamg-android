@@ -77,19 +77,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return plant_id;
     }
 
-    public long createPlantPicture(Plant plant) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(PLANT_PICTURES, (Byte) null);
-
-        long plant_id = db.insert(TABLE_PLANT_PICTURES, null, contentValues);
-
-        Log.d(TAG, "CREATED PLANT PICTURE");
-        return plant_id;
-    }
-
-
     //get 1 plant
     public Plant getPlant(int plant_id) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -182,10 +169,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     //delete a plant picture inside the plant picture table
-    public void deletePlantPicture(int plantID) {
+    public void deletePlantPicture(String sensorID) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_PLANT_PICTURES, KEY_PLANT_ID + " = ?",
-                new String[]{String.valueOf(plantID)});
+        db.delete(TABLE_PLANT_PICTURES, SENSOR_ID + " = ?",
+                new String[]{String.valueOf(sensorID)});
     }
 
 
@@ -197,10 +184,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 new String[]{String.valueOf(plant_id)});
     }
 
-    public void addPlantPicture(byte[] image, String sensorid,String date) {
+    public void addPlantPicture(byte[] image, String sensorID, String date) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(SENSOR_ID, sensorid);
+        contentValues.put(SENSOR_ID, sensorID);
         contentValues.put(DATE_CREATED, date);
         contentValues.put(PLANT_PICTURES, image);
         db.insert(TABLE_PLANT_PICTURES, null, contentValues);
@@ -236,11 +223,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public Bitmap getPlantPictures(int plant_id) {
+    public Bitmap getPlantPictures(String sensor_id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String selectQuery = "SELECT  * FROM " + TABLE_PLANT_PICTURES + " WHERE "
-                + KEY_PLANT_ID + " = " + plant_id;
+                + SENSOR_ID + " = " + sensor_id;
 
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor != null) {
