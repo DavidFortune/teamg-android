@@ -16,11 +16,13 @@ public class ImageAdapter extends BaseAdapter
     private Context context;
     //ArrayList<Plant> plantArrayList;
     ArrayList<Bitmap> plantPictures;
+    String sensorID;
 
-    public ImageAdapter(Context c, ArrayList <Bitmap> plantPictures)
+    public ImageAdapter(Context c, ArrayList <Bitmap> plantPictures, String sensorID)
     {
         context = c;
         this.plantPictures = plantPictures;
+        this.sensorID = sensorID;
     }
     public int getCount()
     {

@@ -93,7 +93,7 @@ public class ImageArchive extends AppCompatActivity {
         Log.d(TAG, "onCreate, sensor ID: " + sensorID);
 
         gridView = (GridView) findViewById(R.id.gridView);
-        ImageAdapter imageAdapter = new ImageAdapter(this, plantPictures);
+        ImageAdapter imageAdapter = new ImageAdapter(this, plantPictures, sensorID);
         gridView.setAdapter(imageAdapter);
 
         // Initialize GridView Thumbnail Click Handler
@@ -120,23 +120,23 @@ public class ImageArchive extends AppCompatActivity {
             if ( resultCode == RESULT_OK)
             {
                 Log.d("TAG", "onActivityResult: getting there");
-                    Bundle bundle = data.getExtras();
-                    Bitmap myImage = bundle.getParcelable("data");
-                    // convert bitmap to byte
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    myImage.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                    byte imageInByte[] = stream.toByteArray();
+                Bundle bundle = data.getExtras();
+                Bitmap myImage = bundle.getParcelable("data");
+                // convert bitmap to byte
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                myImage.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte imageInByte[] = stream.toByteArray();
 
-                    // Adding plant picture
-                    //db.addPlantPicture(imageInByte, "TEMPz1qwerwe","TEMP22-04-20//12:40:12");
-                    db.addPlantPicture(imageInByte, sensorID, format);
-                    Log.d(TAG, "onActivityResult: inserted picture");
-                    Log.d(TAG, "onActivityResult: sensor ID: " + sensorID + "date " + format);
-                    Intent i = new Intent(ImageArchive.this,
-                            ImageArchive.class);
-                    startActivity(i);
-                    finish();
-        }
+                // Adding plant picture
+                //db.addPlantPicture(imageInByte, "TEMPz1qwerwe","TEMP22-04-20//12:40:12");
+                db.addPlantPicture(imageInByte, sensorID, format);
+                plantPictures.add(myImage);
+                Log.d(TAG, "onActivityResult: inserted picture");
+                Log.d(TAG, "onActivityResult: sensor ID: " + sensorID + "date " + format);
+                Intent i = new Intent(ImageArchive.this, ImageArchive.class);
+                startActivity(i);
+                finish();
+            }
     }
     @Override
     public boolean onSupportNavigateUp() {
