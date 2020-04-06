@@ -179,6 +179,12 @@ public class ImageArchive extends AppCompatActivity {
                     finish();
         }
     }
+    @Override
+    public boolean onSupportNavigateUp() {
+        Intent intent = new Intent(this, MainActivity.class);
+        this.startActivity(intent);
+        return true;
+    }
 }
 
 
