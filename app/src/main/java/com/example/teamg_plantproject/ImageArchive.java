@@ -46,6 +46,7 @@ public class ImageArchive extends AppCompatActivity {
     private static final int PICK_FROM_GALLERY = 2;
     protected List<String> myList;
     ArrayList<Plant> plants;
+    ArrayList<Bitmap> plantPictures;
     protected GridView gridView;
     protected String PhotoPath;
 
@@ -92,7 +93,7 @@ public class ImageArchive extends AppCompatActivity {
         Log.d(TAG, "onCreate, sensor ID: " + sensorID);
 
         gridView = (GridView) findViewById(R.id.gridView);
-        ImageAdapter imageAdapter = new ImageAdapter(this, plants);
+        ImageAdapter imageAdapter = new ImageAdapter(this, plantPictures);
         gridView.setAdapter(imageAdapter);
 
         // Initialize GridView Thumbnail Click Handler
@@ -111,16 +112,17 @@ public class ImageArchive extends AppCompatActivity {
     public class ImageAdapter extends BaseAdapter
     {
         private Context context;
-        ArrayList<Plant> plantArrayList;
+        //ArrayList<Plant> plantArrayList;
+        ArrayList <Bitmap> plantPictures;
 
-        public ImageAdapter(Context c, ArrayList<Plant> plantArrayList)
+        public ImageAdapter(Context c, ArrayList <Bitmap> plantPictures)
         {
             context = c;
-            this.plantArrayList = plantArrayList;
+            this.plantPictures = plantPictures;
         }
         public int getCount()
         {
-           return plantArrayList.size();
+           return plantPictures.size();
         }
         public Object getItem(int position)
         {
