@@ -30,18 +30,18 @@ public class PlantType_Custom extends AppCompatActivity implements PlantTypeAddD
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plant_type__custom);
 
-        mrUser = (TextView) findViewById(R.id.mr_user);
-        TextView textViewPlantType = (TextView) findViewById(R.id.tv_new_plant_type);
+        mrUser = (TextView) findViewById(R.id.user_welcome);
+/*        TextView textViewPlantType = (TextView) findViewById(R.id.tv_new_plant_type);
         TextView textViewAirHumidity = (TextView) findViewById(R.id.tv_new_air_humidity);
         TextView textViewAirTemperature = (TextView) findViewById(R.id.tv_new_air_temperature);
-        TextView textViewSoilMoisture = (TextView) findViewById(R.id.tv_new_soil_moisture);
-        inputButton = (Button) findViewById(R.id.input_custom);
-/*        saveTypeButton = (Button) findViewById(R.id.save_new_plant_type);
+        TextView textViewSoilMoisture = (TextView) findViewById(R.id.tv_new_soil_moisture);*/
+        inputButton = (Button) findViewById(R.id.save_new_plant_type);
+        saveTypeButton = (Button) findViewById(R.id.save_new_plant_type);
         cancelTypeButton = (Button) findViewById(R.id.cancel_new_plant_type);
-        plantTypeEdit = findViewById(R.id.plant_type_edit);
-        airHumidityEdit = findViewById(R.id.air_humidity_edit);
-        airTemperatureEdit = findViewById(R.id.air_temperature_edit);
-        soilMoistureEdit = findViewById(R.id.soil_moisture_edit);*/
+        plantTypeEdit = findViewById(R.id.edit_new_plant_type);
+        airHumidityEdit = findViewById(R.id.edit_new_air_humidity);
+        airTemperatureEdit = findViewById(R.id.edit_new_air_temperature);
+        soilMoistureEdit = findViewById(R.id.edit_new_soil_moisture);
 
         inputButton.setOnClickListener(new View.OnClickListener() {
             @Override

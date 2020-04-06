@@ -69,7 +69,7 @@ public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
 //      plantTypeEdit = view.findViewById(R.id.plant_type);
 //      spinnerEdit = view.findViewById(R.id.spinner1);
         plantSensorEdit = view.findViewById(R.id.plant_sensor_id);
-//        plantSensorEdit.setText("z1QgZ1bVjYnUyrsz1U9b");
+        plantSensorEdit.setText("z1QgZ1bVjYnUyrsz1U9b");
         spinEdit = view.findViewById(R.id.sp_Text);
 
         saveButton.setOnClickListener(new View.OnClickListener() {

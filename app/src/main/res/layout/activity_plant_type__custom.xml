@@ -6,55 +6,63 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.teamg_plantproject.PlantType_Custom" >
+    tools:context="com.example.teamg_plantproject.PlantType_Custom"
+    android:orientation="vertical">
 
     <TextView
-        android:id="@+id/mr_user"
+        android:id="@+id/user_welcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:text="Dear Mr.User"
-        android:textSize="30dp"
+        android:text="Dear User, please input the details of your new plant type here:"
+        android:textSize="20dp"
         android:textAppearance="?android:attr/textAppearanceLarge" />
+
+
+    <EditText
+        android:id="@+id/edit_new_plant_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="15"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/edit_new_air_humidity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="15"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/edit_new_air_temperature"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="15"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/edit_new_soil_moisture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="15"
+        android:inputType="textPersonName" />
+
     <Button
-        android:id="@+id/input_custom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="Please input your new plant type here"
-        android:textSize="30dp"
-
-        android:padding="17dip"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <TextView
-        android:id="@+id/tv_new_plant_type"
+        android:id="@+id/save_new_plant_type"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="15"
-        android:inputType="textPersonName" />
+        android:text="Save This" />
 
-    <EditText
-        android:id="@+id/tv_new_air_humidity"
+    <Button
+        android:id="@+id/cancel_new_plant_type"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="15"
-        android:inputType="textPersonName" />
+        android:text="Cancel This" />
 
-    <EditText
-        android:id="@+id/tv_new_air_temperature"
+    <Button
+        android:id="@+id/confirm_goback"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="15"
-        android:inputType="textPersonName" />
-
-    <EditText
-        android:id="@+id/tv_new_soil_moisture"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="15"
-        android:inputType="textPersonName" />
-
+        android:text="Confirm and Go Back " />
 </LinearLayout>
