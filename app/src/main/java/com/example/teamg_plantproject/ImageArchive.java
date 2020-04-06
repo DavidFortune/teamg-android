@@ -55,6 +55,8 @@ public class ImageArchive extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_archive);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         addImageButton = findViewById(R.id.add_image_button);
         addImageButton.setOnClickListener(new View.OnClickListener()
