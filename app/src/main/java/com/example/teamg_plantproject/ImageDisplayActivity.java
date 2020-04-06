@@ -1,4 +1,5 @@
 package com.example.teamg_plantproject;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
@@ -7,70 +8,61 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class ImageDisplayActivity extends AppCompatActivity {
     protected String path;
     protected TextView date;
-    protected Button deleteImgButton;
-    protected int plantID;
+    //protected Button deleteImgButton;
     protected String sensorID;
     protected DatabaseHelper db;
-    Bitmap theImage;
-    int imageId;
+    Bitmap image;
+    String image_date;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_display);
 
-        deleteImgButton = findViewById(R.id.delete_img_button);
-
-        date = findViewById(R.id.dateStamp);
-        SimpleDateFormat s = new SimpleDateFormat("MMM-dd-yyyy");
-        String format = s.format(new Date());
-        date.setText("Created on " + format);
-
-        Intent intent = getIntent();
-        plantID = intent.getIntExtra("PlantID", 0);
-        db = new DatabaseHelper(this);
-        sensorID = db.getPlant(plantID).getSensorId();
-
-        // Get Image Path
-        //path = getIntent().getExtras().getString("path");
+        //deleteImgButton = findViewById(R.id.delete_img_button);
         ImageView imageView = (ImageView)findViewById(R.id.imageView);
-        Intent intnt = getIntent();
-        imageView = (ImageView) intnt.getParcelableExtra("imagename");
-        imageId = intnt.getIntExtra("imageid", 20);
-        imageView.setImageBitmap(theImage);
+        date = findViewById(R.id.dateStamp);
 
-        // Get Image
-        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-        bmOptions. inJustDecodeBounds = false;
-        bmOptions. inSampleSize = 4;
-        bmOptions. inPurgeable = true ;
-        Bitmap bitmap = BitmapFactory.decodeFile(path, bmOptions);
+        image = getIntent().getParcelableExtra("Image");
+        image_date = getIntent().getStringExtra("Date");
+        sensorID = getIntent().getStringExtra("SensorID");
 
-        // Display Image
-        imageView.setImageBitmap(bitmap);
+        imageView.setImageBitmap(image);
+        date.setText(image_date);
 
-        deleteImgButton.setOnClickListener(new View.OnClickListener() {
+        /*deleteImgButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                 //create DatabaseHandler object
                  //Deleting records from database
+
+                db = new DatabaseHelper(getApplicationContext());
                 db.deletePlantPicture(sensorID);
-                // /after deleting data go to main page
+
+                //after deleting data go to main page
                 Intent intent = new Intent(ImageDisplayActivity.this, ImageArchive.class);
                 startActivity(intent);
                 finish();
             }
-        });
+        });*/
+    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        Intent intent = new Intent(this, MainActivity.class);
+        this.startActivity(intent);
+        return true;
     }
 }

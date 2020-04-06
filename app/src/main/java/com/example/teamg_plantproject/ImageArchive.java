@@ -47,6 +47,7 @@ public class ImageArchive extends AppCompatActivity {
     protected List<String> myList;
     ArrayList<Plant> plants;
     ArrayList<Bitmap> plantPictures;
+    ArrayList<Image> images;
     protected GridView gridView;
     protected String PhotoPath;
 
@@ -73,8 +74,7 @@ public class ImageArchive extends AppCompatActivity {
                             startActivityForResult(cameraIntent, CAMERA_REQUEST);
                         } else if (items[which].equals("Gallery"))
                         {
-                            Intent intent = new Intent(Intent.ACTION_PICK,
-                                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                             intent.setType("image/*");
                             startActivityForResult(Intent.createChooser
                                             (intent, "Select file"), PICK_FROM_GALLERY);
@@ -95,20 +95,23 @@ public class ImageArchive extends AppCompatActivity {
         gridView = (GridView) findViewById(R.id.gridView);
 
         plantPictures = db.getArchivePictures(sensorID);
-        ImageAdapter imageAdapter = new ImageAdapter(this, plantPictures, sensorID);
+        images = db.getAllImages();
+
+        ImageAdapter imageAdapter = new ImageAdapter(this, plantPictures, images, sensorID);
         gridView.setAdapter(imageAdapter);
 
         // Initialize GridView Thumbnail Click Handler
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        /*gridView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id)
             {
+
                 Intent intent = new Intent(getApplicationContext(), ImageDisplayActivity.class);
-                intent.putExtra("path", db.getPlantPictures(sensorID));
+                intent.putExtra("DATA", sensorID);
                 startActivity(intent);
             }
-        });
+        });*/
     }   //end of onCreate
 
     @Override
@@ -121,23 +124,47 @@ public class ImageArchive extends AppCompatActivity {
         String format = s.format(new Date());
             if ( resultCode == RESULT_OK)
             {
-                Log.d("TAG", "onActivityResult: getting there");
-                Bundle bundle = data.getExtras();
-                Bitmap myImage = bundle.getParcelable("data");
-                // convert bitmap to byte
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                myImage.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                byte imageInByte[] = stream.toByteArray();
+                if (requestCode == CAMERA_REQUEST) {
+                    Log.d("TAG", "onActivityResult: getting there");
+                    Bundle bundle = data.getExtras();
+                    Bitmap myImage = bundle.getParcelable("data");
+                    // convert bitmap to byte
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    myImage.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    byte imageInByte[] = stream.toByteArray();
 
-                // Adding plant picture
-                //db.addPlantPicture(imageInByte, "TEMPz1qwerwe","TEMP22-04-20//12:40:12");
-                db.addPlantPicture(imageInByte, sensorID, format);
-                //plantPictures.add(myImage);
-                Log.d(TAG, "onActivityResult: inserted picture");
-                Log.d(TAG, "onActivityResult: sensor ID: " + sensorID + "date " + format);
-                Intent i = new Intent(ImageArchive.this, ImageArchive.class);
-                startActivity(i);
-                finish();
+                    //Adding plant picture
+                    //db.addPlantPicture(imageInByte, "TEMPz1qwerwe","TEMP22-04-20//12:40:12");
+                    db.addPlantPicture(imageInByte, sensorID, format);
+                    Log.d(TAG, "onActivityResult: inserted picture");
+                    Log.d(TAG, "onActivityResult: sensor ID: " + sensorID + "date " + format);
+                    Intent i = new Intent(ImageArchive.this, ImageArchive.class);
+                    startActivity(i);
+                    finish();
+                }
+
+                if (requestCode == PICK_FROM_GALLERY) {
+                    Uri imageUri = data.getData();
+                    Bitmap myImage = null;
+                    try
+                    {
+                        myImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                    } catch (IOException e)
+                    {
+                        e.printStackTrace();
+                    }
+                    //Bundle bundle = data.getExtras();
+                    //Bitmap myImage = bundle.getParcelable("data");
+                    // convert bitmap to byte
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    myImage.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    byte imageInByte[] = stream.toByteArray();
+                    db.addPlantPicture(imageInByte, sensorID, format);
+                    Log.d(TAG, "Added picture from gallery");
+                    Intent i = new Intent(ImageArchive.this, ImageArchive.class);
+                    startActivity(i);
+                    finish();
+                }
             }
     }
     @Override

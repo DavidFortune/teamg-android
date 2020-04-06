@@ -1,6 +1,7 @@
 package com.example.teamg_plantproject;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,21 +16,22 @@ public class ImageAdapter extends BaseAdapter
 {
     private Context context;
     //ArrayList<Plant> plantArrayList;
+    ArrayList <Image> imagesAll;
     ArrayList<Bitmap> plantPicturesAll;
     String sensorID;
 
-    public ImageAdapter(Context c, ArrayList <Bitmap> plantPictures, String sensorID)
+    public ImageAdapter(Context c, ArrayList <Bitmap> plantPictures, ArrayList<Image> images, String sensorID)
     {
         context = c;
         plantPicturesAll = plantPictures;
+        imagesAll = images;
         this.sensorID = sensorID;
     }
     public int getCount()
     {
-
-           return plantPicturesAll.size();
-
+        return plantPicturesAll.size();
     }
+
     public Object getItem(int position)
     {
         return null;
@@ -38,10 +40,9 @@ public class ImageAdapter extends BaseAdapter
     {
         return 0;
     }
-    public View getView(int position, View convertView, ViewGroup parent)
+    public View getView(final int position, View convertView, ViewGroup parent)
     {
         final DatabaseHelper db = new DatabaseHelper(context);
-        //final Plant plant = plantArrayList.get(position);
         if (convertView == null)
         {
             final LayoutInflater layoutInflater = LayoutInflater.from(context);
@@ -49,10 +50,28 @@ public class ImageAdapter extends BaseAdapter
         }
 
         final ImageView plantPic = (ImageView)convertView.findViewById(R.id.imageview_plant_pic);
-       // final TextView date = (TextView)convertView.findViewById(R.id.textview_date);
-        plantPic.setImageBitmap(plantPicturesAll.get(position));
-        //date.setText(plantArrayList.get(position));
+        final TextView date = (TextView)convertView.findViewById(R.id.textview_date);
 
+        //plantPic.setImageBitmap(plantPicturesAll.get(position));
+        plantPic.setImageBitmap(imagesAll.get(position).getImage());
+        date.setText(imagesAll.get(position).getImageDate());
+
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ImageDisplayActivity.class);
+                intent.putExtra("Image", imagesAll.get(position).getImage());
+                context.startActivity(intent);
+
+                Intent intent2 = new Intent(context, ImageDisplayActivity.class);
+                intent.putExtra("Date", imagesAll.get(position).getImageDate());
+                context.startActivity(intent);
+
+                Intent intent3 = new Intent(context, ImageDisplayActivity.class);
+                intent.putExtra("SensorID", sensorID);
+                context.startActivity(intent);
+            }
+        });
         return convertView;
     }
 }

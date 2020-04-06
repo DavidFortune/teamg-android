@@ -161,6 +161,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return plants;
     }
 
+    public ArrayList<Image> getAllImages() {
+        ArrayList<Image> images = new ArrayList<>();
+        String selectQuery = "SELECT  * FROM " + TABLE_PLANT_PICTURES;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Image image = new Image();
+                image.setImageDate(cursor.getString(cursor.getColumnIndex(DATE_CREATED)));
+
+                byte[] myImage;
+                myImage = cursor.getBlob(cursor.getColumnIndex(PLANT_PICTURES));
+                image.setImage(BitmapFactory.decodeByteArray(myImage, 0, myImage.length));
+
+                images.add(image);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return images;
+    }
+
+
     //delete a plant inside the plant table
     public void deletePlant(int plantID) {
         SQLiteDatabase db = this.getWritableDatabase();
