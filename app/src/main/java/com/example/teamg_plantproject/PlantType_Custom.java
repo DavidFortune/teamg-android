@@ -15,6 +15,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.CommonStatusCodes;
+
 public class PlantType_Custom extends AppCompatActivity{
     private TextView mrUser;
     private EditText editPlantType;
@@ -144,13 +146,17 @@ public class PlantType_Custom extends AppCompatActivity{
                     plantType.setSoilMoisture(intSoilM);
 
                     dbHelper_plantType.createType(plantType);
-                    Log.d(TAG, "onClick: " + dbHelper_plantType.getType(1));
+                  //  Log.d(TAG, "onClick: " + dbHelper_plantType.getType(1));
 
 /*                   Intent intent = new Intent(PlantType_Custom.this,
                             PlantDialog.class);*/
 /*                    Bundle bundle = new Bundle();
                     bundle.putString(plantTypeName,editPlantType.getText().toString());
                     intent.putExtras(bundle);*/
+                    Log.d("TAG", "onClick: FINISHED CUSTOM");
+                    Intent intent = new Intent();
+                    intent.putExtra("selectedChoice",plantTypeName); // return the one we made so we can set it as our current selection
+                    setResult(CommonStatusCodes.SUCCESS,intent);
                     finish();
                 }
             }
