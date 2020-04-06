@@ -162,7 +162,9 @@ public class ImageArchive extends AppCompatActivity {
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
-                    Bitmap myImage= BitmapFactory.decodeStream(image_stream );
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inScaled = false;
+                    Bitmap myImage= BitmapFactory.decodeStream(image_stream,null,options);
                     //Bundle bundle = data.getExtras();
                     //Bitmap myImage = bundle.getParcelable("data");
                     // convert bitmap to byte
