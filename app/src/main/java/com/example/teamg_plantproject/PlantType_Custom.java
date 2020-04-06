@@ -46,6 +46,7 @@ public class PlantType_Custom extends AppCompatActivity{
         airHumidityEdit = findViewById(R.id.edit_new_air_humidity);
         airTemperatureEdit = findViewById(R.id.edit_new_air_temperature);
         soilMoistureEdit = findViewById(R.id.edit_new_soil_moisture);
+
         if (savedInstanceState != null){
             String savedPlantType = savedInstanceState.getString(KEY_PLANTTYPE);
             textViewPlantType.setText(savedPlantType);

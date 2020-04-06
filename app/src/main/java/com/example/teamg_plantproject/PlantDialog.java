@@ -44,7 +44,6 @@ public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
     private Button cancelButton;
     private EditText plantNameEdit;
   //  private EditText plantTypeEdit;
-//    private Spinner spinnerEdit;
     private Spinner spinEdit;
     protected int typeID;
     DBHelper_PlantType dbHelper_plantType;
@@ -67,9 +66,8 @@ public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
         cancelButton = view.findViewById(R.id.cancel);
         plantNameEdit = view.findViewById(R.id.plant_name);
 //      plantTypeEdit = view.findViewById(R.id.plant_type);
-//      spinnerEdit = view.findViewById(R.id.spinner1);
         plantSensorEdit = view.findViewById(R.id.plant_sensor_id);
-        plantSensorEdit.setText("z1QgZ1bVjYnUyrsz1U9b");
+//        plantSensorEdit.setText("z1QgZ1bVjYnUyrsz1U9b");
         spinEdit = view.findViewById(R.id.sp_Text);
 
         saveButton.setOnClickListener(new View.OnClickListener() {
