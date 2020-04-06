@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -30,7 +31,7 @@ public class PlantType_Custom extends AppCompatActivity{
     private static final String KEY_AIRHUMIDITY = "airhumidity_key";
     private static final String KEY_AIRTEMPERATURE = "airtemperature_key";
     private static final String KEY_SOILMOISTURE = "soilmoisture_key";
-
+    protected static final String TAG = "_PLANT TYPE CUSTOM";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +65,7 @@ public class PlantType_Custom extends AppCompatActivity{
             String savedSoilMoisture = savedInstanceState.getString(KEY_SOILMOISTURE);
             textViewSoilMoisture.setText(savedSoilMoisture);
         } else {
-            Toast.makeText(this, "New Entry to Add Plant Type", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Welcome to Add Your New Plant Type", Toast.LENGTH_SHORT).show();
         }
 
         buttonSaveType.setOnClickListener(new View.OnClickListener() {
@@ -78,12 +79,7 @@ public class PlantType_Custom extends AppCompatActivity{
                 }
                 else{
 
-                    DBHelper_PlantType dbHelper_plantType;
-                    dbHelper_plantType = new DBHelper_PlantType(PlantType_Custom.this);
-                    final PlantType plantType;
-                    plantType = new PlantType();
-
-                    Toast.makeText(PlantType_Custom.this, "New Plant Type Info Is Saved",
+                    Toast.makeText(PlantType_Custom.this, "New Plant Type Info Is Edited",
                             Toast.LENGTH_LONG).show();
                 textViewPlantType.setText("Added Plant Type is: "
                         + editPlantType.getText().toString()+";");
@@ -100,9 +96,11 @@ public class PlantType_Custom extends AppCompatActivity{
         buttonCancelType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(PlantType_Custom.this, "Input Data Erased",
+                        Toast.LENGTH_LONG).show();
+                //1st Click to erase typed words;
                 finish();
-                Toast.makeText(getApplication(),
-                        "No button clicked", Toast.LENGTH_SHORT).show();
+                //2nd Click to return the last page.
             }
         });
 
@@ -116,10 +114,33 @@ public class PlantType_Custom extends AppCompatActivity{
                             Toast.LENGTH_LONG).show();
                 } else {
 
-                    Intent intent = new Intent(PlantType_Custom.this,
+                    String plantTypeName  = editPlantType.getText().toString();
+                    String airHumidity = editAirHumidity.getText().toString();
+                    String airTemperature  = editAirTemperature.getText().toString();
+                    String soilMoisture = editSoilMoisture.getText().toString();
+
+                    DBHelper_PlantType dbHelper_plantType;
+                    dbHelper_plantType = new DBHelper_PlantType(PlantType_Custom.this);
+                    final PlantType plantType;
+                    plantType = new PlantType();
+                    plantType.setPlantType(plantTypeName);
+                    int intAirH = Integer.parseInt(airHumidity);
+                    plantType.setAirHumidity(intAirH);
+                    int intAirT = Integer.parseInt(airTemperature);
+                    plantType.setAirTemperature(intAirT);
+                    int intSoilM = Integer.parseInt(soilMoisture);
+                    plantType.setAirTemperature(intSoilM);
+
+                    dbHelper_plantType.createType(plantType);
+                    Log.d(TAG, "onClick: " + dbHelper_plantType.getType(1));
+
+                    Intent intent = new Intent(PlantType_Custom.this.getApplicationContext(),
                             PlantDialog.class);
-                    Bundle sendData = new Bundle();
+                    Bundle bundle = new Bundle();
+                    bundle.putString(plantTypeName,editPlantType.getText().toString());
+                    intent.putExtras(bundle);
                     startActivity(intent);
+                    finish();
                 }
 
             }
