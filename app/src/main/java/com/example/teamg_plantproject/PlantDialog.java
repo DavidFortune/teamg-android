@@ -122,18 +122,7 @@ public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
         });
 
 
-        DBHelper_PlantType db2 = new DBHelper_PlantType(this.getContext());
-        ArrayList<PlantType> plants = new ArrayList<>();
 
-        plants = db2.getAllTypes();
-      //  String[] plantChoices = new String[plants.size()];
-        ArrayList<String> plantChoices = new ArrayList<>();
-
-        for (int i = 0; i < plants.size(); i++) {
-            //plantChoices[i] = plants.get(i).getPlantType();
-            plantChoices.add(plants.get(i).getPlantType());
-        }
-       plantChoices.add( "Create A New Plant Type...");
 
         /*
         final String[] plantChoices = new String[]{
@@ -153,35 +142,8 @@ public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
 /*        final List<String> plantChoices = new ArrayList<>();
         plantChoices.add(0, "Plant Type:");
         plantChoices.add("Bulbous");*/
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-                this.getActivity(), android.R.layout.simple_spinner_dropdown_item, plantChoices) {
-            @Override
-            public boolean isEnabled(int position) {
-                if (position == 0) {
-                    return false;
-                } else {
-                    return true;
-                }
-            }
 
-            @Override
-            public View getDropDownView(int position, View convertView,
-                                        ViewGroup parent) {
-                View view = super.getDropDownView(position, convertView, parent);
-                TextView tv = (TextView) view;
-                if (position == 0) {
-                    // Set the hint text color gray
-                    tv.setTextColor(Color.GRAY);
-                } else {
-                    tv.setTextColor(Color.BLACK);
-                }
-                return view;
-            }
-
-        };
-
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinEdit.setAdapter(arrayAdapter);
+        updateSpinView(); // update the spinner thingy
 
 
         spinEdit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -198,14 +160,13 @@ public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
                     Toast.makeText(getActivity().getApplicationContext(), "Selected : "
                             + selectedItemText, Toast.LENGTH_SHORT).show();
                     if (parent.getItemAtPosition(position).equals("Create A New Plant Type...")) {
-                        Intent intent = new Intent(view.getContext(),
-                                PlantType_Custom.class);
-                        startActivityForResult(intent,0);
-                        intent.putExtra(extra,selectedItemText);
+                        Intent intent = new Intent(view.getContext(), PlantType_Custom.class);
+                        startActivityForResult(intent,10);
+                      //  intent.putExtra(extra,selectedItemText);
 //                        intent.putExtra("B",spinEdit.toString());
-                        Bundle sendData = new Bundle();
-                        intent.putExtra("TypeID", selectedItemText);
-                        startActivity(intent);
+                     //   Bundle sendData = new Bundle();
+                      //  intent.putExtra("TypeID", selectedItemText);
+                       // startActivity(intent);
                     }
                 }
 
@@ -269,6 +230,10 @@ public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
                 }
             }
         }
+        if(requestCode==10){
+
+            updateSpinView();
+        }
         else {
             super.onActivityResult(requestCode, resultCode, data);
         }
@@ -279,5 +244,52 @@ public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
         EditDialog editDialog = new EditDialog();
         editDialog.setArguments(sendData);
         editDialog.show(fragmentManager, "Plant Type Add");
+    }
+
+    public void updateSpinView()
+    {
+
+        DBHelper_PlantType db2 = new DBHelper_PlantType(this.getContext());
+        ArrayList<PlantType> plants = new ArrayList<>();
+
+        plants = db2.getAllTypes();
+        //  String[] plantChoices = new String[plants.size()];
+        ArrayList<String> plantChoices = new ArrayList<>();
+
+        for (int i = 0; i < plants.size(); i++) {
+            //plantChoices[i] = plants.get(i).getPlantType();
+            plantChoices.add(plants.get(i).getPlantType());
+        }
+        plantChoices.add( "Create A New Plant Type...");
+
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                this.getActivity(), android.R.layout.simple_spinner_dropdown_item, plantChoices) {
+            @Override
+            public boolean isEnabled(int position) {
+                if (position == 0) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+
+            @Override
+            public View getDropDownView(int position, View convertView,
+                                        ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                TextView tv = (TextView) view;
+                if (position == 0) {
+                    // Set the hint text color gray
+                    tv.setTextColor(Color.GRAY);
+                } else {
+                    tv.setTextColor(Color.BLACK);
+                }
+                return view;
+            }
+
+        };
+
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinEdit.setAdapter(arrayAdapter);
     }
 }
