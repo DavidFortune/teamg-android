@@ -28,7 +28,9 @@ import android.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -44,12 +46,10 @@ public class ImageArchive extends AppCompatActivity {
     static final int SELECT_FILE = 1000;
     private static final int CAMERA_REQUEST = 1;
     private static final int PICK_FROM_GALLERY = 2;
-    protected List<String> myList;
-    ArrayList<Plant> plants;
+
     ArrayList<Bitmap> plantPictures;
     ArrayList<Image> images;
     protected GridView gridView;
-    protected String PhotoPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,7 +144,7 @@ public class ImageArchive extends AppCompatActivity {
                 }
 
                 if (requestCode == PICK_FROM_GALLERY) {
-                    Uri imageUri = data.getData();
+                    /*Uri imageUri = data.getData();
                     Bitmap myImage = null;
                     try
                     {
@@ -152,7 +152,15 @@ public class ImageArchive extends AppCompatActivity {
                     } catch (IOException e)
                     {
                         e.printStackTrace();
+                    }*/
+                    Uri IMAGE_URI = data.getData();
+                    InputStream image_stream = null;
+                    try {
+                        image_stream = getContentResolver().openInputStream(IMAGE_URI);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
                     }
+                    Bitmap myImage= BitmapFactory.decodeStream(image_stream );
                     //Bundle bundle = data.getExtras();
                     //Bitmap myImage = bundle.getParcelable("data");
                     // convert bitmap to byte
@@ -169,7 +177,7 @@ public class ImageArchive extends AppCompatActivity {
     }
     @Override
     public boolean onSupportNavigateUp() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, PlantActivity.class);
         this.startActivity(intent);
         return true;
     }

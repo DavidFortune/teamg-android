@@ -61,7 +61,7 @@ public class ImageDisplayActivity extends AppCompatActivity {
     }
     @Override
     public boolean onSupportNavigateUp() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, ImageArchive.class);
         this.startActivity(intent);
         return true;
     }
