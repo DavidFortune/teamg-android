@@ -35,10 +35,10 @@ public class PlantType_Custom extends AppCompatActivity{
         setContentView(R.layout.activity_plant_type__custom);
 
         mrUser = (TextView) findViewById(R.id.user_welcome);
-/*        TextView textViewPlantType = (TextView) findViewById(R.id.tv_new_plant_type);
+        TextView textViewPlantType = (TextView) findViewById(R.id.tv_new_plant_type);
         TextView textViewAirHumidity = (TextView) findViewById(R.id.tv_new_air_humidity);
         TextView textViewAirTemperature = (TextView) findViewById(R.id.tv_new_air_temperature);
-        TextView textViewSoilMoisture = (TextView) findViewById(R.id.tv_new_soil_moisture);*/
+        TextView textViewSoilMoisture = (TextView) findViewById(R.id.tv_new_soil_moisture);
 //        inputButton = (Button) findViewById(R.id.save_new_plant_type);
         saveTypeButton = (Button) findViewById(R.id.save_new_plant_type);
         cancelTypeButton = (Button) findViewById(R.id.cancel_new_plant_type);
@@ -62,6 +62,24 @@ public class PlantType_Custom extends AppCompatActivity{
         } else {
             Toast.makeText(this, "New Entry", Toast.LENGTH_SHORT).show();
         }
+
+        saveTypeButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                plantTypeEdit = findViewById(R.id.edit_new_plant_type);
+                airHumidityEdit = findViewById(R.id.edit_new_air_humidity);
+                airTemperatureEdit = findViewById(R.id.edit_new_air_temperature);
+                soilMoistureEdit = findViewById(R.id.edit_new_soil_moisture);
+                TextView textViewPlantType = (TextView) findViewById(R.id.tv_new_plant_type);
+                TextView textViewAirHumidity = (TextView) findViewById(R.id.tv_new_air_humidity);
+                TextView textViewAirTemperature = (TextView) findViewById(R.id.tv_new_air_temperature);
+                TextView textViewSoilMoisture = (TextView) findViewById(R.id.tv_new_soil_moisture);
+                textViewPlantType.setText("Added Plant Type is: "+plantTypeEdit.getText().toString()+";");
+                textViewAirHumidity.setText("Added Air Humidity is: "+airHumidityEdit.getText().toString()+";");
+                textViewAirTemperature.setText("Added Air Temperature is:"+airTemperatureEdit.getText().toString()+";");
+                textViewSoilMoisture.setText("Added Soil Moisture is:"+soilMoistureEdit.getText().toString()+";");
+            }
+        });
+
     }
 
     public void onSavedInstanceState(Bundle savedInstanceState){
@@ -80,6 +98,8 @@ public class PlantType_Custom extends AppCompatActivity{
         textViewSoilMoisture.setText(soilMoistureEdit.getText().toString().trim());
 
     }
+
+
 
  /*       inputButton.setOnClickListener(new View.OnClickListener() {
             @Override
