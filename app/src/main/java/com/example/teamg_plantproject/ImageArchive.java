@@ -96,10 +96,12 @@ public class ImageArchive extends AppCompatActivity {
 
         gridView = (GridView) findViewById(R.id.gridView);
 
-        plantPictures = db.getArchivePictures(sensorID);
-        images = db.getAllImages();
+       // plantPictures = db.getArchivePictures(sensorID);
+       // images = db.getAllImages();
+        ArrayList<Image> images = new ArrayList<>();
+        images = db.getAllImages(sensorID);
 
-        ImageAdapter imageAdapter = new ImageAdapter(this, plantPictures, images, sensorID);
+        ImageAdapter imageAdapter = new ImageAdapter(this, images, sensorID);
         gridView.setAdapter(imageAdapter);
 
     }   //end of onCreate

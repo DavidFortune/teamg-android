@@ -3,6 +3,7 @@ package com.example.teamg_plantproject;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,19 +18,19 @@ public class ImageAdapter extends BaseAdapter
     private Context context;
     //ArrayList<Plant> plantArrayList;
     ArrayList <Image> imagesAll;
-    ArrayList<Bitmap> plantPicturesAll;
+   // ArrayList<Bitmap> plantPicturesAll;
     String sensorID;
 
-    public ImageAdapter(Context c, ArrayList <Bitmap> plantPictures, ArrayList<Image> images, String sensorID)
+    public ImageAdapter(Context c, ArrayList<Image> images, String sensorID)
     {
         context = c;
-        plantPicturesAll = plantPictures;
+       // plantPicturesAll = plantPictures;
         imagesAll = images;
         this.sensorID = sensorID;
     }
     public int getCount()
     {
-        return plantPicturesAll.size();
+        return imagesAll.size();
     }
 
     public Object getItem(int position)
@@ -56,22 +57,15 @@ public class ImageAdapter extends BaseAdapter
         plantPic.setImageBitmap(imagesAll.get(position).getImage());
         date.setText(imagesAll.get(position).getImageDate());
 
-
-
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ImageDisplayActivity.class);
-                intent.putExtra("Image", imagesAll.get(position).getImage());
+                intent.putExtra("Image",  imagesAll.get(position));
+                intent.putExtra("Date", imagesAll.get(position).getImageDate());
+                intent.putExtra("SensorID", sensorID);
                 context.startActivity(intent);
 
-                Intent intent2 = new Intent(context, ImageDisplayActivity.class);
-                intent2.putExtra("Date", imagesAll.get(position).getImageDate());
-                context.startActivity(intent2);
-
-                Intent intent3 = new Intent(context, ImageDisplayActivity.class);
-                intent3.putExtra("SensorID", sensorID);
-                context.startActivity(intent3);
             }
         });
         return convertView;
