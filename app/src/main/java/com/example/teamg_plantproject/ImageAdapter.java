@@ -56,6 +56,8 @@ public class ImageAdapter extends BaseAdapter {
                 intent.putExtra("Image", imagesAll.get(position));
                 System.out.println(plantId + "++++++++++++++++++++++++++++" + "Image Adapter");
                 intent.putExtra("PlantID", plantId);
+                intent.putExtra("SensorID", sensorID);
+
                 context.startActivity(intent);
             }
         });

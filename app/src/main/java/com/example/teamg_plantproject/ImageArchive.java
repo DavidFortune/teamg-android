@@ -68,6 +68,7 @@ public class ImageArchive extends AppCompatActivity {
         });
 
         sensorID = getIntent().getStringExtra("SENSOR_ID");
+
         PlantID = getIntent().getIntExtra("PlantID", 0);
 
         Log.d(TAG, "Archive: PLANT ID" + PlantID);

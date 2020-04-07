@@ -19,6 +19,7 @@ public class ImageDisplayActivity extends AppCompatActivity {
     int pictureNumber;
     Image image;
     private int plantId;
+    private String sensorID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +32,9 @@ public class ImageDisplayActivity extends AppCompatActivity {
 
         image = getIntent().getParcelableExtra("Image");
         plantId = getIntent().getIntExtra("PlantID", 0);
+
+        sensorID = getIntent().getStringExtra("SensorID");
+        Log.d("TAG", "onCreate sensorid: "+sensorID);
         imageView.setImageBitmap(image.getImage());
 
         date.setText(image.getImageDate());
@@ -60,6 +64,7 @@ public class ImageDisplayActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         Intent intent = new Intent(this, ImageArchive.class);
         intent.putExtra("PlantID", plantId);
+        intent.putExtra("SENSOR_ID", sensorID);
         this.startActivity(intent);
         return true;
     }
