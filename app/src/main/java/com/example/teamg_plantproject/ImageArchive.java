@@ -111,6 +111,7 @@ public class ImageArchive extends AppCompatActivity {
                 Log.d(TAG, "onActivityResult: sensor ID: " + sensorID + "date " + format);
                 Intent i = new Intent(ImageArchive.this, ImageArchive.class);
                 i.putExtra("PlantID", PlantID);
+                i.putExtra("SENSOR_ID", sensorID);
                 startActivity(i);
                 finish();
             }

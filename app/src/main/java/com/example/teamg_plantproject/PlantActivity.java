@@ -361,7 +361,7 @@ public class PlantActivity extends AppCompatActivity {
                         graph.getGridLabelRenderer().setVerticalAxisTitle("Soil Moisture (%)");
                         graph.getGridLabelRenderer().setHorizontalAxisTitle("Last 24 hours");
                         //end of our initial graph
-*/
+
 
                    //     Log.d("TEST", "onDoubleTap : " + currentGraph);
                         if (currentGraph == "soil") {
@@ -373,7 +373,7 @@ public class PlantActivity extends AppCompatActivity {
                         } else if (currentGraph == "humidity") {
                             currentGraph = "soil";
                         }
-
+*/
 
                         if (currentGraph == "soil") {
                             graph.removeAllSeries();
@@ -497,15 +497,6 @@ public class PlantActivity extends AppCompatActivity {
                         final LineGraphSeries<DataPoint> series3 = new LineGraphSeries<>(dataPointsAir.toArray(new DataPoint[dataPointsAir.size()]));
                         final LineGraphSeries<DataPoint> series4 = new LineGraphSeries<>(dataPointsHum.toArray(new DataPoint[dataPointsHum.size()]));
 
-                        if (currentGraph == "soil") {
-                            currentGraph = "solar";
-                        } else if (currentGraph == "solar") {
-                            currentGraph = "air";
-                        } else if (currentGraph == "air") {
-                            currentGraph = "humidity";
-                        } else if (currentGraph == "humidity") {
-                            currentGraph = "soil";
-                        }
 
 
                         if (currentGraph == "soil") {
