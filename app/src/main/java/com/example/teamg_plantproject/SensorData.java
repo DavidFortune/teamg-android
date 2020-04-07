@@ -11,7 +11,8 @@ public class SensorData {
     private double rawTemp;
     private Date createdAt;
 
-    public SensorData() {}  //empty controctor needed
+    public SensorData() {
+    }  //empty controctor needed
 
 
     public SensorData(double rawHumidity, double rawSoilValue, double rawSolarValue, double rawTemp, Date createdAt) {

@@ -1,9 +1,9 @@
 package com.example.teamg_plantproject;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -19,8 +19,7 @@ public class SplashActivity extends AppCompatActivity {
         if (auth.getCurrentUser() != null) {
             Intent intent = new Intent(SplashActivity.this, MainActivity.class);
             startActivity(intent);
-        }
-        else {
+        } else {
 
             Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
             startActivity(intent);

@@ -1,23 +1,25 @@
 package com.example.teamg_plantproject;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.common.api.CommonStatusCodes;
 
-public class PlantType_Custom extends AppCompatActivity{
+public class PlantType_Custom extends AppCompatActivity {
+    protected static final String TAG = "_PLANT TYPE CUSTOM";
+    private static final String KEY_PLANTTYPE = "planttype_key";
+    private static final String KEY_AIRHUMIDITY = "airhumidity_key";
+    private static final String KEY_AIRTEMPERATURE = "airtemperature_key";
+    private static final String KEY_SOILMOISTURE = "soilmoisture_key";
     private TextView mrUser;
     private EditText editPlantType;
     private EditText editAirHumidity;
@@ -30,32 +32,27 @@ public class PlantType_Custom extends AppCompatActivity{
     private TextView textViewAirHumidity;
     private TextView textViewAirTemperature;
     private TextView textViewSoilMoisture;
-    private static final String KEY_PLANTTYPE = "planttype_key";
-    private static final String KEY_AIRHUMIDITY = "airhumidity_key";
-    private static final String KEY_AIRTEMPERATURE = "airtemperature_key";
-    private static final String KEY_SOILMOISTURE = "soilmoisture_key";
-    protected static final String TAG = "_PLANT TYPE CUSTOM";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plant_type__custom);
 
-            mrUser = (TextView) findViewById(R.id.user_welcome);
-            buttonShowType = (Button) findViewById(R.id.show_new_plant_type);
-            buttonCancelType = (Button) findViewById(R.id.cancel_new_plant_type);
-            buttonConfirmType = (Button) findViewById(R.id.confirm_goback);
-            editPlantType = (EditText) findViewById(R.id.edit_new_plant_type);
-            editAirHumidity = (EditText) findViewById(R.id.edit_new_air_humidity);
-            editAirTemperature = (EditText) findViewById(R.id.edit_new_air_temperature);
-            editSoilMoisture = (EditText) findViewById(R.id.edit_new_soil_moisture);
-            textViewPlantType = (TextView) findViewById(R.id.tv_new_plant_type);
-            textViewAirHumidity = (TextView) findViewById(R.id.tv_new_air_humidity);
-            textViewAirTemperature = (TextView) findViewById(R.id.tv_new_air_temperature);
-            textViewSoilMoisture = (TextView) findViewById(R.id.tv_new_soil_moisture);
+        mrUser = findViewById(R.id.user_welcome);
+        buttonShowType = findViewById(R.id.show_new_plant_type);
+        buttonCancelType = findViewById(R.id.cancel_new_plant_type);
+        buttonConfirmType = findViewById(R.id.confirm_goback);
+        editPlantType = findViewById(R.id.edit_new_plant_type);
+        editAirHumidity = findViewById(R.id.edit_new_air_humidity);
+        editAirTemperature = findViewById(R.id.edit_new_air_temperature);
+        editSoilMoisture = findViewById(R.id.edit_new_soil_moisture);
+        textViewPlantType = findViewById(R.id.tv_new_plant_type);
+        textViewAirHumidity = findViewById(R.id.tv_new_air_humidity);
+        textViewAirTemperature = findViewById(R.id.tv_new_air_temperature);
+        textViewSoilMoisture = findViewById(R.id.tv_new_soil_moisture);
 
 
-        if (savedInstanceState != null){
+        if (savedInstanceState != null) {
             String savedPlantType = savedInstanceState.getString(KEY_PLANTTYPE);
             textViewPlantType.setText(savedPlantType);
 
@@ -79,19 +76,18 @@ public class PlantType_Custom extends AppCompatActivity{
                         || TextUtils.isEmpty(editSoilMoisture.getText().toString())) {
                     Toast.makeText(PlantType_Custom.this, "Empty Input Is Not Allowed",
                             Toast.LENGTH_LONG).show();
-                }
-                else{
+                } else {
 
                     Toast.makeText(PlantType_Custom.this, "New Plant Type Info Is Edited",
                             Toast.LENGTH_LONG).show();
-                textViewPlantType.setText("Added Plant Type is:  "
-                        + editPlantType.getText().toString()+" ;");
-                textViewAirHumidity.setText("Added Air Humidity is:  "
-                        + editAirHumidity.getText().toString()+" % ;");
-                textViewAirTemperature.setText("Added Air Temperature is:  "
-                        + editAirTemperature.getText().toString()+" degrees ;");
-                textViewSoilMoisture.setText("Added Soil Moisture is:  "
-                        + editSoilMoisture.getText().toString()+" % ;");
+                    textViewPlantType.setText("Added Plant Type is:  "
+                            + editPlantType.getText().toString() + " ;");
+                    textViewAirHumidity.setText("Added Air Humidity is:  "
+                            + editAirHumidity.getText().toString() + " % ;");
+                    textViewAirTemperature.setText("Added Air Temperature is:  "
+                            + editAirTemperature.getText().toString() + " degrees ;");
+                    textViewSoilMoisture.setText("Added Soil Moisture is:  "
+                            + editSoilMoisture.getText().toString() + " % ;");
                 }
             }
         });
@@ -126,16 +122,16 @@ public class PlantType_Custom extends AppCompatActivity{
                             Toast.LENGTH_LONG).show();
                 } else {
 
-                    String plantTypeName  = editPlantType.getText().toString();
+                    String plantTypeName = editPlantType.getText().toString();
                     String airHumidity = editAirHumidity.getText().toString();
-                    String airTemperature  = editAirTemperature.getText().toString();
+                    String airTemperature = editAirTemperature.getText().toString();
                     String soilMoisture = editSoilMoisture.getText().toString();
 
-                  //  Log.d("TAG", "onClick SOIL MOISTURE: "+soilMoisture);
+                    //  Log.d("TAG", "onClick SOIL MOISTURE: "+soilMoisture);
 
                     DBHelper_PlantType dbHelper_plantType;
                     dbHelper_plantType = new DBHelper_PlantType(PlantType_Custom.this);
-                    PlantType plantType= new PlantType();
+                    PlantType plantType = new PlantType();
 
                     plantType.setPlantType(plantTypeName);
                     int intAirH = Integer.parseInt(airHumidity);
@@ -146,12 +142,12 @@ public class PlantType_Custom extends AppCompatActivity{
                     plantType.setSoilMoisture(intSoilM);
 
                     dbHelper_plantType.createType(plantType);
-                  //  Log.d(TAG, "onClick: " + dbHelper_plantType.getType(1));
+                    //  Log.d(TAG, "onClick: " + dbHelper_plantType.getType(1));
                     Log.d("TAG", "onClick: FINISHED CUSTOM");
                     Intent intent = new Intent();
-                    intent.putExtra("selectedChoice",plantTypeName);
+                    intent.putExtra("selectedChoice", plantTypeName);
                     // return the one we made so we can set it as our current selection
-                    setResult(CommonStatusCodes.SUCCESS,intent);
+                    setResult(CommonStatusCodes.SUCCESS, intent);
                     finish();
                 }
             }

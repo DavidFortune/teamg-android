@@ -1,19 +1,18 @@
 package com.example.teamg_plantproject;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Camera;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.CameraSource;
@@ -25,6 +24,7 @@ import java.io.IOException;
 
 public class QRCodeScanActivity extends AppCompatActivity {
     SurfaceView cameraPreview;
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +32,7 @@ public class QRCodeScanActivity extends AppCompatActivity {
         setContentView(R.layout.activity_qrcodescan);
 
         cameraPreview = findViewById(R.id.cameraSurfaceView);
-        if(ActivityCompat.checkSelfPermission(QRCodeScanActivity.this, Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED)
-        {
+        if (ActivityCompat.checkSelfPermission(QRCodeScanActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             //permission not enabled, request it
             String[] permission = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
             //show popup to request user permission
@@ -45,12 +44,12 @@ public class QRCodeScanActivity extends AppCompatActivity {
     private void createCameraSource() {
 
         BarcodeDetector barcodeDetector = new BarcodeDetector.Builder(this).build();
-        final CameraSource cameraSource = new CameraSource.Builder(this,barcodeDetector)
+        final CameraSource cameraSource = new CameraSource.Builder(this, barcodeDetector)
                 .setAutoFocusEnabled(true)
-                .setRequestedPreviewSize(1600,1024)
+                .setRequestedPreviewSize(1600, 1024)
                 .build();
         cameraPreview.getHolder().addCallback(new SurfaceHolder.Callback() {
-           // @RequiresApi(api = Build.VERSION_CODES.M)
+            // @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
 
@@ -82,11 +81,11 @@ public class QRCodeScanActivity extends AppCompatActivity {
             public void receiveDetections(Detector.Detections<Barcode> detections) {
                 Log.d("TAG", "QRCODE SAW SOMETHING: ");
                 final SparseArray<Barcode> barcodes = detections.getDetectedItems();
-                if(barcodes.size() >0){
+                if (barcodes.size() > 0) {
                     Log.d("TAG", "QRCODE RECEIVED: " + detections.getDetectedItems().valueAt(0));
                     Intent intent = new Intent();
-                    intent.putExtra("qrcode",barcodes.valueAt(0));
-                    setResult(CommonStatusCodes.SUCCESS,intent);
+                    intent.putExtra("qrcode", barcodes.valueAt(0));
+                    setResult(CommonStatusCodes.SUCCESS, intent);
                     finish();
                 }
             }

@@ -31,9 +31,9 @@ import java.util.Objects;
 
 public class PlantListViewAdapter extends BaseAdapter {
 
+    protected final static String TAG = "PLANT LISTVIEW ADAPTER";
     Context context;
     ArrayList<Plant> plantArrayList;
-    protected final static String TAG = "PLANT LISTVIEW ADAPTER";
 
     public PlantListViewAdapter(Context context, ArrayList<Plant> plantArrayList) {
         this.context = context;
@@ -127,17 +127,18 @@ public class PlantListViewAdapter extends BaseAdapter {
                 });
 
         TextView plantName = convertView.findViewById(R.id.plant_name_listview);
+        TextView plantType = convertView.findViewById(R.id.plant_type_listview);
         ImageView plantPicture = convertView.findViewById(R.id.plant_image_view);
         int plantId = plantArrayList.get(position).getPlantID();
         Log.d(TAG, "getView: " + plantId);
 
         //Link and Fill in values
         plantName.setText(plantArrayList.get(position).getPlantName());
+        plantType.setText(plantArrayList.get(position).getPlantType());
         plantPicture.setImageBitmap(db.getImage(plantId));
 //        Log.d(TAG, "getView: "+db.getImage(position));
         //Setup listener for when use click on any of the listView entities to redirect to
         //plant activity of that plant
-
 
 
         convertView.setOnClickListener(new View.OnClickListener() {

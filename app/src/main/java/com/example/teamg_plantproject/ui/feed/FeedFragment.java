@@ -10,7 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,14 +19,9 @@ import com.example.teamg_plantproject.R;
 import com.example.teamg_plantproject.SensorData;
 import com.example.teamg_plantproject.SensorDataAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -39,9 +33,9 @@ import java.util.Date;
 
 public class FeedFragment extends Fragment {
 
+    protected View root;
     private FeedViewModel feedViewModel;
     private FirebaseFirestore fb = FirebaseFirestore.getInstance();
-    protected View root;
     private CollectionReference sensorDataRef = fb.collection("sensors/z1QgZ1bVjYnUyrszlU9b/data");
     private DocumentReference sensorDataObjectRef = fb.document("sensors/z1QgZ1bVjYnUyrszlU9b/data/HGt6aznsr96pnpVlrw7C");
     private SensorDataAdapter adapter;
@@ -56,24 +50,24 @@ public class FeedFragment extends Fragment {
 
 
         sensorDataRef.orderBy("createdAt", Query.Direction.DESCENDING).limit(50)
-            .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                @Override
-                public void onEvent(@Nullable QuerySnapshot value,
-                                    @Nullable FirebaseFirestoreException e) {
-                    if (e != null) {
-                        Log.w(MainActivity.class.getName(), "Listen failed.", e);
-                        return;
-                    }
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value,
+                                        @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.w(MainActivity.class.getName(), "Listen failed.", e);
+                            return;
+                        }
 
-                    String sensorDataText = "";
+                        String sensorDataText = "";
 
-                    for (QueryDocumentSnapshot doc : value) {
-                        if (doc.get("rawHumidity") != null) {
+                        for (QueryDocumentSnapshot doc : value) {
+                            if (doc.get("rawHumidity") != null) {
 
-                            Timestamp timestamp = (Timestamp) doc.get("createdAt");
-                            Date date = timestamp.toDate();
+                                Timestamp timestamp = (Timestamp) doc.get("createdAt");
+                                Date date = timestamp.toDate();
 
-                            sensorDataText = sensorDataText +
+                                sensorDataText = sensorDataText +
                                         date.toString()
                                         + "\nAir Humidity: " + doc.get("rawHumidity")
                                         + "    Solar: " + doc.get("rawSolarValue")
@@ -81,14 +75,14 @@ public class FeedFragment extends Fragment {
                                         + "    Temperature: " + doc.get("rawTemp")
                                         + "\n\n";
 
-                            Log.d(MainActivity.class.getName(), sensorDataText);
+                                Log.d(MainActivity.class.getName(), sensorDataText);
+                            }
                         }
+
+                        textView.setText(sensorDataText);
+
                     }
-
-                    textView.setText(sensorDataText);
-
-                }
-            });
+                });
 
 
         //setUpRecyclerView();
@@ -96,7 +90,7 @@ public class FeedFragment extends Fragment {
         return root;
     }
 
-    private void setUpRecyclerView(){
+    private void setUpRecyclerView() {
         Query query = sensorDataRef.orderBy("createdAt", Query.Direction.DESCENDING).limit(20);
 
 
@@ -125,7 +119,7 @@ public class FeedFragment extends Fragment {
         super.onStop();
 
         //if(adapter != null) {
-            //adapter.stopListening();
-       // }
+        //adapter.stopListening();
+        // }
     }
 }

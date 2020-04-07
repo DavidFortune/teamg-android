@@ -19,25 +19,45 @@ public class PlantType {
         this.soilMoisture = soilMoisture;
     }
 
-    public int getTypeID() { return typeID; }
+    public int getTypeID() {
+        return typeID;
+    }
 
-    public void setTypeID(int typeID) { this.typeID = typeID; }
+    public void setTypeID(int typeID) {
+        this.typeID = typeID;
+    }
 
-    public String getPlantType() { return plantType; }
+    public String getPlantType() {
+        return plantType;
+    }
 
-    public void setPlantType(String plantType) { this.plantType = plantType; }
+    public void setPlantType(String plantType) {
+        this.plantType = plantType;
+    }
 
-    public int getAirHumidity() { return airHumidity; }
+    public int getAirHumidity() {
+        return airHumidity;
+    }
 
-    public void setAirHumidity(int airHumidity) { this.airHumidity = airHumidity; }
+    public void setAirHumidity(int airHumidity) {
+        this.airHumidity = airHumidity;
+    }
 
-    public int getAirTemperature() { return airTemperature; }
+    public int getAirTemperature() {
+        return airTemperature;
+    }
 
-    public void setAirTemperature(int airTemperature) { this.airTemperature = airTemperature; }
+    public void setAirTemperature(int airTemperature) {
+        this.airTemperature = airTemperature;
+    }
 
-    public int getSoilMoisture() { return soilMoisture; }
+    public int getSoilMoisture() {
+        return soilMoisture;
+    }
 
-    public void setSoilMoisture(int soilMoisture) { this.soilMoisture = soilMoisture; }
+    public void setSoilMoisture(int soilMoisture) {
+        this.soilMoisture = soilMoisture;
+    }
 
 
 }

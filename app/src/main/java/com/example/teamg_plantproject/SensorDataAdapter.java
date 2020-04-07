@@ -25,9 +25,9 @@ public class SensorDataAdapter extends FirestoreRecyclerAdapter<SensorData, Sens
 
         holder.textViewTimestamp.setText("2020-03-08");
 
-        String sensorDataText = "Humidity:    " + Double.toString(model.getrawHumidity())
-                            + "\nSolar:       " + Double.toString(model.getrawSolarValue())
-                            + "\nTemperature: " + Double.toString(model.getrawTemp());
+        String sensorDataText = "Humidity:    " + model.getrawHumidity()
+                + "\nSolar:       " + model.getrawSolarValue()
+                + "\nTemperature: " + model.getrawTemp();
 
         holder.textViewSensorData.setText(sensorDataText);
 

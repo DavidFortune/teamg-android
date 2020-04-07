@@ -5,17 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Bundle;
 import android.util.Log;
-import android.view.animation.LinearInterpolator;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 
 public class DBHelper_PlantType extends SQLiteOpenHelper {
 
@@ -53,13 +45,13 @@ public class DBHelper_PlantType extends SQLiteOpenHelper {
         //Add initial seed of hardcoded plant types
 
 
-        createType(db,"Bulbous", 55, 4, 75);
-        createType(db,"Cactus", 20, 18, 30);
-        createType(db,"Common House", 40, 16, 50);
-        createType(db,"Fern", 40, 21, 50);
-        createType(db,"Flowering", 45, 14, 55);
-        createType(db,"Foliage", 40, 20, 45);
-        createType(db,"Succulent", 20, 16, 30);
+        createType(db, "Bulbous", 55, 4, 75);
+        createType(db, "Cactus", 20, 18, 30);
+        createType(db, "Common House", 40, 16, 50);
+        createType(db, "Fern", 40, 21, 50);
+        createType(db, "Flowering", 45, 14, 55);
+        createType(db, "Foliage", 40, 20, 45);
+        createType(db, "Succulent", 20, 16, 30);
     }
 
     @Override
@@ -67,7 +59,8 @@ public class DBHelper_PlantType extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TYPES);
         onCreate(db);
     }
-    public int createType(SQLiteDatabase db,String plant_Name, int humiditypercent, int temperaturepercent, int soilmoisturepercent) {
+
+    public int createType(SQLiteDatabase db, String plant_Name, int humiditypercent, int temperaturepercent, int soilmoisturepercent) {
 
 
         ContentValues contentValues = new ContentValues();
@@ -77,7 +70,7 @@ public class DBHelper_PlantType extends SQLiteOpenHelper {
         contentValues.put(SOIL_MOISTURE, soilmoisturepercent);
         db.insert(TABLE_TYPES, null, contentValues);
 
-        Log.d(TAG, "createType: "+plant_Name+""+humiditypercent+""+temperaturepercent+""+soilmoisturepercent);
+        Log.d(TAG, "createType: " + plant_Name + "" + humiditypercent + "" + temperaturepercent + "" + soilmoisturepercent);
         return 1;
     }
 
@@ -92,7 +85,7 @@ public class DBHelper_PlantType extends SQLiteOpenHelper {
 
         long type_id = db.insert(TABLE_TYPES, null, contentValues);
 
-        Log.d(TAG, "CREATED TYPE" +plantType.getAirHumidity() + "  " +plantType.getAirTemperature() + "  " +  plantType.getSoilMoisture() );
+        Log.d(TAG, "CREATED TYPE" + plantType.getAirHumidity() + "  " + plantType.getAirTemperature() + "  " + plantType.getSoilMoisture());
         return type_id;
     }
 

@@ -10,13 +10,24 @@
     <TextView
         android:id="@+id/plant_name_listview"
         android:layout_width="265dp"
-        android:layout_height="60dp"
+        android:layout_height="30dp"
         android:autoSizeTextType="uniform"
         android:text="Plant Name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@id/plant_image_view"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/plant_type_listview"
+        android:layout_width="265dp"
+        android:layout_height="30dp"
+        android:autoSizeTextType="uniform"
+        android:text="Plant Type"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@id/plant_image_view"
+        app:layout_constraintTop_toBottomOf="@+id/plant_name_listview" />
 
     <ProgressBar
         android:id="@+id/progressBar2"

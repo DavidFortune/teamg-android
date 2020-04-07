@@ -194,7 +194,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //delete a plant picture inside the plant picture table
     public void deletePlantPicture(int picture_number) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_PLANT_PICTURES,  PICTURE_NUMBER + " = ?",
+        db.delete(TABLE_PLANT_PICTURES, PICTURE_NUMBER + " = ?",
                 new String[]{String.valueOf(picture_number)});
     }
 
@@ -333,6 +333,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         return plantPictures;
     }
+
     public ArrayList<Image> getAllImages(String sensor_id) {
         ArrayList<Image> imagearray = new ArrayList<Image>();
         String selectQuery = "SELECT  * FROM " + TABLE_PLANT_PICTURES;

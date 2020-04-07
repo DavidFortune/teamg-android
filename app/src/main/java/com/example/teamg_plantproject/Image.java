@@ -6,25 +6,6 @@ import android.os.Parcelable;
 
 public class Image implements Parcelable {
 
-    private String date;
-    private Bitmap image;
-    private int imageNumber;
-
-    public Image() {
-    }
-
-    public Image(String date, Bitmap image,int imageNumber) {
-        this.date = date;
-        this.image = image;
-        this.imageNumber = imageNumber;
-    }
-
-    protected Image(Parcel in) {
-        date = in.readString();
-        image = in.readParcelable(Bitmap.class.getClassLoader());
-        imageNumber = in.readInt();
-    }
-
     public static final Creator<Image> CREATOR = new Creator<Image>() {
         @Override
         public Image createFromParcel(Parcel in) {
@@ -36,6 +17,24 @@ public class Image implements Parcelable {
             return new Image[size];
         }
     };
+    private String date;
+    private Bitmap image;
+    private int imageNumber;
+
+    public Image() {
+    }
+
+    public Image(String date, Bitmap image, int imageNumber) {
+        this.date = date;
+        this.image = image;
+        this.imageNumber = imageNumber;
+    }
+
+    protected Image(Parcel in) {
+        date = in.readString();
+        image = in.readParcelable(Bitmap.class.getClassLoader());
+        imageNumber = in.readInt();
+    }
 
     public String getImageDate() {
         return date;

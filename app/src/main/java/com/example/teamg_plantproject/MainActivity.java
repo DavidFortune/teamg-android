@@ -39,19 +39,19 @@ public class MainActivity extends AppCompatActivity {
             NavigationUI.setupWithNavController(navView, navController);
 
             FirebaseMessaging.getInstance().subscribeToTopic(auth.getUid())
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        String msg = "Successful login ";
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            String msg = "Successful login ";
+                            //+ auth.getUid();
+                            if (!task.isSuccessful()) {
+                                msg = "Failed to login ";
                                 //+ auth.getUid();
-                        if (!task.isSuccessful()) {
-                            msg = "Failed to login ";
-                                    //+ auth.getUid();
+                            }
+                            Log.d("Settup Listner", msg);
+                            Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                         }
-                        Log.d("Settup Listner", msg);
-                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-                    }
-                });
+                    });
 
         } else {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);

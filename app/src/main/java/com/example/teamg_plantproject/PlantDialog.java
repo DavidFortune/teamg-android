@@ -1,8 +1,6 @@
 package com.example.teamg_plantproject;
 
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -14,13 +12,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.ArrayAdapter;
-import android.widget.SimpleCursorAdapter;
-import androidx.fragment.app.FragmentManager;
-import android.widget.Spinner;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,25 +29,22 @@ import com.google.android.gms.vision.barcode.Barcode;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class PlantDialog extends DialogFragment {
+    protected static final String TAG = "_PLANT DIALOG";
+    private static String extra = "extraPlant";
+    protected int typeID;
+    DBHelper_PlantType dbHelper_plantType;
     private Button saveButton;
     private Button cancelButton;
     private EditText plantNameEdit;
     private Spinner spinEdit;
-    private static String extra = "extraPlant";
-    protected int typeID;
-    DBHelper_PlantType dbHelper_plantType;
     private EditText plantSensorEdit;
     private CollectionReference sensorDataRef;
     private String sensorID;
     private FirebaseFirestore fb = FirebaseFirestore.getInstance();
-    protected static final String TAG = "_PLANT DIALOG";
 
     public View onCreateView(@NonNull LayoutInflater inflater
             , @Nullable ViewGroup container
@@ -120,16 +112,15 @@ public class PlantDialog extends DialogFragment {
                 String selectedItemText = parent.getItemAtPosition(position).toString();
                 ArrayAdapter arrayAdapter1 = ((ArrayAdapter) spinEdit.getAdapter());
                 arrayAdapter1.notifyDataSetChanged();
-                if (parent.getItemAtPosition(position).equals("Plant Type:")){
+                if (parent.getItemAtPosition(position).equals("Plant Type:")) {
                     // do nothing
-                }
-                else {
+                } else {
 
                     Toast.makeText(getActivity().getApplicationContext(), "Selected : "
                             + selectedItemText, Toast.LENGTH_SHORT).show();
                     if (parent.getItemAtPosition(position).equals("Create A New Plant Type...")) {
                         Intent intent = new Intent(view.getContext(), PlantType_Custom.class);
-                        startActivityForResult(intent,10);
+                        startActivityForResult(intent, 10);
                     }
                 }
             }
@@ -143,7 +134,7 @@ public class PlantDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), QRCodeScanActivity.class);
-                startActivityForResult(intent,0);
+                startActivityForResult(intent, 0);
 
             }
         });
@@ -161,6 +152,7 @@ public class PlantDialog extends DialogFragment {
         Intent intent = new Intent(this.getActivity(), MainActivity.class);
         startActivity(intent);
     }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.add_plant_type) {
@@ -171,7 +163,7 @@ public class PlantDialog extends DialogFragment {
             Bundle sendData = new Bundle();
             sendData.putInt("TypeId", typeID);
             showDialog(this, sendData);
-        }else if (item.getItemId() == R.id.cancel_new_plant_type) {
+        } else if (item.getItemId() == R.id.cancel_new_plant_type) {
 
             goToPlantDialog();
         }
@@ -180,23 +172,20 @@ public class PlantDialog extends DialogFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(requestCode==0){
-            if(resultCode == CommonStatusCodes.SUCCESS){
-                if(data!=null)
-                {
+        if (requestCode == 0) {
+            if (resultCode == CommonStatusCodes.SUCCESS) {
+                if (data != null) {
                     Barcode barcode = data.getParcelableExtra("qrcode");
                     plantSensorEdit.setText(barcode.displayValue);
-                }
-                else{
+                } else {
 
                 }
             }
         }
-        if(requestCode==10){
+        if (requestCode == 10) {
 
             updateSpinView();
-        }
-        else {
+        } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
@@ -208,8 +197,7 @@ public class PlantDialog extends DialogFragment {
         editDialog.show(fragmentManager, "Plant Type Add");
     }
 
-    public void updateSpinView()
-    {
+    public void updateSpinView() {
 
         DBHelper_PlantType db2 = new DBHelper_PlantType(this.getContext());
         ArrayList<PlantType> plants = new ArrayList<>();
@@ -223,18 +211,14 @@ public class PlantDialog extends DialogFragment {
             plantChoices.add(plants.get(i).getPlantType());
         }
         plantChoices.add(0, "Plant Type");
-        plantChoices.add( "Create A New Plant Type...");
+        plantChoices.add("Create A New Plant Type...");
 
 
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 this.getActivity(), android.R.layout.simple_spinner_dropdown_item, plantChoices) {
             @Override
             public boolean isEnabled(int position) {
-                if (position == 0) {
-                    return false;
-                } else {
-                    return true;
-                }
+                return position != 0;
             }
 
             @Override
