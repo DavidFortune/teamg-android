@@ -42,6 +42,7 @@ public class ImageArchive extends AppCompatActivity {
     protected Button addImageButton;
     protected DatabaseHelper db;
     protected String sensorID;
+    protected int PlantID;
     static final int IMAGE_CAPTURE_CODE = 1001;
     static final int SELECT_FILE = 1000;
     private static final int CAMERA_REQUEST = 1;
@@ -90,6 +91,8 @@ public class ImageArchive extends AppCompatActivity {
         });
 
         sensorID = getIntent().getStringExtra("SENSOR_ID");
+        PlantID = getIntent().getIntExtra("PlantID",0);
+        Log.d(TAG, "Archive: PLANT ID" + PlantID);
         db = new DatabaseHelper(getApplicationContext());
         Log.d(TAG, "onCreate, sensor ID: " + sensorID);
 
@@ -171,6 +174,7 @@ public class ImageArchive extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
         Intent intent = new Intent(this, PlantActivity.class);
+        intent.putExtra("PlantID",PlantID);
         this.startActivity(intent);
         return true;
     }

@@ -186,6 +186,7 @@ public class PlantActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getBaseContext(), ImageArchive.class);
+                intent.putExtra("PlantID",plantID);
                 intent.putExtra("SENSOR_ID", plantSensorID);
                 startActivity(intent);
             }
