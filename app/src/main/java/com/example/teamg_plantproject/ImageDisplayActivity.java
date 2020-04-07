@@ -21,10 +21,11 @@ import java.util.Date;
 public class ImageDisplayActivity extends AppCompatActivity {
     protected String path;
     protected TextView date;
-    //protected Button deleteImgButton;
+    protected Button deleteImgButton;
     protected String sensorID;
     protected DatabaseHelper db;
-     Image image;
+    int pictureNumber;
+    Image image;
     String image_date;
 
     @Override
@@ -36,30 +37,27 @@ public class ImageDisplayActivity extends AppCompatActivity {
         ImageView imageView = (ImageView)findViewById(R.id.imageView);
         date = findViewById(R.id.dateStamp);
 
-        image=    getIntent().getExtras().getParcelable("Image");
-//do anything with data
-      //  image = getIntent().getParcelableExtra("Image");
-        image_date = getIntent().getStringExtra("Date");
-        sensorID = getIntent().getStringExtra("SensorID");
+        image= getIntent().getParcelableExtra("Image");
+        //do anything with data
+
 
         imageView.setImageBitmap(image.getImage());
         date.setText(image_date);
 
-        /*deleteImgButton.setOnClickListener(new View.OnClickListener() {
+        pictureNumber = image.getImageNumber();
 
+        deleteImgButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                  //Deleting records from database
-
                 db = new DatabaseHelper(getApplicationContext());
-                db.deletePlantPicture(sensorID);
-
+                db.deletePlantPicture(pictureNumber);
                 //after deleting data go to main page
                 Intent intent = new Intent(ImageDisplayActivity.this, ImageArchive.class);
                 startActivity(intent);
                 finish();
             }
-        });*/
+        });
     }
     @Override
     public boolean onSupportNavigateUp() {

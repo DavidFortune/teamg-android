@@ -48,7 +48,6 @@ public class ImageArchive extends AppCompatActivity {
     private static final int PICK_FROM_GALLERY = 2;
 
     ArrayList<Bitmap> plantPictures;
-    ArrayList<Image> images;
     protected GridView gridView;
 
     @Override

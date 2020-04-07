@@ -137,37 +137,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    //get 1 plant archive image
-    public Image getPlantImage (String sensor_id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        String selectQuery = "SELECT  * FROM " + TABLE_PLANT_PICTURES + " WHERE "
-                + SENSOR_ID + " = " + sensor_id;
-
-        Cursor cursor = db.rawQuery(selectQuery, null);
-
-        if (cursor != null) {
-            cursor.moveToFirst();
-        }
-
-        assert cursor != null;
-        if (cursor.moveToFirst()) {
-            Image image = new Image();
-            image.setImageDate(cursor.getString(cursor.getColumnIndex(DATE_CREATED)));
-            image.setImage_number(cursor.getInt(cursor.getColumnIndex(PICTURE_NUMBER)));
-
-            byte[] myImage;
-            myImage = cursor.getBlob(cursor.getColumnIndex(PLANT_PICTURES));
-            image.setImage(BitmapFactory.decodeByteArray(myImage, 0, myImage.length));
-
-            cursor.close();
-            return image;
-
-        } else {
-            cursor.close();
-            return null;
-        }
-    }
     //Get all plants from plant table
     public ArrayList<Plant> getAllPlants() {
         ArrayList<Plant> plants = new ArrayList<>();

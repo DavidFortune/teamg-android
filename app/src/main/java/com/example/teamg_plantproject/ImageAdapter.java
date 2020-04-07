@@ -62,10 +62,7 @@ public class ImageAdapter extends BaseAdapter
             public void onClick(View v) {
                 Intent intent = new Intent(context, ImageDisplayActivity.class);
                 intent.putExtra("Image",  imagesAll.get(position));
-                intent.putExtra("Date", imagesAll.get(position).getImageDate());
-                intent.putExtra("SensorID", sensorID);
                 context.startActivity(intent);
-
             }
         });
         return convertView;
