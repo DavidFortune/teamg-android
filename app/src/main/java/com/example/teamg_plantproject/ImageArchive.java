@@ -44,7 +44,10 @@ public class ImageArchive extends AppCompatActivity {
         addImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final CharSequence[] items = {"Camera", "Gallery", "Cancel"};
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+
+               /* final CharSequence[] items = {"Camera", "Gallery", "Cancel"};
                 AlertDialog.Builder builder = new AlertDialog.Builder(ImageArchive.this);
                 builder.setTitle("Select image from");
                 builder.setItems(items, new DialogInterface.OnClickListener() {
@@ -63,7 +66,7 @@ public class ImageArchive extends AppCompatActivity {
                         }
                     }
                 });
-                builder.show();
+                builder.show();*/
             }
         });
 
@@ -92,10 +95,10 @@ public class ImageArchive extends AppCompatActivity {
         Log.d("TAG", "in onActivity for Result");
         super.onActivityResult(requestCode, resultCode, data);
         //db = new DatabaseHelper(getApplicationContext());
-        SimpleDateFormat s = new SimpleDateFormat("MMM-dd-yyyy HH:mm:ss");
+        SimpleDateFormat s = new SimpleDateFormat("MMM dd, yyyy HH:mm:ss");
         String format = s.format(new Date());
         if (resultCode == RESULT_OK) {
-            if (requestCode == CAMERA_REQUEST) {
+            //if (requestCode == CAMERA_REQUEST) {
                 Log.d("TAG", "onActivityResult: getting there");
                 Bundle bundle = data.getExtras();
                 Bitmap myImage = bundle.getParcelable("data");
@@ -114,18 +117,10 @@ public class ImageArchive extends AppCompatActivity {
                 i.putExtra("SENSOR_ID", sensorID);
                 startActivity(i);
                 finish();
-            }
+            //}
 
-            if (requestCode == PICK_FROM_GALLERY) {
-                    /*Uri imageUri = data.getData();
-                    Bitmap myImage = null;
-                    try
-                    {
-                        myImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-                    } catch (IOException e)
-                    {
-                        e.printStackTrace();
-                    }*/
+           /* if (requestCode == PICK_FROM_GALLERY) {
+
                 Uri IMAGE_URI = data.getData();
                 InputStream image_stream = null;
                 try {
@@ -147,7 +142,7 @@ public class ImageArchive extends AppCompatActivity {
                 Intent i = new Intent(ImageArchive.this, ImageArchive.class);
                 startActivity(i);
                 finish();
-            }
+            }*/
         }
     }
 
