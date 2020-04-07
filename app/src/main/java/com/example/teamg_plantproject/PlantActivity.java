@@ -452,12 +452,13 @@ public class PlantActivity extends AppCompatActivity {
 
                 });
     }
+
     protected void setupGraphMonthly() {
 
         graph.removeAllSeries();
         sensorDataRef.orderBy("createdAt", Query.Direction.ASCENDING)
-                    .limit(24)
-                .whereArrayContains("createdAt","April 7")
+                .limit(720)
+                //.whereArrayContains("createdAt","April 7")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @SuppressLint("ClickableViewAccessibility")
                     @Override
@@ -472,8 +473,15 @@ public class PlantActivity extends AppCompatActivity {
                         List<DataPoint> dataPointsAir = new ArrayList<>();
                         List<DataPoint> dataPointsHum = new ArrayList<>();
                         int iteration = 0;
+                        int dailyiteration = 0;
+                        int sumSoil = 0;
+                        int sumHum = 0;
+                        int sumSolar = 0;
+                        int sumTemp = 0;
+
                         for (QueryDocumentSnapshot doc : value) {
-                            if (doc.get("rawHumidity") != null) {
+
+                            if (dailyiteration <= 24 && doc.get("rawHumidity") != null ) {
 
                                 String i = Objects.requireNonNull(doc.get("rawSoilValue")).toString();
                                 int ii = (int) Math.floor(Double.parseDouble(i));
@@ -483,20 +491,37 @@ public class PlantActivity extends AppCompatActivity {
                                 int kk = (int) Math.floor(Double.parseDouble(k));
                                 String l = Objects.requireNonNull(doc.get("rawTemp")).toString();
                                 int ll = (int) Math.floor(Double.parseDouble(l));
-                                int soilPercent = ((ii * 100) / soilMax);
+                                sumSoil = sumSoil + ii;
+                                sumHum = sumHum + jj;
+                                sumSolar = sumSolar + kk;
+                                sumTemp = sumTemp + ll;
+                                dailyiteration++;
+
+                            }
+
+
+
+
+                            if (doc.get("rawHumidity") != null && dailyiteration >=24) {
+
+
+                                int soilPercent = ((sumSoil * 100) / soilMax);
+
+
                                 dataPointsSoil.add(new DataPoint(iteration, soilPercent));
-                                dataPointsSolar.add(new DataPoint(iteration, kk));
-                                dataPointsAir.add(new DataPoint(iteration, ll));
-                                dataPointsHum.add(new DataPoint(iteration, jj));
+                                dataPointsSolar.add(new DataPoint(iteration, sumSolar));
+                                dataPointsAir.add(new DataPoint(iteration, sumTemp));
+                                dataPointsHum.add(new DataPoint(iteration, sumHum));
 
                                 iteration++;
                             }
+                            dailyiteration=0;
+
                         }
                         final LineGraphSeries<DataPoint> series = new LineGraphSeries<>(dataPointsSoil.toArray(new DataPoint[dataPointsSoil.size()]));
                         final LineGraphSeries<DataPoint> series2 = new LineGraphSeries<>(dataPointsSolar.toArray(new DataPoint[dataPointsSolar.size()]));
                         final LineGraphSeries<DataPoint> series3 = new LineGraphSeries<>(dataPointsAir.toArray(new DataPoint[dataPointsAir.size()]));
                         final LineGraphSeries<DataPoint> series4 = new LineGraphSeries<>(dataPointsHum.toArray(new DataPoint[dataPointsHum.size()]));
-
 
 
                         if (currentGraph == "soil") {
@@ -576,6 +601,7 @@ public class PlantActivity extends AppCompatActivity {
 
                 });
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
