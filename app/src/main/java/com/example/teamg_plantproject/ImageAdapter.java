@@ -54,6 +54,7 @@ public class ImageAdapter extends BaseAdapter {
             public void onClick(View v) {
                 Intent intent = new Intent(context, ImageDisplayActivity.class);
                 intent.putExtra("Image", imagesAll.get(position));
+                System.out.println(plantId + "++++++++++++++++++++++++++++" + "Image Adapter");
                 intent.putExtra("PlantID", plantId);
                 context.startActivity(intent);
             }

@@ -24,8 +24,6 @@ import java.util.Date;
 
 public class ImageArchive extends AppCompatActivity {
 
-    static final int IMAGE_CAPTURE_CODE = 1001;
-    static final int SELECT_FILE = 1000;
     private static final String TAG = "My Activity";
     private static final int CAMERA_REQUEST = 1;
     private static final int PICK_FROM_GALLERY = 2;
@@ -34,8 +32,6 @@ public class ImageArchive extends AppCompatActivity {
     protected String sensorID;
     protected int PlantID;
     protected GridView gridView;
-    ArrayList<Bitmap> plantPictures;
-    private int plantId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,11 +102,13 @@ public class ImageArchive extends AppCompatActivity {
                 myImage.compress(Bitmap.CompressFormat.PNG, 100, stream);
                 byte[] imageInByte = stream.toByteArray();
 
+
                 //Adding plant picture
                 db.addPlantPicture(imageInByte, sensorID, format);
                 Log.d(TAG, "onActivityResult: inserted picture");
                 Log.d(TAG, "onActivityResult: sensor ID: " + sensorID + "date " + format);
                 Intent i = new Intent(ImageArchive.this, ImageArchive.class);
+                i.putExtra("PlantID", PlantID);
                 startActivity(i);
                 finish();
             }

@@ -20,8 +20,8 @@
 
     <TextView
         android:id="@+id/plant_type_listview"
-        android:layout_width="265dp"
-        android:layout_height="30dp"
+        android:layout_width="205dp"
+        android:layout_height="15dp"
         android:autoSizeTextType="uniform"
         android:text="Plant Type"
         app:layout_constraintEnd_toEndOf="parent"

@@ -15,11 +15,9 @@ import androidx.appcompat.app.AppCompatActivity;
 public class ImageDisplayActivity extends AppCompatActivity {
     protected String path;
     protected TextView date;
-    protected String sensorID;
     protected DatabaseHelper db;
     int pictureNumber;
     Image image;
-    String image_date;
     private int plantId;
 
     @Override
@@ -50,12 +48,10 @@ public class ImageDisplayActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.option_delete_image) {
+            Intent intent = new Intent(this, ImageArchive.class);
+            intent.putExtra("PlantID", plantId);
             db = new DatabaseHelper(getApplicationContext());
             db.deletePlantPicture(pictureNumber);
-            //after deleting data go to main page
-            Intent intent = new Intent(this, ImageArchive.class);
-            System.out.println(plantId + "++++++++++++++++++++++++++++" + "delete");
-//            intent.putExtra("PlantId", plantId);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
@@ -64,7 +60,6 @@ public class ImageDisplayActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         Intent intent = new Intent(this, ImageArchive.class);
         intent.putExtra("PlantID", plantId);
-        System.out.println(plantId + "++++++++++++++++++++++++++++" + "back");
         this.startActivity(intent);
         return true;
     }
