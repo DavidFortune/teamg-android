@@ -113,7 +113,7 @@ public class ImageArchive extends AppCompatActivity {
         Log.d("TAG", "in onActivity for Result");
         super.onActivityResult(requestCode, resultCode, data);
         //db = new DatabaseHelper(getApplicationContext());
-        SimpleDateFormat s = new SimpleDateFormat("MMM-dd-yyyy");
+        SimpleDateFormat s = new SimpleDateFormat("MMM-dd-yyyy HH:mm:ss");
         String format = s.format(new Date());
             if ( resultCode == RESULT_OK)
             {

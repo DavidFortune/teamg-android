@@ -42,9 +42,11 @@ public class MainActivity extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        String msg = "Successful signup to topic " + auth.getUid();
+                        String msg = "Successful login ";
+                                //+ auth.getUid();
                         if (!task.isSuccessful()) {
-                            msg = "Failed to singup to topic " + auth.getUid();
+                            msg = "Failed to login ";
+                                    //+ auth.getUid();
                         }
                         Log.d("Settup Listner", msg);
                         Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
