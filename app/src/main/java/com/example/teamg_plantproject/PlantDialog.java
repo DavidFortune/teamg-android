@@ -40,12 +40,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
+public class PlantDialog extends DialogFragment {
     private Button saveButton;
     private Button cancelButton;
-//    private Button buttonConfirmNewType;
     private EditText plantNameEdit;
-  //  private EditText plantTypeEdit;
     private Spinner spinEdit;
     private static String extra = "extraPlant";
     protected int typeID;
@@ -55,10 +53,6 @@ public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
     private String sensorID;
     private FirebaseFirestore fb = FirebaseFirestore.getInstance();
     protected static final String TAG = "_PLANT DIALOG";
-    protected SharedPreferencesHelper sharedPreferencesHelper;
-
-    ArrayList<Plant> plants = null;
-    ArrayList<Type> types = null;
 
     public View onCreateView(@NonNull LayoutInflater inflater
             , @Nullable ViewGroup container
@@ -68,12 +62,9 @@ public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
         saveButton = view.findViewById(R.id.save);
         cancelButton = view.findViewById(R.id.cancel);
         plantNameEdit = view.findViewById(R.id.plant_name);
-//      plantTypeEdit = view.findViewById(R.id.plant_type);
         plantSensorEdit = view.findViewById(R.id.plant_sensor_id);
-//        plantSensorEdit.setText("z1QgZ1bVjYnUyrsz1U9b");
+        plantSensorEdit.setText("z1QgZ1bVjYnUyrsz1U9b");
         spinEdit = view.findViewById(R.id.sp_Text);
-
-//        buttonConfirmNewType = view.findViewById(R.id.button_confirm_new_type);
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,30 +112,7 @@ public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
             }
         });
 
-
-
-
-        /*
-        final String[] plantChoices = new String[]{
-                "Plant Type",
-                "Bulbous",
-                "Cactus",
-                "Common House",
-                "Fern",
-                "Flowering",
-                "Foliage",
-                "Succulent",
-                "Create A New Plant Type..."
-        };
-
-        */
-
-/*        final List<String> plantChoices = new ArrayList<>();
-        plantChoices.add(0, "Plant Type:");
-        plantChoices.add("Bulbous");*/
-
         updateSpinView(); // update the spinner thingy
-
 
         spinEdit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -162,14 +130,8 @@ public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
                     if (parent.getItemAtPosition(position).equals("Create A New Plant Type...")) {
                         Intent intent = new Intent(view.getContext(), PlantType_Custom.class);
                         startActivityForResult(intent,10);
-                      //  intent.putExtra(extra,selectedItemText);
-//                        intent.putExtra("B",spinEdit.toString());
-                     //   Bundle sendData = new Bundle();
-                      //  intent.putExtra("TypeID", selectedItemText);
-                       // startActivity(intent);
                     }
                 }
-
             }
 
             @Override
@@ -260,7 +222,9 @@ public class PlantDialog<sharedPreferencesHelper> extends DialogFragment {
             //plantChoices[i] = plants.get(i).getPlantType();
             plantChoices.add(plants.get(i).getPlantType());
         }
+        plantChoices.add(0, "Plant Type");
         plantChoices.add( "Create A New Plant Type...");
+
 
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 this.getActivity(), android.R.layout.simple_spinner_dropdown_item, plantChoices) {

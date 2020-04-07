@@ -23,7 +23,7 @@ public class PlantType_Custom extends AppCompatActivity{
     private EditText editAirHumidity;
     private EditText editAirTemperature;
     private EditText editSoilMoisture;
-    private Button buttonSaveType;
+    private Button buttonShowType;
     private Button buttonCancelType;
     private Button buttonConfirmType;
     private TextView textViewPlantType;
@@ -42,7 +42,7 @@ public class PlantType_Custom extends AppCompatActivity{
         setContentView(R.layout.activity_plant_type__custom);
 
             mrUser = (TextView) findViewById(R.id.user_welcome);
-            buttonSaveType = (Button) findViewById(R.id.show_new_plant_type);
+            buttonShowType = (Button) findViewById(R.id.show_new_plant_type);
             buttonCancelType = (Button) findViewById(R.id.cancel_new_plant_type);
             buttonConfirmType = (Button) findViewById(R.id.confirm_goback);
             editPlantType = (EditText) findViewById(R.id.edit_new_plant_type);
@@ -71,7 +71,7 @@ public class PlantType_Custom extends AppCompatActivity{
             Toast.makeText(this, "Welcome to Add Your New Plant Type", Toast.LENGTH_SHORT).show();
         }
 
-        buttonSaveType.setOnClickListener(new View.OnClickListener() {
+        buttonShowType.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 if (TextUtils.isEmpty(editPlantType.getText().toString())
                         || TextUtils.isEmpty(editAirHumidity.getText().toString())
@@ -84,14 +84,14 @@ public class PlantType_Custom extends AppCompatActivity{
 
                     Toast.makeText(PlantType_Custom.this, "New Plant Type Info Is Edited",
                             Toast.LENGTH_LONG).show();
-                textViewPlantType.setText("Added Plant Type is: "
-                        + editPlantType.getText().toString()+";");
-                textViewAirHumidity.setText("Added Air Humidity is: "
-                        + editAirHumidity.getText().toString()+" %;");
-                textViewAirTemperature.setText("Added Air Temperature is:"
-                        + editAirTemperature.getText().toString()+" degrees;");
-                textViewSoilMoisture.setText("Added Soil Moisture is:"
-                        + editSoilMoisture.getText().toString()+" %;");
+                textViewPlantType.setText("Added Plant Type is:  "
+                        + editPlantType.getText().toString()+" ;");
+                textViewAirHumidity.setText("Added Air Humidity is:  "
+                        + editAirHumidity.getText().toString()+" % ;");
+                textViewAirTemperature.setText("Added Air Temperature is:  "
+                        + editAirTemperature.getText().toString()+" degrees ;");
+                textViewSoilMoisture.setText("Added Soil Moisture is:  "
+                        + editSoilMoisture.getText().toString()+" % ;");
                 }
             }
         });
@@ -147,15 +147,10 @@ public class PlantType_Custom extends AppCompatActivity{
 
                     dbHelper_plantType.createType(plantType);
                   //  Log.d(TAG, "onClick: " + dbHelper_plantType.getType(1));
-
-/*                   Intent intent = new Intent(PlantType_Custom.this,
-                            PlantDialog.class);*/
-/*                    Bundle bundle = new Bundle();
-                    bundle.putString(plantTypeName,editPlantType.getText().toString());
-                    intent.putExtras(bundle);*/
                     Log.d("TAG", "onClick: FINISHED CUSTOM");
                     Intent intent = new Intent();
-                    intent.putExtra("selectedChoice",plantTypeName); // return the one we made so we can set it as our current selection
+                    intent.putExtra("selectedChoice",plantTypeName);
+                    // return the one we made so we can set it as our current selection
                     setResult(CommonStatusCodes.SUCCESS,intent);
                     finish();
                 }
