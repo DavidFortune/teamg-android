@@ -63,7 +63,7 @@ public class PlantDialog extends DialogFragment {
         cancelButton = view.findViewById(R.id.cancel);
         plantNameEdit = view.findViewById(R.id.plant_name);
         plantSensorEdit = view.findViewById(R.id.plant_sensor_id);
-        plantSensorEdit.setText("z1QgZ1bVjYnUyrsz1U9b");
+//        plantSensorEdit.setText("z1QgZ1bVjYnUyrsz1U9b");
         spinEdit = view.findViewById(R.id.sp_Text);
 
         saveButton.setOnClickListener(new View.OnClickListener() {
