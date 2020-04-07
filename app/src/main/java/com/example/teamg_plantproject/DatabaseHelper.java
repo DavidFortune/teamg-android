@@ -347,7 +347,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 Image image = new Image();
                 image.setImage(BitmapFactory.decodeByteArray(myImage, 0, myImage.length));
                 image.setImageDate(cursor.getString(cursor.getColumnIndex(DATE_CREATED)));
-                image.setImageNumber((cursor.getColumnIndex(PICTURE_NUMBER)));
+                image.setImageNumber(cursor.getInt(cursor.getColumnIndex(PICTURE_NUMBER)));
 
                 imagearray.add(image);
             } while (cursor.moveToNext());

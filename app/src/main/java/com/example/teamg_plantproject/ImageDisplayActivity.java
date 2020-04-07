@@ -33,7 +33,7 @@ public class ImageDisplayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_display);
 
-        //deleteImgButton = findViewById(R.id.delete_img_button);
+        deleteImgButton = findViewById(R.id.delete_img_button);
         ImageView imageView = (ImageView)findViewById(R.id.imageView);
         date = findViewById(R.id.dateStamp);
 
@@ -42,8 +42,9 @@ public class ImageDisplayActivity extends AppCompatActivity {
 
 
         imageView.setImageBitmap(image.getImage());
-        date.setText(image_date);
 
+        date.setText(image.getImageDate());
+        Log.d("TAG", "onCreate: IMAGE NUMBER: "+ image.getImageNumber());
         pictureNumber = image.getImageNumber();
 
         deleteImgButton.setOnClickListener(new View.OnClickListener() {
