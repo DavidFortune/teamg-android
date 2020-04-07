@@ -24,7 +24,7 @@ public class ImageDisplayActivity extends AppCompatActivity {
     //protected Button deleteImgButton;
     protected String sensorID;
     protected DatabaseHelper db;
-    Bitmap image;
+     Image image;
     String image_date;
 
     @Override
@@ -36,11 +36,13 @@ public class ImageDisplayActivity extends AppCompatActivity {
         ImageView imageView = (ImageView)findViewById(R.id.imageView);
         date = findViewById(R.id.dateStamp);
 
-        image = getIntent().getParcelableExtra("Image");
+        image=    getIntent().getExtras().getParcelable("Image");
+//do anything with data
+      //  image = getIntent().getParcelableExtra("Image");
         image_date = getIntent().getStringExtra("Date");
         sensorID = getIntent().getStringExtra("SensorID");
 
-        imageView.setImageBitmap(image);
+        imageView.setImageBitmap(image.getImage());
         date.setText(image_date);
 
         /*deleteImgButton.setOnClickListener(new View.OnClickListener() {
