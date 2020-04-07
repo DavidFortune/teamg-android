@@ -207,7 +207,7 @@ public class PlantActivity extends AppCompatActivity {
         });
 
 
-        setupGraphDaily();
+        setupGraphMonthly();
 
         //on click listener of picture archive button
         imagesButton.setOnClickListener(new View.OnClickListener() {
@@ -456,8 +456,7 @@ public class PlantActivity extends AppCompatActivity {
     protected void setupGraphMonthly() {
 
         graph.removeAllSeries();
-        sensorDataRef.orderBy("createdAt", Query.Direction.ASCENDING)
-                .limit(720)
+        sensorDataRef.orderBy("createdAt", Query.Direction.ASCENDING).limit(720)
                 //.whereArrayContains("createdAt","April 7")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @SuppressLint("ClickableViewAccessibility")
@@ -481,7 +480,7 @@ public class PlantActivity extends AppCompatActivity {
 
                         for (QueryDocumentSnapshot doc : value) {
 
-                            if (dailyiteration <= 24 && doc.get("rawHumidity") != null ) {
+                            if (dailyiteration < 25  ) {
 
                                 String i = Objects.requireNonNull(doc.get("rawSoilValue")).toString();
                                 int ii = (int) Math.floor(Double.parseDouble(i));
@@ -496,6 +495,7 @@ public class PlantActivity extends AppCompatActivity {
                                 sumSolar = sumSolar + kk;
                                 sumTemp = sumTemp + ll;
                                 dailyiteration++;
+                                Log.d(TAG, "daily iteration: "+dailyiteration);
 
                             }
 
@@ -512,7 +512,7 @@ public class PlantActivity extends AppCompatActivity {
                                 dataPointsSolar.add(new DataPoint(iteration, sumSolar));
                                 dataPointsAir.add(new DataPoint(iteration, sumTemp));
                                 dataPointsHum.add(new DataPoint(iteration, sumHum));
-
+                                Log.d("TAG", "datapoint : "+iteration+" "+soilPercent);
                                 iteration++;
                             }
                             dailyiteration=0;
@@ -540,7 +540,7 @@ public class PlantActivity extends AppCompatActivity {
                             graph.getViewport().setScrollableY(true); //allow vertical scrolling
                             // set axis labels
                             graph.getGridLabelRenderer().setVerticalAxisTitle("Soil Moisture (%)");
-                            graph.getGridLabelRenderer().setHorizontalAxisTitle("Last 24 hours");
+                            graph.getGridLabelRenderer().setHorizontalAxisTitle("Last 30 days");
 
                         } else if (currentGraph == "solar") {
                             graph.removeAllSeries();
@@ -558,7 +558,7 @@ public class PlantActivity extends AppCompatActivity {
                             graph.getViewport().setScrollableY(true); //allow vertical scrolling
                             // set axis labels
                             graph.getGridLabelRenderer().setVerticalAxisTitle("Sunlight");
-                            graph.getGridLabelRenderer().setHorizontalAxisTitle("Last 24 hours");
+                            graph.getGridLabelRenderer().setHorizontalAxisTitle("Last 30 days");
                         } else if (currentGraph == "air") {
                             graph.removeAllSeries();
                             graph.addSeries(series3);
@@ -575,7 +575,7 @@ public class PlantActivity extends AppCompatActivity {
                             graph.getViewport().setScrollableY(true); //allow vertical scrolling
                             // set axis labels
                             graph.getGridLabelRenderer().setVerticalAxisTitle("(°C)");
-                            graph.getGridLabelRenderer().setHorizontalAxisTitle("Last 24 hours");
+                            graph.getGridLabelRenderer().setHorizontalAxisTitle("Last 30 days");
                         } else if (currentGraph == "humidity") {
 
                             graph.removeAllSeries();
@@ -593,7 +593,7 @@ public class PlantActivity extends AppCompatActivity {
                             graph.getViewport().setScrollableY(true); //allow vertical scrolling
                             // set axis labels
                             graph.getGridLabelRenderer().setVerticalAxisTitle("Air Humidity (%)");
-                            graph.getGridLabelRenderer().setHorizontalAxisTitle("Last 24 hours");
+                            graph.getGridLabelRenderer().setHorizontalAxisTitle("Last 30 days");
                         }
 
                     }
