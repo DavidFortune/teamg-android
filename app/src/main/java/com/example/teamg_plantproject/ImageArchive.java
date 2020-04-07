@@ -99,7 +99,6 @@ public class ImageArchive extends AppCompatActivity {
         gridView = (GridView) findViewById(R.id.gridView);
 
        // plantPictures = db.getArchivePictures(sensorID);
-       // images = db.getAllImages();
         ArrayList<Image> images = new ArrayList<>();
         images = db.getAllImages(sensorID);
 
@@ -128,7 +127,6 @@ public class ImageArchive extends AppCompatActivity {
                     byte imageInByte[] = stream.toByteArray();
 
                     //Adding plant picture
-                    //db.addPlantPicture(imageInByte, "TEMPz1qwerwe","TEMP22-04-20//12:40:12");
                     db.addPlantPicture(imageInByte, sensorID, format);
                     Log.d(TAG, "onActivityResult: inserted picture");
                     Log.d(TAG, "onActivityResult: sensor ID: " + sensorID + "date " + format);

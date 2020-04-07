@@ -38,9 +38,6 @@ public class ImageDisplayActivity extends AppCompatActivity {
         date = findViewById(R.id.dateStamp);
 
         image= getIntent().getParcelableExtra("Image");
-        //do anything with data
-
-
         imageView.setImageBitmap(image.getImage());
 
         date.setText(image.getImageDate());
@@ -50,7 +47,7 @@ public class ImageDisplayActivity extends AppCompatActivity {
         deleteImgButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 //Deleting records from database
+                //Deleting records from database
                 db = new DatabaseHelper(getApplicationContext());
                 db.deletePlantPicture(pictureNumber);
                 //after deleting data go to main page

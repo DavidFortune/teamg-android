@@ -16,15 +16,12 @@ import java.util.ArrayList;
 public class ImageAdapter extends BaseAdapter
 {
     private Context context;
-    //ArrayList<Plant> plantArrayList;
     ArrayList <Image> imagesAll;
-   // ArrayList<Bitmap> plantPicturesAll;
     String sensorID;
 
     public ImageAdapter(Context c, ArrayList<Image> images, String sensorID)
     {
         context = c;
-       // plantPicturesAll = plantPictures;
         imagesAll = images;
         this.sensorID = sensorID;
     }
@@ -32,7 +29,6 @@ public class ImageAdapter extends BaseAdapter
     {
         return imagesAll.size();
     }
-
     public Object getItem(int position)
     {
         return null;
@@ -53,7 +49,6 @@ public class ImageAdapter extends BaseAdapter
         final ImageView plantPic = (ImageView)convertView.findViewById(R.id.imageview_plant_pic);
         final TextView date = (TextView)convertView.findViewById(R.id.textview_date);
 
-        //plantPic.setImageBitmap(plantPicturesAll.get(position));
         plantPic.setImageBitmap(imagesAll.get(position).getImage());
         date.setText(imagesAll.get(position).getImageDate());
 
