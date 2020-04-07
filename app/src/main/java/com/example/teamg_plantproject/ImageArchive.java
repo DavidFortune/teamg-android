@@ -78,6 +78,7 @@ public class ImageArchive extends AppCompatActivity {
 
         // plantPictures = db.getArchivePictures(sensorID);
         ArrayList<Image> images = new ArrayList<>();
+        Log.d(TAG, "ARCHIVE sensorID :"+sensorID);
         images = db.getAllImages(sensorID);
 
         ImageAdapter imageAdapter = new ImageAdapter(this, images, sensorID, PlantID);

@@ -336,10 +336,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public ArrayList<Image> getAllImages(String sensor_id) {
         ArrayList<Image> imagearray = new ArrayList<Image>();
-        String selectQuery = "SELECT  * FROM " + TABLE_PLANT_PICTURES;
-
+        Log.d(TAG, "getAllImages: SENSORID"+ sensor_id);
+        String selectQuery = "SELECT * FROM " + TABLE_PLANT_PICTURES + " WHERE " + SENSOR_ID + " = ?";
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        //Cursor cursor = db.rawQuery(selectQuery, null);
+        Cursor cursor = db.rawQuery(selectQuery, new String[] { sensor_id });
 
         if (cursor.moveToFirst()) {
             do {
