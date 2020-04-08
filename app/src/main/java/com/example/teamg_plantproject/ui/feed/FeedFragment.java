@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,7 @@ import com.example.teamg_plantproject.SensorData;
 import com.example.teamg_plantproject.SensorDataAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
@@ -29,27 +31,42 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
+import java.util.Map;
 
 public class FeedFragment extends Fragment {
 
     protected View root;
     private FeedViewModel feedViewModel;
     private FirebaseFirestore fb = FirebaseFirestore.getInstance();
-    private CollectionReference sensorDataRef = fb.collection("sensors/z1QgZ1bVjYnUyrszlU9b/data");
-    private DocumentReference sensorDataObjectRef = fb.document("sensors/z1QgZ1bVjYnUyrszlU9b/data/HGt6aznsr96pnpVlrw7C");
+    private CollectionReference sensorDataRef;
+    private DocumentReference sensorDataObjectRef;
     private SensorDataAdapter adapter;
     private TextView textView;
+    private ListView notificationlist;
+    private FeedAdapter feedAdapter ;
+
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         feedViewModel =
                 ViewModelProviders.of(this).get(FeedViewModel.class);
         root = inflater.inflate(R.layout.fragment_feed, container, false);
-        textView = root.findViewById(R.id.text_sensor_data);
 
+        textView = root.findViewById(R.id.text_notification_data);
 
-        sensorDataRef.orderBy("createdAt", Query.Direction.DESCENDING).limit(50)
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        String profileUID = auth.getCurrentUser().getUid();
+        sensorDataRef = fb.collection("notifications");
+        //  fb.collection("notifications/"+profileUID+"/");
+        fb.document("notifications/" + profileUID + "/");
+        sensorDataRef.orderBy("topic", Query.Direction.DESCENDING)
+                //.whereArrayContains("topic",profileUID)
+                .limit(10)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value,
@@ -59,33 +76,38 @@ public class FeedFragment extends Fragment {
                             return;
                         }
 
-                        String sensorDataText = "";
-
+                        String notificationbody = "";
+                        Log.d("TAG", "onEvent: value " + value + "   ");
+                        ArrayList<String> arrayofdates=new ArrayList<String>();;
+                        ArrayList<String> arrayofnotifications=new ArrayList<String>();;
                         for (QueryDocumentSnapshot doc : value) {
-                            if (doc.get("rawHumidity") != null) {
+                            Log.d("TAG", "onEvent: PASSING THROUGH NOTIFICATIONS ");
+                            Map data = doc.getData();
+                            Map notification = (Map) data.get("notification");
+                            notificationbody = notificationbody + notification.get("body") + "\n";
+                            SimpleDateFormat sfd = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                            Timestamp timestamp = (Timestamp) doc.get("timestamp");
+                            String simpleformat = sfd.format(timestamp.toDate());
+                            String bodytext = (notification.get("body")).toString();
 
-                                Timestamp timestamp = (Timestamp) doc.get("createdAt");
-                                Date date = timestamp.toDate();
+                          //  Log.d("TAG", "what's the timestamp: " + sfd.format(timestamp.toDate()));
+                            Log.d("TAG", "onCreateView: "+ (notification.get("body")).toString());
 
-                                sensorDataText = sensorDataText +
-                                        date.toString()
-                                        + "\nAir Humidity: " + doc.get("rawHumidity")
-                                        + "    Solar: " + doc.get("rawSolarValue")
-                                        + "\nSoil humidity: " + doc.get("rawSoilValue")
-                                        + "    Temperature: " + doc.get("rawTemp")
-                                        + "\n\n";
+                            arrayofdates.add(simpleformat);
+                            arrayofnotifications.add(bodytext);
 
-                                Log.d(MainActivity.class.getName(), sensorDataText);
-                            }
                         }
+                        feedAdapter = new FeedAdapter(root.getContext(), arrayofdates, arrayofnotifications);
+                        // textView.setText(notificationbody);
+                        notificationlist = root.findViewById(R.id.listview_activityfeed);
 
-                        textView.setText(sensorDataText);
 
+//        feedAdapter.notifyDataSetChanged();
+                        notificationlist.setAdapter(feedAdapter);
+                        //setUpRecyclerView();
                     }
                 });
 
-
-        //setUpRecyclerView();
 
         return root;
     }
