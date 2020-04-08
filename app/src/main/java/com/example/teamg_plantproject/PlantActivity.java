@@ -154,7 +154,7 @@ public class PlantActivity extends AppCompatActivity {
                                 String l = Objects.requireNonNull(doc.get("rawTemp")).toString();
 
                                 waterBar.setProgress((1 - (((ii - 1300)) / soilMax)) * 100);
-                                Log.d(TAG, "onEvent: " + ((ii * 100) / soilMax));
+                                Log.d(TAG, "onEvent: " + ((1 - (((ii - 1300)) / soilMax)) * 100));
                                 humidityBar.setProgress(jj);
                                 Log.d(TAG, "onEvent: " + (jj));
                                 sunBar.setProgress((kk * 100) / solarMax);
@@ -162,7 +162,7 @@ public class PlantActivity extends AppCompatActivity {
                                 plantTemp.setText(l + "°C");
                                 Log.d(TAG, "onEvent: " + l);
 
-                                int water_p = ((ii * 100) / soilMax);
+                                int water_p = ((1 - (((ii - 1300)) / soilMax)) * 100);
                                 water_percentage.setText(water_p + " %");
 
                                 int sunshine_p = ((kk * 100) / solarMax);
