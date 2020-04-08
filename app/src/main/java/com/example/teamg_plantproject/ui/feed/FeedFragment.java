@@ -15,11 +15,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.teamg_plantproject.MainActivity;
+import com.example.teamg_plantproject.Notification;
 import com.example.teamg_plantproject.R;
 import com.example.teamg_plantproject.SensorData;
 import com.example.teamg_plantproject.SensorDataAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
@@ -36,90 +39,73 @@ public class FeedFragment extends Fragment {
     protected View root;
     private FeedViewModel feedViewModel;
     private FirebaseFirestore fb = FirebaseFirestore.getInstance();
-    private CollectionReference sensorDataRef = fb.collection("sensors/z1QgZ1bVjYnUyrszlU9b/data");
-    private DocumentReference sensorDataObjectRef = fb.document("sensors/z1QgZ1bVjYnUyrszlU9b/data/HGt6aznsr96pnpVlrw7C");
-    private SensorDataAdapter adapter;
-    private TextView textView;
+    private RecyclerView nRecyclerView;
+    private FirestoreRecyclerAdapter nAdapter;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        feedViewModel =
-                ViewModelProviders.of(this).get(FeedViewModel.class);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        feedViewModel = ViewModelProviders.of(this).get(FeedViewModel.class);
         root = inflater.inflate(R.layout.fragment_feed, container, false);
-        textView = root.findViewById(R.id.text_sensor_data);
+        nRecyclerView = root.findViewById(R.id.firestore_list);
+        final FirebaseAuth auth = FirebaseAuth.getInstance();
+
+        Query query = fb.collection("notifications").whereEqualTo("topic", auth.getUid()).orderBy("timestamp", Query.Direction.DESCENDING).limit(30);
+
+        FirestoreRecyclerOptions<Notification> options = new FirestoreRecyclerOptions.Builder<Notification>()
+                .setQuery(query, Notification.class)
+                .build();
+
+        nAdapter = new FirestoreRecyclerAdapter<Notification, NotificationViewHolder>(options) {
+            @NonNull
+            @Override
+            public NotificationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = getLayoutInflater().from(parent.getContext()).inflate(R.layout.fragment_feed_item, parent, false);
+                return new NotificationViewHolder(view);
+            }
+
+            @Override
+            protected void onBindViewHolder(@NonNull NotificationViewHolder holder, int position, @NonNull Notification model) {
+                holder.list_body.setText(model.getNotification().get("body"));
+                holder.list_title.setText(model.getNotification().get("title"));
+                holder.list_timestamp.setText(model.getDate());
+            }
+        };
 
 
-        sensorDataRef.orderBy("createdAt", Query.Direction.DESCENDING).limit(50)
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value,
-                                        @Nullable FirebaseFirestoreException e) {
-                        if (e != null) {
-                            Log.w(MainActivity.class.getName(), "Listen failed.", e);
-                            return;
-                        }
-
-                        String sensorDataText = "";
-
-                        for (QueryDocumentSnapshot doc : value) {
-                            if (doc.get("rawHumidity") != null) {
-
-                                Timestamp timestamp = (Timestamp) doc.get("createdAt");
-                                Date date = timestamp.toDate();
-
-                                sensorDataText = sensorDataText +
-                                        date.toString()
-                                        + "\nAir Humidity: " + doc.get("rawHumidity")
-                                        + "    Solar: " + doc.get("rawSolarValue")
-                                        + "\nSoil humidity: " + doc.get("rawSoilValue")
-                                        + "    Temperature: " + doc.get("rawTemp")
-                                        + "\n\n";
-
-                                Log.d(MainActivity.class.getName(), sensorDataText);
-                            }
-                        }
-
-                        textView.setText(sensorDataText);
-
-                    }
-                });
-
-
-        //setUpRecyclerView();
+        nRecyclerView.setHasFixedSize(true);
+        nRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        nRecyclerView.setAdapter(nAdapter);
 
         return root;
     }
 
-    private void setUpRecyclerView() {
-        Query query = sensorDataRef.orderBy("createdAt", Query.Direction.DESCENDING).limit(20);
+    private class NotificationViewHolder extends RecyclerView.ViewHolder{
 
+        private TextView list_title;
+        private TextView list_body;
+        private TextView list_timestamp;
 
-        FirestoreRecyclerOptions<SensorData> options = new FirestoreRecyclerOptions.Builder<SensorData>()
-                .setQuery(query, SensorData.class)
-                .build();
+        public NotificationViewHolder(@NonNull View itemView) {
+            super(itemView);
 
-        adapter = new SensorDataAdapter(options);
-
-        RecyclerView recyclerView = this.root.findViewById(R.id.recycler_view);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(adapter);
-
-        Log.w(MainActivity.class.getName(), "Recycler View setup completed.");
+            list_body = itemView.findViewById(R.id.list_body);
+            list_title = itemView.findViewById(R.id.list_title);
+            list_timestamp = itemView.findViewById(R.id.list_timestamp);
+        }
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        //adapter.startListening();
+        nAdapter.startListening();
     }
 
     @Override
     public void onStop() {
         super.onStop();
 
-        //if(adapter != null) {
-        //adapter.stopListening();
-        // }
+        if(nAdapter != null) {
+            nAdapter.stopListening();
+        }
     }
 }

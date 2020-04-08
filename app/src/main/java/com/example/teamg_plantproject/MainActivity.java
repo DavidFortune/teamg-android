@@ -20,6 +20,10 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivity extends AppCompatActivity {
 
+    private String sensorId;
+    private int plantId;
+    protected DatabaseHelper db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,19 +47,32 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             String msg = "Successful login ";
-                            //+ auth.getUid();
                             if (!task.isSuccessful()) {
                                 msg = "Failed to login ";
-                                //+ auth.getUid();
                             }
                             Log.d("Settup Listner", msg);
-                            Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                         }
                     });
 
+
+            Intent intent = getIntent();
+            sensorId = intent.getStringExtra("sensorId");
+
+            if(sensorId != null) {
+                db = new DatabaseHelper(getApplicationContext());
+                plantId = db.getPlantBySensorId(sensorId).getPlantID();
+
+                if (plantId > 0) {
+                    Intent plantIntent = new Intent(MainActivity.this, PlantActivity.class);
+                    plantIntent.putExtra("plantID", plantId);
+                    startActivity(plantIntent);
+                }
+            }
+
         } else {
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(intent);
+            Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(loginIntent);
         }
     }
 

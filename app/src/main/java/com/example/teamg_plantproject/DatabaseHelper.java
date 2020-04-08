@@ -108,6 +108,36 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    public Plant getPlantBySensorId(String sensor_id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+
+        String selectQuery = "SELECT  * FROM " + TABLE_PLANTS + " WHERE "
+                + SENSOR_ID + " = " + sensor_id;
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+
+        assert cursor != null;
+        if (cursor.moveToFirst()) {
+            Plant plant = new Plant();
+
+            plant.setPlantID(cursor.getInt(cursor.getColumnIndex(KEY_PLANT_ID)));
+            plant.setPlantName(cursor.getString(cursor.getColumnIndex(PLANT_NAME)));
+            plant.setPlantType(cursor.getString(cursor.getColumnIndex(PLANT_TYPE)));
+            plant.setSensorId(cursor.getString(cursor.getColumnIndex(SENSOR_ID)));
+            cursor.close();
+            return plant;
+
+        } else {
+            cursor.close();
+            return null;
+        }
+    }
+
     //get 1 plant picture
     public Plant getPlantPicture(int plant_id) {
         SQLiteDatabase db = this.getReadableDatabase();
