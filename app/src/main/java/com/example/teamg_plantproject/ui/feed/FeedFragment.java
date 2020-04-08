@@ -54,7 +54,7 @@ public class FeedFragment extends Fragment {
         nRecyclerView = root.findViewById(R.id.firestore_list);
         final FirebaseAuth auth = FirebaseAuth.getInstance();
 
-        Query query = fb.collection("notifications").whereEqualTo("topic", auth.getUid()).orderBy("timestamp", Query.Direction.DESCENDING).limit(30);
+        Query query = fb.collection("notifications").orderBy("timestamp", Query.Direction.DESCENDING).limit(30);
 
         FirestoreRecyclerOptions<Notification> options = new FirestoreRecyclerOptions.Builder<Notification>()
                 .setQuery(query, Notification.class)
@@ -96,7 +96,6 @@ public class FeedFragment extends Fragment {
             list_body = itemView.findViewById(R.id.list_body);
             list_title = itemView.findViewById(R.id.list_title);
             list_timestamp = itemView.findViewById(R.id.list_timestamp);
-            //fdgdfg
         }
     }
 
