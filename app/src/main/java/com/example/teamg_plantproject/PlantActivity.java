@@ -153,8 +153,8 @@ public class PlantActivity extends AppCompatActivity {
                                 int kk = (int) Math.floor(Double.parseDouble(k));
                                 String l = Objects.requireNonNull(doc.get("rawTemp")).toString();
 
-                                waterBar.setProgress((1 - (((ii - 1300)) / soilMax)) * 100);
-                                Log.d(TAG, "onEvent: " + ((1 - (((ii - 1300)) / soilMax)) * 100));
+                                waterBar.setProgress((int) Math.ceil(100 - (((ii - 1300) * 100 / soilMax))));
+                                Log.d(TAG, "onEvent: " + (100 - (((ii - 1300) / soilMax) * 100)));
                                 humidityBar.setProgress(jj);
                                 Log.d(TAG, "onEvent: " + (jj));
                                 sunBar.setProgress((kk * 100) / solarMax);
@@ -162,7 +162,7 @@ public class PlantActivity extends AppCompatActivity {
                                 plantTemp.setText(l + "°C");
                                 Log.d(TAG, "onEvent: " + l);
 
-                                int water_p = ((1 - (((ii - 1300)) / soilMax)) * 100);
+                                int water_p = (int) Math.ceil(100 - (((ii - 1300) * 100 / soilMax)));
                                 water_percentage.setText(water_p + " %");
 
                                 int sunshine_p = ((kk * 100) / solarMax);
@@ -178,8 +178,8 @@ public class PlantActivity extends AppCompatActivity {
             public void onClick(View v) {
                 currentGraph = "soil";
                 Log.d(TAG, "onClick: waterbar");
-                if(graphTime == "Monthly")setupGraphMonthly();
-                if(graphTime == "Daily") setupGraphDaily();
+                if (graphTime == "Monthly") setupGraphMonthly();
+                if (graphTime == "Daily") setupGraphDaily();
             }
         });
         humidityBar.setOnClickListener(new View.OnClickListener() {
@@ -187,8 +187,8 @@ public class PlantActivity extends AppCompatActivity {
             public void onClick(View v) {
                 currentGraph = "humidity";
                 Log.d(TAG, "onClick: humidity bar");
-                if(graphTime == "Monthly")setupGraphMonthly();
-                if(graphTime == "Daily") setupGraphDaily();
+                if (graphTime == "Monthly") setupGraphMonthly();
+                if (graphTime == "Daily") setupGraphDaily();
             }
         });
         sunBar.setOnClickListener(new View.OnClickListener() {
@@ -196,8 +196,8 @@ public class PlantActivity extends AppCompatActivity {
             public void onClick(View v) {
                 currentGraph = "solar";
                 Log.d(TAG, "onClick: Solar bar");
-                if(graphTime == "Monthly")setupGraphMonthly();
-                if(graphTime == "Daily") setupGraphDaily();
+                if (graphTime == "Monthly") setupGraphMonthly();
+                if (graphTime == "Daily") setupGraphDaily();
             }
         });
         plantTemp.setOnClickListener(new View.OnClickListener() {
@@ -205,14 +205,14 @@ public class PlantActivity extends AppCompatActivity {
             public void onClick(View v) {
                 currentGraph = "air";
                 Log.d(TAG, "onClick: temperature reader");
-                if(graphTime == "Monthly")setupGraphMonthly();
-                if(graphTime == "Daily") setupGraphDaily();
+                if (graphTime == "Monthly") setupGraphMonthly();
+                if (graphTime == "Daily") setupGraphDaily();
             }
         });
 
 
-        if(graphTime == "Monthly")setupGraphMonthly();
-        if(graphTime == "Daily") setupGraphDaily();
+        if (graphTime == "Monthly") setupGraphMonthly();
+        if (graphTime == "Daily") setupGraphDaily();
 
         //on click listener of picture archive button
         imagesButton.setOnClickListener(new View.OnClickListener() {
@@ -485,8 +485,8 @@ public class PlantActivity extends AppCompatActivity {
                         int sumTemp = 0;
 
                         for (QueryDocumentSnapshot doc : value) {
-                           // Log.d(TAG, "daily iteration: "+dailyiteration);
-                            if (dailyiteration < 25  ) {
+                            // Log.d(TAG, "daily iteration: "+dailyiteration);
+                            if (dailyiteration < 25) {
 
                                 String i = Objects.requireNonNull(doc.get("rawSoilValue")).toString();
                                 int ii = (int) Math.floor(Double.parseDouble(i));
@@ -501,23 +501,23 @@ public class PlantActivity extends AppCompatActivity {
                                 sumSolar = sumSolar + kk;
                                 sumTemp = sumTemp + ll;
                                 dailyiteration++;
-                             //  Log.d(TAG, "sumsoil: "+sumSoil);
+                                //  Log.d(TAG, "sumsoil: "+sumSoil);
 
                             }
 
-                            if (doc.get("rawHumidity") != null && dailyiteration >=24) {
+                            if (doc.get("rawHumidity") != null && dailyiteration >= 24) {
 
-                              //  Log.d("TAG", "sumsoil: " +(sumSoil/24) );
-                                int soilPercent = (((sumSoil/24) * 100) / soilMax);
+                                //  Log.d("TAG", "sumsoil: " +(sumSoil/24) );
+                                int soilPercent = (((sumSoil / 24) * 100) / soilMax);
 
 
                                 dataPointsSoil.add(new DataPoint(iteration, soilPercent));
-                                dataPointsSolar.add(new DataPoint(iteration, sumSolar/24));
-                                dataPointsAir.add(new DataPoint(iteration, sumTemp/24));
-                                dataPointsHum.add(new DataPoint(iteration, sumHum/24));
+                                dataPointsSolar.add(new DataPoint(iteration, sumSolar / 24));
+                                dataPointsAir.add(new DataPoint(iteration, sumTemp / 24));
+                                dataPointsHum.add(new DataPoint(iteration, sumHum / 24));
                                 //Log.d("TAG", "datapoint : "+iteration+" "+soilPercent/24);
                                 iteration++;
-                                dailyiteration=0;
+                                dailyiteration = 0;
                                 sumSoil = 0;
                                 sumHum = 0;
                                 sumSolar = 0;
@@ -630,15 +630,12 @@ public class PlantActivity extends AppCompatActivity {
         } else if (item.getItemId() == R.id.delete_plant_option) {
             db.deletePlant(plantID);
             goToPlantList();
-        }
-        else if (item.getItemId()==R.id.edit_plant_graph)
-        {
-            if(graphTime == "Monthly"){
+        } else if (item.getItemId() == R.id.edit_plant_graph) {
+            if (graphTime == "Monthly") {
                 graphTime = "Daily";
                 setupGraphDaily();
                 Log.d(TAG, "onOptionsItemSelected: DAILY GRAPH");
-            }
-           else if(graphTime == "Daily") {
+            } else if (graphTime == "Daily") {
                 graphTime = "Monthly";
                 setupGraphMonthly();
                 Log.d(TAG, "onOptionsItemSelected: MONTHLY GRAPH");
