@@ -70,8 +70,11 @@ public class PlantActivity extends AppCompatActivity {
     protected String plantSensorID;
     Uri image_uri;
     private String currentGraph = "soil";
+    private String graphTime = "Daily";
+
     private FirebaseFirestore fb = FirebaseFirestore.getInstance();
     private CollectionReference sensorDataRef;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,7 +178,8 @@ public class PlantActivity extends AppCompatActivity {
             public void onClick(View v) {
                 currentGraph = "soil";
                 Log.d(TAG, "onClick: waterbar");
-                setupGraphDaily();
+                if(graphTime == "Monthly")setupGraphMonthly();
+                if(graphTime == "Daily") setupGraphDaily();
             }
         });
         humidityBar.setOnClickListener(new View.OnClickListener() {
@@ -183,7 +187,8 @@ public class PlantActivity extends AppCompatActivity {
             public void onClick(View v) {
                 currentGraph = "humidity";
                 Log.d(TAG, "onClick: humidity bar");
-                setupGraphDaily();
+                if(graphTime == "Monthly")setupGraphMonthly();
+                if(graphTime == "Daily") setupGraphDaily();
             }
         });
         sunBar.setOnClickListener(new View.OnClickListener() {
@@ -191,7 +196,8 @@ public class PlantActivity extends AppCompatActivity {
             public void onClick(View v) {
                 currentGraph = "solar";
                 Log.d(TAG, "onClick: Solar bar");
-                setupGraphDaily();
+                if(graphTime == "Monthly")setupGraphMonthly();
+                if(graphTime == "Daily") setupGraphDaily();
             }
         });
         plantTemp.setOnClickListener(new View.OnClickListener() {
@@ -199,12 +205,14 @@ public class PlantActivity extends AppCompatActivity {
             public void onClick(View v) {
                 currentGraph = "air";
                 Log.d(TAG, "onClick: temperature reader");
-                setupGraphDaily();
+                if(graphTime == "Monthly")setupGraphMonthly();
+                if(graphTime == "Daily") setupGraphDaily();
             }
         });
 
 
-        setupGraphDaily();
+        if(graphTime == "Monthly")setupGraphMonthly();
+        if(graphTime == "Daily") setupGraphDaily();
 
         //on click listener of picture archive button
         imagesButton.setOnClickListener(new View.OnClickListener() {
@@ -335,6 +343,7 @@ public class PlantActivity extends AppCompatActivity {
                                 dataPointsHum.add(new DataPoint(iteration, jj));
 
                                 iteration++;
+
                             }
                         }
                         final LineGraphSeries<DataPoint> series = new LineGraphSeries<>(dataPointsSoil.toArray(new DataPoint[dataPointsSoil.size()]));
@@ -388,7 +397,7 @@ public class PlantActivity extends AppCompatActivity {
                             graph.getViewport().setScrollableY(true); //allow vertical scrolling
                             // set axis labels
                             graph.getGridLabelRenderer().setVerticalAxisTitle("Soil Moisture (%)");
-                            graph.getGridLabelRenderer().setHorizontalAxisTitle("Last 24 hours");
+                            graph.getGridLabelRenderer().setHorizontalAxisTitle("Hours Ago");
 
                         } else if (currentGraph == "solar") {
                             graph.removeAllSeries();
@@ -406,7 +415,7 @@ public class PlantActivity extends AppCompatActivity {
                             graph.getViewport().setScrollableY(true); //allow vertical scrolling
                             // set axis labels
                             graph.getGridLabelRenderer().setVerticalAxisTitle("Sunlight");
-                            graph.getGridLabelRenderer().setHorizontalAxisTitle("Last 24 hours");
+                            graph.getGridLabelRenderer().setHorizontalAxisTitle("Hours Ago");
                         } else if (currentGraph == "air") {
                             graph.removeAllSeries();
                             graph.addSeries(series3);
@@ -423,7 +432,7 @@ public class PlantActivity extends AppCompatActivity {
                             graph.getViewport().setScrollableY(true); //allow vertical scrolling
                             // set axis labels
                             graph.getGridLabelRenderer().setVerticalAxisTitle("(°C)");
-                            graph.getGridLabelRenderer().setHorizontalAxisTitle("Last 24 hours");
+                            graph.getGridLabelRenderer().setHorizontalAxisTitle("Hours Ago");
                         } else if (currentGraph == "humidity") {
 
                             graph.removeAllSeries();
@@ -441,7 +450,7 @@ public class PlantActivity extends AppCompatActivity {
                             graph.getViewport().setScrollableY(true); //allow vertical scrolling
                             // set axis labels
                             graph.getGridLabelRenderer().setVerticalAxisTitle("Air Humidity (%)");
-                            graph.getGridLabelRenderer().setHorizontalAxisTitle("Last 24 hours");
+                            graph.getGridLabelRenderer().setHorizontalAxisTitle("Hours Ago");
                         }
 
                     }
@@ -453,8 +462,7 @@ public class PlantActivity extends AppCompatActivity {
     protected void setupGraphMonthly() {
 
         graph.removeAllSeries();
-        sensorDataRef.orderBy("createdAt", Query.Direction.ASCENDING)
-                .limit(720)
+        sensorDataRef.orderBy("createdAt", Query.Direction.ASCENDING).limit(720)
                 //.whereArrayContains("createdAt","April 7")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @SuppressLint("ClickableViewAccessibility")
@@ -477,8 +485,8 @@ public class PlantActivity extends AppCompatActivity {
                         int sumTemp = 0;
 
                         for (QueryDocumentSnapshot doc : value) {
-
-                            if (dailyiteration <= 24 && doc.get("rawHumidity") != null ) {
+                           // Log.d(TAG, "daily iteration: "+dailyiteration);
+                            if (dailyiteration < 25  ) {
 
                                 String i = Objects.requireNonNull(doc.get("rawSoilValue")).toString();
                                 int ii = (int) Math.floor(Double.parseDouble(i));
@@ -493,26 +501,29 @@ public class PlantActivity extends AppCompatActivity {
                                 sumSolar = sumSolar + kk;
                                 sumTemp = sumTemp + ll;
                                 dailyiteration++;
+                             //  Log.d(TAG, "sumsoil: "+sumSoil);
 
                             }
-
-
-
 
                             if (doc.get("rawHumidity") != null && dailyiteration >=24) {
 
-
-                                int soilPercent = ((sumSoil * 100) / soilMax);
+                              //  Log.d("TAG", "sumsoil: " +(sumSoil/24) );
+                                int soilPercent = (((sumSoil/24) * 100) / soilMax);
 
 
                                 dataPointsSoil.add(new DataPoint(iteration, soilPercent));
-                                dataPointsSolar.add(new DataPoint(iteration, sumSolar));
-                                dataPointsAir.add(new DataPoint(iteration, sumTemp));
-                                dataPointsHum.add(new DataPoint(iteration, sumHum));
-
+                                dataPointsSolar.add(new DataPoint(iteration, sumSolar/24));
+                                dataPointsAir.add(new DataPoint(iteration, sumTemp/24));
+                                dataPointsHum.add(new DataPoint(iteration, sumHum/24));
+                                //Log.d("TAG", "datapoint : "+iteration+" "+soilPercent/24);
                                 iteration++;
+                                dailyiteration=0;
+                                sumSoil = 0;
+                                sumHum = 0;
+                                sumSolar = 0;
+                                sumTemp = 0;
                             }
-                            dailyiteration=0;
+
 
                         }
                         final LineGraphSeries<DataPoint> series = new LineGraphSeries<>(dataPointsSoil.toArray(new DataPoint[dataPointsSoil.size()]));
@@ -537,7 +548,7 @@ public class PlantActivity extends AppCompatActivity {
                             graph.getViewport().setScrollableY(true); //allow vertical scrolling
                             // set axis labels
                             graph.getGridLabelRenderer().setVerticalAxisTitle("Soil Moisture (%)");
-                            graph.getGridLabelRenderer().setHorizontalAxisTitle("Last 24 hours");
+                            graph.getGridLabelRenderer().setHorizontalAxisTitle("Days ago");
 
                         } else if (currentGraph == "solar") {
                             graph.removeAllSeries();
@@ -555,7 +566,7 @@ public class PlantActivity extends AppCompatActivity {
                             graph.getViewport().setScrollableY(true); //allow vertical scrolling
                             // set axis labels
                             graph.getGridLabelRenderer().setVerticalAxisTitle("Sunlight");
-                            graph.getGridLabelRenderer().setHorizontalAxisTitle("Last 24 hours");
+                            graph.getGridLabelRenderer().setHorizontalAxisTitle("Days ago");
                         } else if (currentGraph == "air") {
                             graph.removeAllSeries();
                             graph.addSeries(series3);
@@ -572,7 +583,7 @@ public class PlantActivity extends AppCompatActivity {
                             graph.getViewport().setScrollableY(true); //allow vertical scrolling
                             // set axis labels
                             graph.getGridLabelRenderer().setVerticalAxisTitle("(°C)");
-                            graph.getGridLabelRenderer().setHorizontalAxisTitle("Last 24 hours");
+                            graph.getGridLabelRenderer().setHorizontalAxisTitle("Days ago");
                         } else if (currentGraph == "humidity") {
 
                             graph.removeAllSeries();
@@ -590,7 +601,7 @@ public class PlantActivity extends AppCompatActivity {
                             graph.getViewport().setScrollableY(true); //allow vertical scrolling
                             // set axis labels
                             graph.getGridLabelRenderer().setVerticalAxisTitle("Air Humidity (%)");
-                            graph.getGridLabelRenderer().setHorizontalAxisTitle("Last 24 hours");
+                            graph.getGridLabelRenderer().setHorizontalAxisTitle("Days ago");
                         }
 
                     }
@@ -619,6 +630,21 @@ public class PlantActivity extends AppCompatActivity {
         } else if (item.getItemId() == R.id.delete_plant_option) {
             db.deletePlant(plantID);
             goToPlantList();
+        }
+        else if (item.getItemId()==R.id.edit_plant_graph)
+        {
+            if(graphTime == "Monthly"){
+                graphTime = "Daily";
+                setupGraphDaily();
+                Log.d(TAG, "onOptionsItemSelected: DAILY GRAPH");
+            }
+           else if(graphTime == "Daily") {
+                graphTime = "Monthly";
+                setupGraphMonthly();
+                Log.d(TAG, "onOptionsItemSelected: MONTHLY GRAPH");
+            }
+
+
         }
         return super.onOptionsItemSelected(item);
     }

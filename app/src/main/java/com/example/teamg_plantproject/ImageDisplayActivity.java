@@ -54,6 +54,7 @@ public class ImageDisplayActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.option_delete_image) {
             Intent intent = new Intent(this, ImageArchive.class);
             intent.putExtra("PlantID", plantId);
+            intent.putExtra("SENSOR_ID", sensorID);
             db = new DatabaseHelper(getApplicationContext());
             db.deletePlantPicture(pictureNumber);
             startActivity(intent);

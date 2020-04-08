@@ -12,6 +12,15 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/edit_plant_graph"
+        android:title="Graph Hourly/Daily"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/edit_null"
+        android:title="   "
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/delete_plant_option"
         android:title="Delete Plant"
         app:showAsAction="never" />
