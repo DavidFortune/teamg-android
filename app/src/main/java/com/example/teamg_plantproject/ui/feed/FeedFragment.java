@@ -96,6 +96,7 @@ public class FeedFragment extends Fragment {
             list_body = itemView.findViewById(R.id.list_body);
             list_title = itemView.findViewById(R.id.list_title);
             list_timestamp = itemView.findViewById(R.id.list_timestamp);
+            //fdgdfg
         }
     }
 
