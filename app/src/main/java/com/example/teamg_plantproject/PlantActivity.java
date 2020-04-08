@@ -34,8 +34,11 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.LabelFormatter;
 import com.jjoe64.graphview.LegendRenderer;
+import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
@@ -310,7 +313,7 @@ public class PlantActivity extends AppCompatActivity {
     protected void setupGraphDaily() {
 
         graph.removeAllSeries();
-        sensorDataRef.orderBy("createdAt", Query.Direction.ASCENDING).limit(24)
+        sensorDataRef.orderBy("createdAt", Query.Direction.DESCENDING).limit(24)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @SuppressLint("ClickableViewAccessibility")
                     @Override
@@ -336,7 +339,7 @@ public class PlantActivity extends AppCompatActivity {
                                 int kk = (int) Math.floor(Double.parseDouble(k));
                                 String l = Objects.requireNonNull(doc.get("rawTemp")).toString();
                                 int ll = (int) Math.floor(Double.parseDouble(l));
-                                int soilPercent = ((ii * 100) / soilMax);
+                                int soilPercent = (int)Math.ceil(100 - (((ii - 1300) * 100 / soilMax)));
                                 dataPointsSoil.add(new DataPoint(iteration, soilPercent));
                                 dataPointsSolar.add(new DataPoint(iteration, kk));
                                 dataPointsAir.add(new DataPoint(iteration, ll));
@@ -396,6 +399,7 @@ public class PlantActivity extends AppCompatActivity {
                             graph.getViewport().setScalable(true); // allow pinching the zoom and stuff
                             graph.getViewport().setScrollableY(true); //allow vertical scrolling
                             // set axis labels
+                            graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter());
                             graph.getGridLabelRenderer().setVerticalAxisTitle("Soil Moisture (%)");
                             graph.getGridLabelRenderer().setHorizontalAxisTitle("Hours Ago");
 
@@ -414,6 +418,13 @@ public class PlantActivity extends AppCompatActivity {
                             graph.getViewport().setScalable(true); // allow pinching the zoom and stuff
                             graph.getViewport().setScrollableY(true); //allow vertical scrolling
                             // set axis labels
+                            StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graph);
+                            staticLabelsFormatter.setVerticalLabels(new String[] {"Very Low","Low", "Medium", "High"});
+                            graph.getViewport().setYAxisBoundsManual(false);
+                            //graph.getViewport().setMinY(0);
+                           // graph.getViewport().setMaxY(100);
+                            graph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
+
                             graph.getGridLabelRenderer().setVerticalAxisTitle("Sunlight");
                             graph.getGridLabelRenderer().setHorizontalAxisTitle("Hours Ago");
                         } else if (currentGraph == "air") {
@@ -433,8 +444,8 @@ public class PlantActivity extends AppCompatActivity {
                             // set axis labels
                             graph.getGridLabelRenderer().setVerticalAxisTitle("(°C)");
                             graph.getGridLabelRenderer().setHorizontalAxisTitle("Hours Ago");
+                            graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter());
                         } else if (currentGraph == "humidity") {
-
                             graph.removeAllSeries();
                             graph.addSeries(series4);
                             series4.setTitle("Air Humidity (%)");
@@ -451,6 +462,7 @@ public class PlantActivity extends AppCompatActivity {
                             // set axis labels
                             graph.getGridLabelRenderer().setVerticalAxisTitle("Air Humidity (%)");
                             graph.getGridLabelRenderer().setHorizontalAxisTitle("Hours Ago");
+                            graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter());
                         }
 
                     }
@@ -462,7 +474,7 @@ public class PlantActivity extends AppCompatActivity {
     protected void setupGraphMonthly() {
 
         graph.removeAllSeries();
-        sensorDataRef.orderBy("createdAt", Query.Direction.ASCENDING).limit(720)
+        sensorDataRef.orderBy("createdAt", Query.Direction.DESCENDING).limit(720)
                 //.whereArrayContains("createdAt","April 7")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @SuppressLint("ClickableViewAccessibility")
@@ -508,7 +520,8 @@ public class PlantActivity extends AppCompatActivity {
                             if (doc.get("rawHumidity") != null && dailyiteration >= 24) {
 
                                 //  Log.d("TAG", "sumsoil: " +(sumSoil/24) );
-                                int soilPercent = (((sumSoil / 24) * 100) / soilMax);
+                                int soilPercent = (int)Math.ceil(100 - ((((sumSoil / 24) - 1300) * 100 / soilMax)));
+
 
 
                                 dataPointsSoil.add(new DataPoint(iteration, soilPercent));
@@ -549,6 +562,8 @@ public class PlantActivity extends AppCompatActivity {
                             // set axis labels
                             graph.getGridLabelRenderer().setVerticalAxisTitle("Soil Moisture (%)");
                             graph.getGridLabelRenderer().setHorizontalAxisTitle("Days ago");
+                            graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter());
+
 
                         } else if (currentGraph == "solar") {
                             graph.removeAllSeries();
@@ -565,6 +580,9 @@ public class PlantActivity extends AppCompatActivity {
                             graph.getViewport().setScalable(true); // allow pinching the zoom and stuff
                             graph.getViewport().setScrollableY(true); //allow vertical scrolling
                             // set axis labels
+                            StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graph);
+                            staticLabelsFormatter.setVerticalLabels(new String[] {"Very Low","Low", "Medium", "High"});
+                            graph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
                             graph.getGridLabelRenderer().setVerticalAxisTitle("Sunlight");
                             graph.getGridLabelRenderer().setHorizontalAxisTitle("Days ago");
                         } else if (currentGraph == "air") {
@@ -584,6 +602,8 @@ public class PlantActivity extends AppCompatActivity {
                             // set axis labels
                             graph.getGridLabelRenderer().setVerticalAxisTitle("(°C)");
                             graph.getGridLabelRenderer().setHorizontalAxisTitle("Days ago");
+                            graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter());
+
                         } else if (currentGraph == "humidity") {
 
                             graph.removeAllSeries();
@@ -602,6 +622,8 @@ public class PlantActivity extends AppCompatActivity {
                             // set axis labels
                             graph.getGridLabelRenderer().setVerticalAxisTitle("Air Humidity (%)");
                             graph.getGridLabelRenderer().setHorizontalAxisTitle("Days ago");
+                            graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter());
+
                         }
 
                     }

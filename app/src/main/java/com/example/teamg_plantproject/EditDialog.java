@@ -1,5 +1,6 @@
 package com.example.teamg_plantproject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -11,6 +12,9 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+
+import com.google.android.gms.common.api.CommonStatusCodes;
+import com.google.android.gms.vision.barcode.Barcode;
 
 public class EditDialog extends DialogFragment {
     private Button saveButton;
@@ -30,6 +34,16 @@ public class EditDialog extends DialogFragment {
         saveButton = view.findViewById(R.id.save_changes);
         nameEdit = view.findViewById(R.id.plant_name_edit);
         sesonrIDEdit = view.findViewById(R.id.sensor_id_edit);
+        sesonrIDEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), QRCodeScanActivity.class);
+                startActivityForResult(intent, 0);
+
+            }
+        });
+
+
         db = new DatabaseHelper(getContext());
         plantID = getArguments().getInt("PlantId");
 
@@ -59,4 +73,21 @@ public class EditDialog extends DialogFragment {
         return view;
     }
 
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == 0) {
+            if (resultCode == CommonStatusCodes.SUCCESS) {
+                if (data != null) {
+                    Barcode barcode = data.getParcelableExtra("qrcode");
+                    sesonrIDEdit.setText(barcode.displayValue);
+                } else {
+
+                }
+            }
+        }
+        else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
 }
