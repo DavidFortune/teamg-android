@@ -11,11 +11,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -52,7 +50,7 @@ public class PlantActivity extends AppCompatActivity {
     private static final int IMAGE_CAPTURE_CODE = 1001;
     private static final int PERMISSION_CODE = 1000;
     private static final String TAG = "_Plant_Indiv";
-    private final int soilMax = 3300;
+    private final int soilMax = 1700;
     private final int solarMax = 2300;
     protected TextView plantName;
     protected TextView plantType;
@@ -61,7 +59,6 @@ public class PlantActivity extends AppCompatActivity {
     protected TextView water_percentage;
     protected TextView sunshine_percentage;
     protected GraphView graph;
-    protected Button deletePlant;
     protected ImageButton takePictureButton;
     protected Button imagesButton;
     protected TextView humidity_percentage;
@@ -153,7 +150,7 @@ public class PlantActivity extends AppCompatActivity {
                                 int kk = (int) Math.floor(Double.parseDouble(k));
                                 String l = Objects.requireNonNull(doc.get("rawTemp")).toString();
 
-                                waterBar.setProgress((ii * 100) / soilMax);
+                                waterBar.setProgress((1 - (((ii - 1300)) / soilMax)) * 100);
                                 Log.d(TAG, "onEvent: " + ((ii * 100) / soilMax));
                                 humidityBar.setProgress(jj);
                                 Log.d(TAG, "onEvent: " + (jj));
